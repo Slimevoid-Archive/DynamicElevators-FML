@@ -1,7 +1,5 @@
 package ironclad49er.elevators.common;
 // CLIENT - 1.6
-import ironclad49er.elevators.client.GuiElevator;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -106,7 +104,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
     		}
     		else {
     			mod_Elevator.say("Attempting to open GUI locally");
-    			ModLoader.openGUI(player, new GuiElevator(packet, loc));
+    			mod_Elevator.proxy.openGui(world, player, packet, loc);
     		}
 
     		mod_Elevator.say((new StringBuilder()).append("Successfully added request for ").append(player.username).toString());
@@ -146,8 +144,8 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 			// GUI Request received
 			if (packet.channel.equals(CHANNELS[GUI_REQUEST])) {		        
 				// Attempt to open GUI screen with received data
-				GuiScreen screen = new GuiElevator(packet);
-				ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, screen);
+				// EURY EDIT
+				mod_Elevator.proxy.openGui(world, null, packet, null);
 			}
 			else if (packet.channel.equals(CHANNELS[GUI_DATA])) {				
 				ElevatorProperties props = new ElevatorProperties();

@@ -235,6 +235,7 @@ public class EntityElevator extends Entity {
 			Entity rider = iter.next();
 			updateRider(rider);
 			rider.motionY = 0.1F;
+			rider.posY += 0.5F;
 			say("Ejected rider #" + rider.entityId);
 		}
 		mod_Elevator.packetHandler.sendRiderUpdates(mountedEntities, (int)this.posX, (int)this.posY, (int)this.posZ, false);

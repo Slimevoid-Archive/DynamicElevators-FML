@@ -1,7 +1,6 @@
 package ironclad49er.elevators.common;
 
 import ironclad49er.common.Props;
-import ironclad49er.elevators.client.DE_ClientProxy;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -177,6 +176,12 @@ public class mod_Elevator {
 		}
 	}
 	
+	@SidedProxy(
+			clientSide="ironclad49er.elevators.client.DE_ClientProxy",
+			serverSide="ironclad49er.elevators.common.DE_CommonProxy"
+			)
+	public static DE_CommonProxy proxy;
+	
 	@Init
 	public void load (FMLInitializationEvent evt) {
 		say("Starting in verbose mode!");
@@ -194,7 +199,7 @@ public class mod_Elevator {
         EntityRegistry.registerGlobalEntityID(EntityElevator.class, "ironclad_elevator", elevator_entityID);
         EntityRegistry.registerModEntity(EntityElevator.class, "ironclad_elevator", elevator_entityID, this, 400, 1, true);
         
-        DE_ClientProxy.registerRenderInformation();
+        proxy.registerRenderInformation();
         
         //--------------RECIPES--------------//
         GameRegistry.addRecipe(new ItemStack(ElevatorButton, 1), new Object[] {"I","I", Character.valueOf('I'), Item.ingotIron});

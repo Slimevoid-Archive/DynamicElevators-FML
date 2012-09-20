@@ -5,8 +5,12 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class DE_CommonProxy implements IGuiHandler {
-	public static void registerRenderInformation() {
+	public void registerRenderInformation() {
 	         //No rendering for servers.
+	}
+	
+	public void openGui(World world, EntityPlayer entityplayer, Packet250CustomPayload packet, ChunkPosition loc) {
+		// No openGUI for Server
 	}
 	
 	@Override
