@@ -1,5 +1,5 @@
 package ironclad49er.elevators.common;
-//D.E. - 1.6
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -233,9 +233,14 @@ public class EntityElevator extends Entity {
 		Iterator<Entity> iter = mountedEntities.iterator();
 		while(iter.hasNext()) {
 			Entity rider = iter.next();
-			updateRider(rider);
+			double pos = Math.abs(rider.posY - this.posY);
+			if (pos < 1.0) {
+				if (this.motionY > 0)
+				rider.posY += 1F;
+				//System.out.println("Pos:" + pos);
+			}
 			rider.motionY = 0.1F;
-			rider.posY += 0.5F;
+			updateRider(rider);
 			say("Ejected rider #" + rider.entityId);
 		}
 		mod_Elevator.packetHandler.sendRiderUpdates(mountedEntities, (int)this.posX, (int)this.posY, (int)this.posZ, false);
@@ -243,7 +248,7 @@ public class EntityElevator extends Entity {
     }
     
     public double getMountedYOffset() {
-        return 0.5D;
+        return 0.75D;
     }
 	
     public void updateRider(Entity rider) {
@@ -466,6 +471,7 @@ public class EntityElevator extends Entity {
 				Iterator<Entity> iter = mountedEntities.iterator();
 				while (iter.hasNext()) {
 					Entity curentity = iter.next();
+					curentity.posY += 0.5;
 					if (curentity instanceof EntityPlayer) {
 						EntityPlayer player = (EntityPlayer) curentity;
 						player.addChatMessage(mod_Elevator.message_elevator_arrival + " " + floorName);

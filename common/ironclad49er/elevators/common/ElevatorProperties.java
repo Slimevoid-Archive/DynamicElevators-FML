@@ -1,5 +1,5 @@
 package ironclad49er.elevators.common;
-// D.E. - 1.6
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

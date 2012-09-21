@@ -1,5 +1,5 @@
 package ironclad49er.elevators.common;
-// CLIENT - 1.6
+
 import java.io.IOException;
 import java.util.*;
 
@@ -350,7 +350,6 @@ public class BlockElevator extends BlockContainer{
    
     //right clicked?
 	@Override
-	@SideOnly(Side.CLIENT)
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int side, float par7, float par8, float par9) {
 		if (world.isRemote) { return true; }
         updateCeilingStatus(world, i, j, k);

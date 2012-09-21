@@ -1,5 +1,5 @@
 package ironclad49er.elevators.common;
-// D.E. - 1.6
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
