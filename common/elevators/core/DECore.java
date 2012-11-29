@@ -268,9 +268,7 @@ public class DECore {
 		props.getInt("Max_Elevator_Y", 255);
 
 		props.getInt("Elevator_GUI_ID", 553);
-		props.getInt("elevator_entityID", EntityRegistry
-				.instance()
-					.findGlobalUniqueEntityId());
+		props.getInt("elevator_entityID", ModLoader.getUniqueEntityId());
 
 		props.getBoolean("invertElevatorKeys", false);
 		props.getBoolean("entireShaftMustBeClear", true);

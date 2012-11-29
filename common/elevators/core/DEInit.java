@@ -39,9 +39,6 @@ public class DEInit {
 				TileEntityElevator.class,
 				"dynamicelevator");
 
-		EntityRegistry.instance();
-		// EntityRegistry.registerGlobalEntityID(EntityElevator.class,
-		// "delv", DECore.elevator_entityID);
 		EntityRegistry.registerModEntity(
 				EntityElevator.class,
 				"delv",
@@ -51,6 +48,11 @@ public class DEInit {
 				1,
 				true);
 
+		EntityRegistry.instance().registerGlobalEntityID(
+				EntityElevator.class,
+				"delv",
+				DECore.elevator_entityID);
+		
 		DEInit.DEM.getProxy().registerRenderInformation();
 
 		DECore.addConfig();

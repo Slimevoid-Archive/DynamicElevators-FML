@@ -44,10 +44,12 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f * f5, f * f5, f * f5);
-		renderBlocks.renderBlockByRenderType(elevator, i, j, k);// .renderBottomFace(elevator,
-																// -0.5D, -0.5D,
-																// -0.5D,
-		// textureData[0]);
+		renderBlocks.renderBottomFace(
+				elevator,
+				-0.5D,
+				-0.5D,
+				-0.5D,
+				textureData[0]);
 		f5 = 1.0F;
 
 		if (f5 < f4) {
