@@ -45,12 +45,10 @@ public class BlockElevatorCaller extends Block {
 				tempX++;
 			}
 			int ID = world.getBlockId(tempX, tempY, tempZ);
-			DECore.say("Checking: " + tempX + ", " + tempY + ", " + tempZ
-					+ ": has block ID" + ID);
-			if (ID > 0
-					&& ID != DECore.Elevator.blockID
-					&& Block.blocksList[ID].isIndirectlyPoweringTo(world,
-							tempX, tempY, tempZ, iter)) {
+			DECore
+					.say("Checking: " + tempX + ", " + tempY + ", " + tempZ + ": has block ID" + ID);
+			if (ID > 0 && ID != DECore.Elevator.blockID && Block.blocksList[ID]
+					.isIndirectlyPoweringTo(world, tempX, tempY, tempZ, iter)) {
 				return true;
 			}
 		}
@@ -63,14 +61,12 @@ public class BlockElevatorCaller extends Block {
 	}
 
 	@Override
-	public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2,
-			int par3, int par4, int par5) {
+	public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return true;
 	}
 
 	@Override
-	public boolean isBlockSolidOnSide(World world, int x, int y, int z,
-			ForgeDirection side) {
+	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
 		return true;
 	}
 
@@ -94,12 +90,14 @@ public class BlockElevatorCaller extends Block {
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k,
-			int notifierID) {
+	public void onNeighborBlockChange(World world, int i, int j, int k, int notifierID) {
 		if (notifierID != DECore.ElevatorButton.blockID) {
-			if (notifierID <= 0 || notifierID == DECore.Elevator.blockID
-					|| !Block.blocksList[notifierID].canProvidePower()
-					|| !isBeingPoweredByNonElevator(world, i, j, k)) {
+			if (notifierID <= 0 || notifierID == DECore.Elevator.blockID || !Block.blocksList[notifierID]
+					.canProvidePower() || !isBeingPoweredByNonElevator(
+					world,
+					i,
+					j,
+					k)) {
 				previouslyPowered = false;
 				return;
 			}
@@ -121,8 +119,8 @@ public class BlockElevatorCaller extends Block {
 				} else if (iter == 3) {
 					tempZ++;
 				}
-				if (world.getBlockId(tempX, j, tempZ) == DECore.ElevatorButton.blockID
-						&& (world.getBlockMetadata(tempX, j, tempZ) & 8) > 0) {
+				if (world.getBlockId(tempX, j, tempZ) == DECore.ElevatorButton.blockID && (world
+						.getBlockMetadata(tempX, j, tempZ) & 8) > 0) {
 					foundButton = true;
 				}
 			}
@@ -133,8 +131,7 @@ public class BlockElevatorCaller extends Block {
 
 	}
 
-	public static boolean findAndActivateElevator(World world, int i, int j,
-			int k, int depth) {
+	public static boolean findAndActivateElevator(World world, int i, int j, int k, int depth) {
 		if (depth > 32) {
 			return false;
 		}
@@ -168,9 +165,8 @@ public class BlockElevatorCaller extends Block {
 			} else if (iter == 5) {
 				tempX++;
 			}
-			if (world.getBlockId(tempX, tempY, tempZ) == DECore.ElevatorCaller.blockID
-					&& !checkedCallers.contains(new ChunkPosition(tempX, tempY,
-							tempZ))) {
+			if (world.getBlockId(tempX, tempY, tempZ) == DECore.ElevatorCaller.blockID && !checkedCallers
+					.contains(new ChunkPosition(tempX, tempY, tempZ))) {
 				findAndActivateElevator(world, tempX, tempY, tempZ, depth + 1);
 				foundOtherCallerBlock = true;
 			}
@@ -183,10 +179,16 @@ public class BlockElevatorCaller extends Block {
 		// No uncalled elevator callers were found, so search for elevators here
 		checkForElevators(world, new ChunkPosition(i, j, k), 0);
 		DECore.say("ElevatorCaller activated at: " + i + ", " + j + ", " + k);
-		DECore.say((new StringBuilder()).append("Checked ")
-				.append(checkedBlocks.size()).append(" blocks").toString());
-		DECore.say((new StringBuilder()).append("Found ").append(elvs.size())
-				.append(" elevators").toString());
+		DECore.say((new StringBuilder())
+				.append("Checked ")
+					.append(checkedBlocks.size())
+					.append(" blocks")
+					.toString());
+		DECore.say((new StringBuilder())
+				.append("Found ")
+					.append(elvs.size())
+					.append(" elevators")
+					.toString());
 		int dist = 500;
 		int destY = -1;
 		ChunkPosition newPos = null;
@@ -194,10 +196,14 @@ public class BlockElevatorCaller extends Block {
 			Iterator<ChunkPosition> iter = elvs.iterator();
 			while (iter.hasNext()) {
 				ChunkPosition curPos = iter.next();
-				BlockElevator.refreshAndCombineAllAdjacentElevators(world,
+				BlockElevator.refreshAndCombineAllAdjacentElevators(
+						world,
 						curPos);
-				TileEntityElevator curTile = BlockElevator.getTileEntity(world,
-						curPos.x, curPos.y, curPos.z);
+				TileEntityElevator curTile = BlockElevator.getTileEntity(
+						world,
+						curPos.x,
+						curPos.y,
+						curPos.z);
 				if (curTile != null) {
 					int suggestedY = curTile.getClosestYFromYCoor(j);
 					if (MathHelper.abs(suggestedY - curPos.y) < dist) {
@@ -216,8 +222,7 @@ public class BlockElevatorCaller extends Block {
 		return false;
 	}
 
-	public static void checkForElevators(World world, ChunkPosition pos,
-			int numSolid) {
+	public static void checkForElevators(World world, ChunkPosition pos, int numSolid) {
 		if (checkedBlocks.contains(pos)) {
 			return;
 		}
@@ -232,17 +237,25 @@ public class BlockElevatorCaller extends Block {
 			}
 		}
 		if (isCeiling || DECore.isBlockOpeningMaterial(world, pos)) {
-			if (pos.y > 0
-					&& !DECore.isBlockLedgeMaterial(world, pos.x, pos.y - 1,
-							pos.z)) {
-				checkForElevators(world, new ChunkPosition(pos.x, pos.y - 1,
-						pos.z), numSolid);
+			if (pos.y > 0 && !DECore.isBlockLedgeMaterial(
+					world,
+					pos.x,
+					pos.y - 1,
+					pos.z)) {
+				checkForElevators(world, new ChunkPosition(
+						pos.x,
+							pos.y - 1,
+							pos.z), numSolid);
 			}
-			if (pos.y < DECore.max_elevator_Y
-					&& !DECore.isBlockLedgeMaterial(world, pos.x, pos.y + 1,
-							pos.z)) {
-				checkForElevators(world, new ChunkPosition(pos.x, pos.y + 1,
-						pos.z), numSolid);
+			if (pos.y < DECore.max_elevator_Y && !DECore.isBlockLedgeMaterial(
+					world,
+					pos.x,
+					pos.y + 1,
+					pos.z)) {
+				checkForElevators(world, new ChunkPosition(
+						pos.x,
+							pos.y + 1,
+							pos.z), numSolid);
 			}
 		} else {
 			numSolid++;

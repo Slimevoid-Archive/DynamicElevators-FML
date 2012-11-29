@@ -17,19 +17,16 @@ public class DE_CommonProxy implements IDECommonProxy {
 	}
 
 	@Override
-	public void openGui(World world, EntityPlayer entityplayer,
-			Packet250CustomPayload packet, ChunkPosition loc) {
+	public void openGui(World world, EntityPlayer entityplayer, Packet250CustomPayload packet, ChunkPosition loc) {
 	}
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
-			int x, int y, int z) {
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return null;
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
-			int x, int y, int z) {
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return null;
 	}
 
@@ -49,8 +46,7 @@ public class DE_CommonProxy implements IDECommonProxy {
 	}
 
 	@Override
-	public void onPacketData(INetworkManager manager,
-			Packet250CustomPayload packet, Player player) {
+	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 	}
 
 	@Override
@@ -59,13 +55,11 @@ public class DE_CommonProxy implements IDECommonProxy {
 	}
 
 	@Override
-	public void registerTileEntitySpecialRenderer(
-			Class<? extends TileEntity> clazz) {
+	public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz) {
 	}
 
 	@Override
-	public void displayTileEntityGui(EntityPlayer entityplayer,
-			TileEntity tileentity) {
+	public void displayTileEntityGui(EntityPlayer entityplayer, TileEntity tileentity) {
 	}
 
 	@Override
@@ -84,8 +78,7 @@ public class DE_CommonProxy implements IDECommonProxy {
 	}
 
 	@Override
-	public void login(NetHandler handler, INetworkManager manager,
-			Packet1Login login) {
+	public void login(NetHandler handler, INetworkManager manager, Packet1Login login) {
 	}
 
 	@Override

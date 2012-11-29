@@ -52,8 +52,7 @@ public class BlockElevator extends BlockContainer {
 	// ------------------ SERVER/CLIENT SENSITIVE CODE! ------------------- //
 	static boolean isClient = true;
 
-	private static void openGUI(World world, ChunkPosition loc,
-			EntityPlayer player) {
+	private static void openGUI(World world, ChunkPosition loc, EntityPlayer player) {
 		DECore.packetHandler.requestGUIMapping(world, loc, player);
 	}
 
@@ -87,8 +86,7 @@ public class BlockElevator extends BlockContainer {
 		}
 	}
 
-	public static TileEntityElevator getTileEntity(World world, int i, int j,
-			int k) {
+	public static TileEntityElevator getTileEntity(World world, int i, int j, int k) {
 		if (isCeiling(world, i, j, k)) {
 			return null;
 		}
@@ -111,8 +109,7 @@ public class BlockElevator extends BlockContainer {
 		return null;
 	}
 
-	public static TileEntityElevator getTileEntity(IBlockAccess world, int i,
-			int j, int k) {
+	public static TileEntityElevator getTileEntity(IBlockAccess world, int i, int j, int k) {
 		if (isCeiling(world.getBlockMetadata(i, j, k))) {
 			return null;
 		}
@@ -146,8 +143,7 @@ public class BlockElevator extends BlockContainer {
 	}
 
 	@Override
-	public void breakBlock(World world, int i, int j, int k, int blockID,
-			int metadata) {
+	public void breakBlock(World world, int i, int j, int k, int blockID, int metadata) {
 		ChunkPosition curPos = new ChunkPosition(i, j, k);
 		super.breakBlock(world, i, j, k, blockID, metadata);
 		world.removeBlockTileEntity(i, j, k);
@@ -160,8 +156,7 @@ public class BlockElevator extends BlockContainer {
 
 	}
 
-	public static boolean checkoutWaitingNames(World world, int i, int j, int k)
-			throws IOException {
+	public static boolean checkoutWaitingNames(World world, int i, int j, int k) throws IOException {
 		TileEntityElevator curTile = getTileEntity(world, i, j, k);
 		say("Looking for waiting property entries...");
 		if (curTile != null) {
@@ -218,19 +213,22 @@ public class BlockElevator extends BlockContainer {
 		}
 	}
 
-	public static boolean hasOpening(World world, ChunkPosition pos, int origY,
-			boolean strict, boolean testingShaft) {
-		return hasOpening(world, pos.x, pos.y, pos.z, origY, strict,
+	public static boolean hasOpening(World world, ChunkPosition pos, int origY, boolean strict, boolean testingShaft) {
+		return hasOpening(
+				world,
+				pos.x,
+				pos.y,
+				pos.z,
+				origY,
+				strict,
 				testingShaft);
 	}
 
-	public static boolean hasOpening(World world, int x, int y, int z,
-			int origY, boolean strict, boolean testingShaft) {
+	public static boolean hasOpening(World world, int x, int y, int z, int origY, boolean strict, boolean testingShaft) {
 		boolean ceil = hasCeiling(world, x, origY, z);
 		int max = ceil ? y + 3 : y + 2;
 
-		if (y != origY && !world.isAirBlock(x, y, z)
-				&& !(ceil && y == origY + 3) && !testingShaft) {
+		if (y != origY && !world.isAirBlock(x, y, z) && !(ceil && y == origY + 3) && !testingShaft) {
 			return false;
 		}
 		if (!strict && !ceil) {
@@ -238,8 +236,7 @@ public class BlockElevator extends BlockContainer {
 		}
 
 		for (int testY = y + 1; testY <= max; testY++) {
-			boolean valid = DECore.isBlockOpeningMaterial(world, x, testY, z)
-					|| origY == testY;
+			boolean valid = DECore.isBlockOpeningMaterial(world, x, testY, z) || origY == testY;
 			valid = valid || (ceil && testY == origY + 3);
 			if (!valid) {
 				return false;
@@ -249,8 +246,7 @@ public class BlockElevator extends BlockContainer {
 		return true;
 	}
 
-	public static boolean hasPossibleFloor(World world, int x, int y, int z,
-			int origY) {
+	public static boolean hasPossibleFloor(World world, int x, int y, int z, int origY) {
 		// Check the current location
 		if (!hasOpening(world, x, y, z, origY, true, false)) {
 			return false;
@@ -273,11 +269,9 @@ public class BlockElevator extends BlockContainer {
 			} else if (iter == 3) {
 				tempX++;
 			}
-			if (DECore.isBlockLedgeMaterial(world, tempX, y, tempZ)
-					&& DECore
-							.isBlockOpeningMaterial(world, tempX, y + 1, tempZ)
-					&& DECore
-							.isBlockOpeningMaterial(world, tempX, y + 2, tempZ)) {
+			if (DECore.isBlockLedgeMaterial(world, tempX, y, tempZ) && DECore
+					.isBlockOpeningMaterial(world, tempX, y + 1, tempZ) && DECore
+					.isBlockOpeningMaterial(world, tempX, y + 2, tempZ)) {
 				return true;
 			}
 		}
@@ -298,9 +292,8 @@ public class BlockElevator extends BlockContainer {
 		int curFloor = 0;
 		boolean betweenFloors = true;
 
-		for (int curY = y; curY > 0
-				&& (curY == y || DECore.isBlockOpeningMaterial(world, x, curY,
-						z)); curY--) {
+		for (int curY = y; curY > 0 && (curY == y || DECore
+				.isBlockOpeningMaterial(world, x, curY, z)); curY--) {
 			if (hasPossibleFloor(world, x, curY, z, y)) {
 				blockNum.add(curY);
 				if (curY == y) {
@@ -310,9 +303,12 @@ public class BlockElevator extends BlockContainer {
 		}
 
 		boolean addCheck = true;
-		for (int curY = y + 1; curY < (DECore.max_elevator_Y - 3)
-				&& (DECore.isBlockOpeningMaterial(world, x, curY, z) || (curY == y + 3 && hasCeiling(
-						world, x, y, z))); curY++) {
+		for (int curY = y + 1; curY < (DECore.max_elevator_Y - 3) && (DECore
+				.isBlockOpeningMaterial(world, x, curY, z) || (curY == y + 3 && hasCeiling(
+				world,
+				x,
+				y,
+				z))); curY++) {
 			if (hasPossibleFloor(world, x, curY, z, y)) {
 				blockNum.add(curY);
 				addCheck = false;
@@ -327,27 +323,29 @@ public class BlockElevator extends BlockContainer {
 		return blockNum;
 	}
 
-	public static boolean isReachable(World world, ChunkPosition testFloor,
-			int origY) {
+	public static boolean isReachable(World world, ChunkPosition testFloor, int origY) {
 		return isReachable(world, testFloor, origY, DECore.strictShaft);
 	}
 
-	public static boolean isReachable(World world, ChunkPosition testFloor,
-			int origY, boolean strict) {
+	public static boolean isReachable(World world, ChunkPosition testFloor, int origY, boolean strict) {
 		if (testFloor.y <= 0 || testFloor.y >= DECore.max_elevator_Y) {
 			return false;
 		}
-		if (hasCeiling(world, testFloor.x, origY, testFloor.z)
-				&& (testFloor.y + 3) >= DECore.max_elevator_Y) {
+		if (hasCeiling(world, testFloor.x, origY, testFloor.z) && (testFloor.y + 3) >= DECore.max_elevator_Y) {
 			return false;
 		}
 
 		if (origY < testFloor.y) {
 			for (int testY = origY; testY <= testFloor.y; testY++) {
-				if (!hasOpening(world, testFloor.x, testY, testFloor.z, origY,
-						strict, (testY != origY && testY != testFloor.y))) {
-					say("Blocked at: " + testFloor.x + ", " + testY + ", "
-							+ testFloor.z);
+				if (!hasOpening(
+						world,
+						testFloor.x,
+						testY,
+						testFloor.z,
+						origY,
+						strict,
+						(testY != origY && testY != testFloor.y))) {
+					say("Blocked at: " + testFloor.x + ", " + testY + ", " + testFloor.z);
 					return false;
 				}
 			}
@@ -355,10 +353,15 @@ public class BlockElevator extends BlockContainer {
 			return true;
 		} else {
 			for (int testY = origY; testY >= testFloor.y; testY--) {
-				if (!hasOpening(world, testFloor.x, testY, testFloor.z, origY,
-						strict, (testY != origY && testY != testFloor.y))) {
-					say("Blocked at: " + testFloor.x + ", " + testY + ", "
-							+ testFloor.z);
+				if (!hasOpening(
+						world,
+						testFloor.x,
+						testY,
+						testFloor.z,
+						origY,
+						strict,
+						(testY != origY && testY != testFloor.y))) {
+					say("Blocked at: " + testFloor.x + ", " + testY + ", " + testFloor.z);
 					return false;
 				}
 			}
@@ -366,13 +369,11 @@ public class BlockElevator extends BlockContainer {
 		return true;
 	}
 
-	public static void refreshAndCombineAllAdjacentElevators(World world,
-			ChunkPosition pos) {
+	public static void refreshAndCombineAllAdjacentElevators(World world, ChunkPosition pos) {
 		refreshAndCombineAllAdjacentElevators(world, pos, false);
 	}
 
-	public static void refreshAndCombineAllAdjacentElevators(World world,
-			ChunkPosition pos, boolean justAdded) {
+	public static void refreshAndCombineAllAdjacentElevators(World world, ChunkPosition pos, boolean justAdded) {
 		DEProperties props = new DEProperties();
 
 		boolean updateProperties = false;
@@ -381,7 +382,10 @@ public class BlockElevator extends BlockContainer {
 
 		if (!justAdded && thisTile != null) {
 			try {
-				updateProperties = checkoutWaitingNames(world, pos.x, pos.y,
+				updateProperties = checkoutWaitingNames(
+						world,
+						pos.x,
+						pos.y,
 						pos.z);
 				if (updateProperties) {
 					props.mergeProperties(thisTile);
@@ -401,8 +405,11 @@ public class BlockElevator extends BlockContainer {
 			ChunkPosition curPos = iter.next();
 			floorsList.addAll(refreshElevator(world, curPos));
 			if (updateProperties) {
-				TileEntityElevator curInfo = getTileEntity(world, curPos.x,
-						curPos.y, curPos.z);
+				TileEntityElevator curInfo = getTileEntity(
+						world,
+						curPos.x,
+						curPos.y,
+						curPos.z);
 				try {
 					curInfo.props.mergeProperties(props);
 				} catch (IOException e) {
@@ -421,14 +428,18 @@ public class BlockElevator extends BlockContainer {
 		while (it.hasNext()) {
 			int curTestFloorY = it.next();
 			if (verbose) {
-				say((new StringBuilder()).append("testing y = ")
-						.append(curTestFloorY).toString());
+				say((new StringBuilder())
+						.append("testing y = ")
+							.append(curTestFloorY)
+							.toString());
 			}
 			boolean canBeUsed = true;
 			for (int i = 0; i < conjoinedElevators.size() && canBeUsed; i++) {
 				ChunkPosition curElvPos = conjoinedElevators.get(i);
-				if (!isReachable(world, new ChunkPosition(curElvPos.x,
-						curTestFloorY, curElvPos.z), curElvPos.y)) {
+				if (!isReachable(world, new ChunkPosition(
+						curElvPos.x,
+							curTestFloorY,
+							curElvPos.z), curElvPos.y)) {
 					canBeUsed = false;
 				}
 			}
@@ -451,8 +462,11 @@ public class BlockElevator extends BlockContainer {
 
 		for (int i = 0; i < conjoinedElevators.size(); i++) {
 			ChunkPosition curPos = conjoinedElevators.get(i);
-			TileEntityElevator curInfo = getTileEntity(world, curPos.x,
-					curPos.y, curPos.z);
+			TileEntityElevator curInfo = getTileEntity(
+					world,
+					curPos.x,
+					curPos.y,
+					curPos.z);
 			if (curInfo != null) {
 				curInfo.setFloors(floorsList);
 			}
@@ -462,15 +476,17 @@ public class BlockElevator extends BlockContainer {
 	public static void listFloors(Set<Integer> floors) {
 		Iterator<Integer> i = floors.iterator();
 		while (i.hasNext()) {
-			say((new StringBuilder()).append("Floor at y = ").append(i.next())
-					.append(".").toString());
+			say((new StringBuilder())
+					.append("Floor at y = ")
+						.append(i.next())
+						.append(".")
+						.toString());
 		}
 	}
 
 	// right clicked?
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k,
-			EntityPlayer player, int side, float par7, float par8, float par9) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int side, float par7, float par8, float par9) {
 		if (world.isRemote) {
 			return true;
 		}
@@ -503,8 +519,10 @@ public class BlockElevator extends BlockContainer {
 		say("Floors Below: " + floorsBelow);
 		say("Floors Above: " + floorsAbove);
 		say("Current floor: " + curFloor);
-		say("Player is on elevator: "
-				+ isEntityOnThisElevator(world, loc, player));
+		say("Player is on elevator: " + isEntityOnThisElevator(
+				world,
+				loc,
+				player));
 
 		/*
 		 * if (mod_Elevator.canShortCircuit(player.username) && floorsBelow == 1
@@ -524,8 +542,7 @@ public class BlockElevator extends BlockContainer {
 		return true;
 	}
 
-	public boolean isEntityOnThisElevator(World world, ChunkPosition pos,
-			EntityPlayer player) {
+	public boolean isEntityOnThisElevator(World world, ChunkPosition pos, EntityPlayer player) {
 		Iterator<ChunkPosition> iter = conjoinedElevators.iterator();
 		while (iter.hasNext()) {
 			if (DECore.isEntityOnBlock(world, iter.next(), player)) {
@@ -542,8 +559,7 @@ public class BlockElevator extends BlockContainer {
 		populateAdjacenciesList(world, startPos, 0);
 	}
 
-	public static void populateAdjacenciesList(World world, ChunkPosition pos,
-			int dist) {
+	public static void populateAdjacenciesList(World world, ChunkPosition pos, int dist) {
 		conjoinedElevators.add(pos);
 		if (dist > 127) {
 			return;
@@ -562,8 +578,10 @@ public class BlockElevator extends BlockContainer {
 			}
 
 			ChunkPosition curPos = new ChunkPosition(curX, pos.y, curZ);
-			if (!conjoinedElevators.contains(curPos)
-					&& world.getBlockId(curX, pos.y, curZ) == DECore.Elevator.blockID) {
+			if (!conjoinedElevators.contains(curPos) && world.getBlockId(
+					curX,
+					pos.y,
+					curZ) == DECore.Elevator.blockID) {
 				populateAdjacenciesList(world, curPos, dist + 1);
 			}
 		}
@@ -575,21 +593,22 @@ public class BlockElevator extends BlockContainer {
 	}
 
 	@Override
-	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j,
-			int k, int l) {
+	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l) {
 		return isPoweringTo(world, i, j, k, l);
 	}
 
 	@Override
-	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k,
-			int l) {
+	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		if (isCeiling(iblockaccess.getBlockMetadata(i, j, k))) {
 			return false;
 		}
 		if (l == 0) {
 			return false;
 		} else {
-			TileEntityElevator elevatorInfo = getTileEntity(iblockaccess, i, j,
+			TileEntityElevator elevatorInfo = getTileEntity(
+					iblockaccess,
+					i,
+					j,
 					k);
 
 			if (elevatorInfo == null) {
@@ -613,8 +632,7 @@ public class BlockElevator extends BlockContainer {
 		boolean providesPower = elevatorInfo.getProvidesPower();
 
 		say("Elevator Updated at " + DECore.pos2Str(curPos));
-		say("Current Y: " + j + ", requested Y: " + curDest
-				+ "; Proving power: " + providesPower);
+		say("Current Y: " + j + ", requested Y: " + curDest + "; Proving power: " + providesPower);
 
 		refreshAndCombineAllAdjacentElevators(world, curPos);
 
@@ -632,11 +650,12 @@ public class BlockElevator extends BlockContainer {
 			break;
 		case DEMAND_NEW_FLOOR:
 			say("Block has been demanded to " + curDest);
-			for (int iter = 0; iter < conjoinedElevators.size()
-					&& (curDest != j); iter++) {
+			for (int iter = 0; iter < conjoinedElevators.size() && (curDest != j); iter++) {
 				ChunkPosition conjPos = conjoinedElevators.get(iter);
-				if (!isReachable(world, new ChunkPosition(conjPos.x, curDest,
-						conjPos.z), conjPos.y, false)) {
+				if (!isReachable(world, new ChunkPosition(
+						conjPos.x,
+							curDest,
+							conjPos.z), conjPos.y, false)) {
 					curDest = j;
 					say("Unable to meet demand - part of the elevator is blocked!");
 					say("Elevator chunk blocked at: " + DECore.pos2Str(conjPos));
@@ -648,14 +667,12 @@ public class BlockElevator extends BlockContainer {
 			}
 		case REQUEST_NEW_FLOOR:
 			if (providesPower && curDest != j) {
-				say("Block has been demanded to " + curDest
-						+ " - toggling power in preparation for travel");
+				say("Block has been demanded to " + curDest + " - toggling power in preparation for travel");
 				toggleConjoinedPower(world, false);
 				// Refresh for actual movement
 				DECore.refreshElevator(world, curPos, 2);
-			} else if (!world.isRemote
-					&& (curDest != j)
-					&& (elevatorInfo.hasFloorAt(curDest) || curState == DEMAND_NEW_FLOOR)) {
+			} else if (!world.isRemote && (curDest != j) && (elevatorInfo
+					.hasFloorAt(curDest) || curState == DEMAND_NEW_FLOOR)) {
 				say("Current is not the same as requested! Move requested!");
 
 				Set<EntityElevator> allEntities = new HashSet<EntityElevator>();
@@ -665,33 +682,52 @@ public class BlockElevator extends BlockContainer {
 					ChunkPosition pos = conjoinedElevators.get(iter);
 
 					say("Adjoined at " + pos.x + ", " + pos.y + ", " + pos.z);
-					TileEntityElevator curInfo = getTileEntity(world, pos.x,
-							pos.y, pos.z);
+					TileEntityElevator curInfo = getTileEntity(
+							world,
+							pos.x,
+							pos.y,
+							pos.z);
 
 					if (curInfo != null && !isCeiling(world, pos)) {
 						curInfo.demandY(curDest);
 
-						int metadata = world.getBlockMetadata(pos.x, pos.y,
+						int metadata = world.getBlockMetadata(
+								pos.x,
+								pos.y,
 								pos.z);
 						boolean isCenter = (pos.x == i && pos.y == j && pos.z == k); // ||
 																						// isClient;
-						EntityElevator curElevator = new EntityElevator(world,
-								pos.x, pos.y, pos.z);
+						EntityElevator curElevator = new EntityElevator(
+								world,
+									pos.x,
+									pos.y,
+									pos.z);
 						if (hasCeiling(world, pos)) {
 							// Create ceiling entity
 							EntityElevator ceilingElevator = new EntityElevator(
-									world, pos.x, pos.y + 3, pos.z);
+									world,
+										pos.x,
+										pos.y + 3,
+										pos.z);
 
-							ceilingElevator.setProperties(curDest + 3, false,
-									isClient, world.getBlockMetadata(pos.x,
-											pos.y + 3, pos.z));
+							ceilingElevator.setProperties(
+									curDest + 3,
+									false,
+									isClient,
+									world.getBlockMetadata(
+											pos.x,
+											pos.y + 3,
+											pos.z));
 
 							// Set current elevator's ceiling as this ceiling
 							curElevator.joinToCeiling(ceilingElevator);
 
 							world.spawnEntityInWorld(ceilingElevator);
 						}
-						curElevator.setProperties(curDest, isCenter, isClient,
+						curElevator.setProperties(
+								curDest,
+								isCenter,
+								isClient,
 								metadata);
 						world.spawnEntityInWorld(curElevator);
 					}
@@ -709,7 +745,10 @@ public class BlockElevator extends BlockContainer {
 	public void toggleConjoinedPower(World world, boolean newPowerState) {
 		for (int iter = 0; iter < conjoinedElevators.size(); iter++) {
 			ChunkPosition pos = conjoinedElevators.get(iter);
-			TileEntityElevator curInfo = getTileEntity(world, pos.x, pos.y,
+			TileEntityElevator curInfo = getTileEntity(
+					world,
+					pos.x,
+					pos.y,
 					pos.z);
 			curInfo.setPower(newPowerState);
 		}

@@ -14,8 +14,7 @@ public class ItemElevator extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer player,
-			World world, int i, int j, int k, int l, float x, float y, float z) {
+	public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int i, int j, int k, int l, float x, float y, float z) {
 		boolean clickElevator = false;
 		if (world.getBlockId(i, j, k) == DECore.Elevator.blockID) {
 			clickElevator = true;
@@ -46,8 +45,12 @@ public class ItemElevator extends ItemBlock {
 				return false;
 			}
 			itemstack.stackSize--;
-			world.setBlockAndMetadataWithNotify(i, j + 2, k,
-					DECore.Elevator.blockID, 0x01);
+			world.setBlockAndMetadataWithNotify(
+					i,
+					j + 2,
+					k,
+					DECore.Elevator.blockID,
+					0x01);
 		} else if (!clickElevator || (clickElevator && l != 0)) {
 			if (!world.isAirBlock(i, j, k)) {
 				return false;

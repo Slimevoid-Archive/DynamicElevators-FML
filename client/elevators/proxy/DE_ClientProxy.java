@@ -20,7 +20,8 @@ public class DE_ClientProxy extends DE_CommonProxy {
 
 	@Override
 	public void registerRenderInformation() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityElevator.class,
+		RenderingRegistry.registerEntityRenderingHandler(
+				EntityElevator.class,
 				new RenderElevator());
 	}
 
@@ -30,8 +31,7 @@ public class DE_ClientProxy extends DE_CommonProxy {
 	}
 
 	@Override
-	public void openGui(World world, EntityPlayer entityplayer,
-			Packet250CustomPayload packet, ChunkPosition loc) {
+	public void openGui(World world, EntityPlayer entityplayer, Packet250CustomPayload packet, ChunkPosition loc) {
 		if (entityplayer == null) {
 			entityplayer = ModLoader.getMinecraftInstance().thePlayer;
 		}

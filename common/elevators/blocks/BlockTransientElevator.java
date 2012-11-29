@@ -23,12 +23,10 @@ public class BlockTransientElevator extends Block {
 	 * Adds to the supplied array any colliding bounding boxes with the passed
 	 * in bounding box. Args: world, x, y, z, axisAlignedBB, arrayList
 	 */
-	public void getCollidingBoundingBoxes(World par1World, int par2, int par3,
-			int par4, AxisAlignedBB par5AxisAlignedBB, ArrayList par6ArrayList) {
+	public void getCollidingBoundingBoxes(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, ArrayList par6ArrayList) {
 	}
 
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World,
-			int par2, int par3, int par4) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
 		return null;
 	}
 
@@ -51,14 +49,12 @@ public class BlockTransientElevator extends Block {
 	}
 
 	@Override
-	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j,
-			int k, int l) {
+	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l) {
 		return isPoweringTo(world, i, j, k, l);
 	}
 
 	@Override
-	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k,
-			int l) {
+	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		if (l == 0) {
 			return false;
 		}
@@ -81,8 +77,7 @@ public class BlockTransientElevator extends Block {
 		return 0;
 	}
 
-	public void notifyExtendedNeighbors(World world, int i, int j, int k,
-			int notifyID) {
+	public void notifyExtendedNeighbors(World world, int i, int j, int k, int notifyID) {
 		world.notifyBlocksOfNeighborChange(i, j, k, notifyID);
 		world.notifyBlocksOfNeighborChange(i - 1, j, k, notifyID);
 		world.notifyBlocksOfNeighborChange(i + 1, j, k, notifyID);
@@ -103,8 +98,13 @@ public class BlockTransientElevator extends Block {
 	}
 
 	private boolean checkForEntity(World world, int i, int j, int k) {
-		AxisAlignedBB box = AxisAlignedBB.getBoundingBox((i), (j), (k), i + 1,
-				j + 1, k + 1);
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(
+				(i),
+				(j),
+				(k),
+				i + 1,
+				j + 1,
+				k + 1);
 		box.expand(0, -0.25D, 0);
 		List entities = world.getEntitiesWithinAABBExcludingEntity(null, box);
 		Iterator iter = entities.iterator();
@@ -126,8 +126,7 @@ public class BlockTransientElevator extends Block {
 		}
 	}
 
-	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess,
-			int par2, int par3, int par4, int par5) {
+	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return false;
 	}
 }

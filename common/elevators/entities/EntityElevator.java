@@ -91,8 +91,14 @@ public class EntityElevator extends Entity {
 		prevPosY = j + 0.5F;
 		prevPosZ = k + 0.5F;
 		setPosition(prevPosX, prevPosY, prevPosZ);
-		say((new StringBuilder()).append("Elevator created at ").append(i)
-				.append(", ").append(j).append(", ").append(k).toString());
+		say((new StringBuilder())
+				.append("Elevator created at ")
+					.append(i)
+					.append(", ")
+					.append(j)
+					.append(", ")
+					.append(k)
+					.toString());
 
 		dest = (int) j;
 		destY = (float) j + 0.5F;
@@ -105,8 +111,7 @@ public class EntityElevator extends Entity {
 		this.dataWatcher.updateObject(17, 0);
 	}
 
-	public void setProperties(int destination, boolean isCenter, boolean local,
-			int meta) {
+	public void setProperties(int destination, boolean isCenter, boolean local, int meta) {
 		if (propertiesSet) {
 			return;
 		}
@@ -121,8 +126,7 @@ public class EntityElevator extends Entity {
 
 		propertiesSet = true;
 
-		say("Properties set! destination: " + destination + ", isClient: "
-				+ isClient + ", center: " + center + ", metadata: " + meta);
+		say("Properties set! destination: " + destination + ", isClient: " + isClient + ", center: " + center + ", metadata: " + meta);
 
 		this.dataWatcher.updateObject(17, meta);
 	}
@@ -143,8 +147,12 @@ public class EntityElevator extends Entity {
 	}
 
 	private void say(String s) {
-		DECore.say((new StringBuilder()).append(" [ ").append(entityId)
-				.append(" ] ").append(s).toString());
+		DECore.say((new StringBuilder())
+				.append(" [ ")
+					.append(entityId)
+					.append(" ] ")
+					.append(s)
+					.toString());
 	}
 
 	// -------------------------------------------------------------------- //
@@ -203,8 +211,10 @@ public class EntityElevator extends Entity {
 		Iterator<EntityElevator> elevators = conjoinedelevators.iterator();
 		while (elevators.hasNext()) {
 			EntityElevator curElevator = elevators.next();
-			AxisAlignedBB boundBox = curElevator.getBoundingBox().expand(0,
-					2.0, 0);
+			AxisAlignedBB boundBox = curElevator.getBoundingBox().expand(
+					0,
+					2.0,
+					0);
 			boundBox.minY += 1.5;
 
 			Set<Entity> potentialEntities = new HashSet<Entity>();
@@ -213,8 +223,8 @@ public class EntityElevator extends Entity {
 			Iterator<Entity> iter = potentialEntities.iterator();
 			while (iter.hasNext()) {
 				Entity entity = iter.next();
-				if (entity != null && !(entity instanceof EntityElevator)
-						&& !mountedEntities.contains(entity)) {
+				if (entity != null && !(entity instanceof EntityElevator) && !mountedEntities
+						.contains(entity)) {
 					if (entity.ridingEntity == null) {
 						mountedEntities.add(entity);
 					}
@@ -256,8 +266,11 @@ public class EntityElevator extends Entity {
 			while (iter.hasNext()) {
 				updateRider(iter.next());
 			}
-			ElevatorPacketHandler.sendRiderUpdates(mountedEntities,
-					(int) this.posX, (int) this.posY, (int) this.posZ);
+			ElevatorPacketHandler.sendRiderUpdates(
+					mountedEntities,
+					(int) this.posX,
+					(int) this.posY,
+					(int) this.posZ);
 		}
 	}
 
@@ -278,8 +291,12 @@ public class EntityElevator extends Entity {
 			updateRider(rider);
 			say("Ejected rider #" + rider.entityId);
 		}
-		ElevatorPacketHandler.sendRiderUpdates(mountedEntities,
-				(int) this.posX, (int) this.posY, (int) this.posZ, false);
+		ElevatorPacketHandler.sendRiderUpdates(
+				mountedEntities,
+				(int) this.posX,
+				(int) this.posY,
+				(int) this.posZ,
+				false);
 		mountedEntities.clear();
 	}
 
@@ -297,8 +314,7 @@ public class EntityElevator extends Entity {
 		say("Difference: " + (rider.posY - this.posY));
 		if (rider instanceof EntityLiving) {
 			// if (rider instanceof EntityPlayer) {
-			rider.posY = centerElevator.posY + getMountedYOffset()
-					+ rider.yOffset;
+			rider.posY = centerElevator.posY + getMountedYOffset() + rider.yOffset;
 			// }
 			// elses {
 			// / rider.setPosition(rider.posX, centerElevator.posY +
@@ -308,14 +324,16 @@ public class EntityElevator extends Entity {
 			rider.fallDistance = 0.0F;
 			rider.isCollidedVertically = true;
 		} else if (!(rider instanceof EntityElevator)) {
-			rider.posY = centerElevator.posY + getMountedYOffset()
-					+ rider.yOffset;
+			rider.posY = centerElevator.posY + getMountedYOffset() + rider.yOffset;
 			rider.onGround = false;
 		}
 
-		say((new StringBuilder()).append("Updating rider with id #")
-				.append(rider.entityId).append(" to ").append(rider.posY)
-				.toString());
+		say((new StringBuilder())
+				.append("Updating rider with id #")
+					.append(rider.entityId)
+					.append(" to ")
+					.append(rider.posY)
+					.toString());
 	}
 
 	protected void entityInit() {
@@ -352,7 +370,10 @@ public class EntityElevator extends Entity {
 				if (!isCeiling()) {
 					BlockElevator elevator = (BlockElevator) Block.blocksList[blockID];
 					TileEntityElevator curTile = BlockElevator.getTileEntity(
-							worldObj, i, j, k);
+							worldObj,
+							i,
+							j,
+							k);
 					try {
 						props.mergeProperties(curTile);
 					} catch (IOException e) {
@@ -361,7 +382,10 @@ public class EntityElevator extends Entity {
 					}
 				}
 				if (!this.isCeiling() && props.getMobilePower()) {
-					worldObj.setBlockWithNotify(i, j, k,
+					worldObj.setBlockWithNotify(
+							i,
+							j,
+							k,
 							DECore.Transient.blockID);
 				} else {
 					worldObj.setBlockWithNotify(i, j, k, 0);
@@ -394,20 +418,33 @@ public class EntityElevator extends Entity {
 			int underId = worldObj.getBlockId(curX, curY, curZ);
 
 			if (underId == 0) {
-				worldObj.setBlockWithNotify(curX, curY, curZ,
+				worldObj.setBlockWithNotify(
+						curX,
+						curY,
+						curZ,
 						DECore.Transient.blockID);
 			}
 		}
-		DECore.say("-----------------------------------------------------------------");
+		DECore
+				.say("-----------------------------------------------------------------");
 
 		if (!center) {
-			say((new StringBuilder()).append("Speed: ").append(motionY)
-					.append(", posY: ").append(posY).append(", destY: ")
-					.append(destY).append(", center: " + center).toString());
+			say((new StringBuilder())
+					.append("Speed: ")
+						.append(motionY)
+						.append(", posY: ")
+						.append(posY)
+						.append(", destY: ")
+						.append(destY)
+						.append(", center: " + center)
+						.toString());
 			if (centerElevator != null && !centerElevator.isDead) {
 				if (this.isCeiling() && floor != null) {
-					this.setPosition(this.posX, floor.posY + floorCeilingHeight
-							+ floor.centerElevator.motionY, this.posZ);
+					this
+							.setPosition(
+									this.posX,
+									floor.posY + floorCeilingHeight + floor.centerElevator.motionY,
+									this.posZ);
 				} else {
 					this.setPosition(this.posX, centerElevator.posY, this.posZ);
 				}
@@ -435,19 +472,17 @@ public class EntityElevator extends Entity {
 			if (!conjoinedelevators.contains(this)) {
 				conjoinedelevators.add(this);
 			}
-			say((new StringBuilder()).append("Waiting to accelerate")
-					.toString());
+			say((new StringBuilder())
+					.append("Waiting to accelerate")
+						.toString());
 		} else {
 			float tempSpeed = elevatorSpeed + elevatorAccel;
 			if (tempSpeed > maxElevatorSpeed) {
 				tempSpeed = maxElevatorSpeed;
 			}
 			// Calculate elevator range to break
-			range = (tempSpeed * tempSpeed - minElevatorMovingSpeed
-					* minElevatorMovingSpeed)
-					/ (2 * elevatorAccel);
-			if (!slowingDown
-					&& MathHelper.abs((float) (destY - posY)) >= (range)) {
+			range = (tempSpeed * tempSpeed - minElevatorMovingSpeed * minElevatorMovingSpeed) / (2 * elevatorAccel);
+			if (!slowingDown && MathHelper.abs((float) (destY - posY)) >= (range)) {
 				// if current destination is further away than this range and <
 				// max speed, continue to accelerate
 				elevatorSpeed = tempSpeed;
@@ -465,19 +500,29 @@ public class EntityElevator extends Entity {
 			}
 		}
 		// check whether at the destination or not
-		atDestination = onGround
-				|| (MathHelper.abs((float) (destY - posY)) < elevatorSpeed);
+		atDestination = onGround || (MathHelper.abs((float) (destY - posY)) < elevatorSpeed);
 		if (destY < 1 || destY > DECore.max_elevator_Y) {
 			atDestination = true;
 			say("Requested destination is too high or too low!");
-			say((new StringBuilder()).append("Requested: ").append(destY)
-					.append(", max: ").append(DECore.max_elevator_Y).toString());
+			say((new StringBuilder())
+					.append("Requested: ")
+						.append(destY)
+						.append(", max: ")
+						.append(DECore.max_elevator_Y)
+						.toString());
 		}
 
-		say((new StringBuilder()).append("Speed: ").append(motionY)
-				.append(", posY: ").append(posY).append(", destY: ")
-				.append(destY).append(", range: ").append(range)
-				.append(", center: " + center).toString());
+		say((new StringBuilder())
+				.append("Speed: ")
+					.append(motionY)
+					.append(", posY: ")
+					.append(posY)
+					.append(", destY: ")
+					.append(destY)
+					.append(", range: ")
+					.append(range)
+					.append(", center: " + center)
+					.toString());
 
 		refreshRiders();
 
@@ -495,8 +540,7 @@ public class EntityElevator extends Entity {
 		}
 
 		if (!emerHalt) {
-			if (MathHelper.abs((float) motionY) < minElevatorMovingSpeed
-					&& stillcount++ > 10) {
+			if (MathHelper.abs((float) motionY) < minElevatorMovingSpeed && stillcount++ > 10) {
 				killAllConjoined();
 			} else {
 				stillcount = 0;
@@ -524,20 +568,30 @@ public class EntityElevator extends Entity {
 		int curY = MathHelper.floor_double(posY);
 		if (!isCeiling()) {
 			try {
-				DECore.checkedProperties.put(new ChunkPosition(i, curY, k),
+				DECore.checkedProperties.put(
+						new ChunkPosition(i, curY, k),
 						props.createPropertiesPacket(false));
 			} catch (IOException e) {
 				say("Unable to check properties");
 				e.printStackTrace();
 			}
 		}
-		boolean blockPlaced = !worldObj.isRemote
-				&& (worldObj.getBlockId(i, curY, k) == blockID || worldObj
-						.canPlaceEntityOnSide(blockID, i, curY, k, true, 1,
-								(Entity) null)
-						&& worldObj.setBlockAndMetadataWithNotify(i, curY, k,
-								blockID,
-								this.dataWatcher.getWatchableObjectInt(17)));
+		boolean blockPlaced = !worldObj.isRemote && (worldObj.getBlockId(
+				i,
+				curY,
+				k) == blockID || worldObj.canPlaceEntityOnSide(
+				blockID,
+				i,
+				curY,
+				k,
+				true,
+				1,
+				(Entity) null) && worldObj.setBlockAndMetadataWithNotify(
+				i,
+				curY,
+				k,
+				blockID,
+				this.dataWatcher.getWatchableObjectInt(17)));
 
 		if (!worldObj.isRemote && !blockPlaced) {
 			dropItem(blockID, 1);
@@ -552,8 +606,8 @@ public class EntityElevator extends Entity {
 					curentity.posY += 0.5;
 					if (curentity instanceof EntityPlayer) {
 						EntityPlayer player = (EntityPlayer) curentity;
-						player.addChatMessage(DECore.message_elevator_arrival
-								+ " " + floorName);
+						player
+								.addChatMessage(DECore.message_elevator_arrival + " " + floorName);
 					}
 				}
 			}
@@ -589,7 +643,8 @@ public class EntityElevator extends Entity {
 		}
 
 		Set<Entity> neighbors = new HashSet<Entity>();
-		neighbors.addAll(worldObj.getEntitiesWithinAABBExcludingEntity(null,
+		neighbors.addAll(worldObj.getEntitiesWithinAABBExcludingEntity(
+				null,
 				getBoundingBox().expand(0.5, 0, 0.5)));
 		Iterator<Entity> iter = neighbors.iterator();
 		while (iter.hasNext()) {
@@ -649,7 +704,8 @@ public class EntityElevator extends Entity {
 		nbttagcompound.setBoolean("emerHalt", emerHalt);
 		nbttagcompound.setBoolean("isClient", isClient);
 		nbttagcompound.setBoolean("isCenter", center);
-		nbttagcompound.setInteger("metadata",
+		nbttagcompound.setInteger(
+				"metadata",
 				dataWatcher.getWatchableObjectInt(17));
 		if (!isCeiling()) {
 			props.writeToNBT(nbttagcompound);
@@ -682,8 +738,13 @@ public class EntityElevator extends Entity {
 	}
 
 	public AxisAlignedBB getBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(posX - 0.5, posY - 0.5, posZ - 0.5,
-				posX + 0.5, posY + 0.5, posZ + 0.5);
+		return AxisAlignedBB.getBoundingBox(
+				posX - 0.5,
+				posY - 0.5,
+				posZ - 0.5,
+				posX + 0.5,
+				posY + 0.5,
+				posZ + 0.5);
 	}
 
 	public float getShadowSize() {
@@ -699,10 +760,7 @@ public class EntityElevator extends Entity {
 	 * IOException { say("Writing spawn data - dest: " + dest + ", destY: " +
 	 * destY + ", center: " + center + ", emerHalt: " + emerHalt);
 	 * data.writeInt(this.dest); data.writeFloat(this.destY);
-	 * data.writeBoolean(this.center); data.writeBoolean(this.emerHalt);
-	 * 
-	 * }
-	 * 
+	 * data.writeBoolean(this.center); data.writeBoolean(this.emerHalt); }
 	 * @Override public void readSpawnData(DataInputStream data) throws
 	 * IOException { dest = data.readInt(); destY = data.readFloat(); center =
 	 * data.readBoolean(); emerHalt = data.readBoolean();

@@ -1,6 +1,6 @@
 package elevators.gui;
 
-//DYNAMIC ELEVATORS - 1.6
+// DYNAMIC ELEVATORS - 1.6
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -97,8 +97,7 @@ public class GuiElevator extends GuiScreen {
 	int floorOne = 1;
 
 	// Constructor for local (SSP) GUI
-	public GuiElevator(Packet250CustomPayload packet, ChunkPosition pos)
-			throws IOException {
+	public GuiElevator(Packet250CustomPayload packet, ChunkPosition pos) throws IOException {
 		this(packet);
 		elevatorPos = pos;
 		isRemote = false;
@@ -159,11 +158,9 @@ public class GuiElevator extends GuiScreen {
 			}
 			if (numCols > 8) {
 				numRows = 6;
-				numCols = (size > (numRows * 2)) ? ((size - 1) / numRows) + 1
-						: 2;
+				numCols = (size > (numRows * 2)) ? ((size - 1) / numRows) + 1 : 2;
 			}
-			startY = (numRows == 6 || size < ((numRows - 1) * numCols + 1)) ? guiTop + 155
-					: guiTop + 130;
+			startY = (numRows == 6 || size < ((numRows - 1) * numCols + 1)) ? guiTop + 155 : guiTop + 130;
 		} else {
 			numRows = (size % 7 == 1) ? 6 : 7;
 			numCols = ((size - 1) / numRows) + 1;
@@ -173,8 +170,8 @@ public class GuiElevator extends GuiScreen {
 			}
 		}
 
-		DECore.say("Size: " + size + "; rows: " + numRows + "; columns: "
-				+ numCols);
+		DECore
+				.say("Size: " + size + "; rows: " + numRows + "; columns: " + numCols);
 
 		int startX = width / 2;
 
@@ -199,13 +196,21 @@ public class GuiElevator extends GuiScreen {
 		for (int j = size; j > 0; j--) {
 			GuiButton curButton;
 			if (!DECore.invertKeys) {
-				curButton = new GuiButton(j, startX + ((j - 1) % numCols)
-						* spacing, startY - spacing * ((j - 1) / numCols), 20,
-						20, (new StringBuilder()).append(j).toString());
+				curButton = new GuiButton(
+						j,
+							startX + ((j - 1) % numCols) * spacing,
+							startY - spacing * ((j - 1) / numCols),
+							20,
+							20,
+							(new StringBuilder()).append(j).toString());
 			} else {
-				curButton = new GuiButton(j, startX - ((j - 1) % numCols)
-						* spacing, startY - spacing * ((j - 1) / numCols), 20,
-						20, (new StringBuilder()).append(j).toString());
+				curButton = new GuiButton(
+						j,
+							startX - ((j - 1) % numCols) * spacing,
+							startY - spacing * ((j - 1) / numCols),
+							20,
+							20,
+							(new StringBuilder()).append(j).toString());
 			}
 			if (curFloor == j) {
 				curButton.enabled = false;
@@ -217,22 +222,48 @@ public class GuiElevator extends GuiScreen {
 		titleTop = guiTop + 5;
 		subtitleTop = guiTop + 15;
 
-		controlList.add(new GuiElevatorOptionsButton(GUI_OPTIONS, guiLeft + 4,
-				guiTop + 4));
-		controlList.add(new GuiButton(GUI_RESET, width / 2 - 95, guiTop + 180,
-				90, 20, "Reset Elevator"));
-		controlList.add(new GuiButton(GUI_CANCEL, width / 2 + 5, guiTop + 180,
-				90, 20, "Close"));
+		controlList.add(new GuiElevatorOptionsButton(
+				GUI_OPTIONS,
+					guiLeft + 4,
+					guiTop + 4));
+		controlList.add(new GuiButton(
+				GUI_RESET,
+					width / 2 - 95,
+					guiTop + 180,
+					90,
+					20,
+					"Reset Elevator"));
+		controlList.add(new GuiButton(
+				GUI_CANCEL,
+					width / 2 + 5,
+					guiTop + 180,
+					90,
+					20,
+					"Close"));
 
-		controlList.add(new GuiButton(GUI_OPTIONS_APPLY, width / 2 - 95,
-				guiTop + 180, 90, 20, "Apply"));
-		controlList.add(new GuiButton(GUI_OPTIONS_CANCEL, width / 2 + 5,
-				guiTop + 180, 90, 20, stringtranslate
-						.translateKey("gui.cancel")));
+		controlList.add(new GuiButton(
+				GUI_OPTIONS_APPLY,
+					width / 2 - 95,
+					guiTop + 180,
+					90,
+					20,
+					"Apply"));
+		controlList.add(new GuiButton(
+				GUI_OPTIONS_CANCEL,
+					width / 2 + 5,
+					guiTop + 180,
+					90,
+					20,
+					stringtranslate.translateKey("gui.cancel")));
 
-		floorZeroSlider = new GuiElevatorSlider(GUI_OPTIONS_SLIDER,
-				width / 2 - 75, guiTop + 110, floorOne, numFloors, true,
-				"First Floor: ");
+		floorZeroSlider = new GuiElevatorSlider(
+				GUI_OPTIONS_SLIDER,
+					width / 2 - 75,
+					guiTop + 110,
+					floorOne,
+					numFloors,
+					true,
+					"First Floor: ");
 		controlList.add(floorZeroSlider);
 
 		// TODO: Add interface for selecting textures for elevator floor,
@@ -243,35 +274,76 @@ public class GuiElevator extends GuiScreen {
 			floorNamesForList.add(i);
 		}
 
-		floorNamesList = new GuiElevatorList(this, GUI_OPTIONS_NAMESLIST,
-				width / 2 - 103, guiTop + 50, 130, 20, 15, 50,
-				floorNamesForList, this.mc, this.fontRenderer);
-		RenameFloor = new GuiButton(GUI_OPTIONS_FLOORNAME, width / 2 + 40,
-				guiTop + 50, 60, 20, "Rename...");
-		RenameElevator = new GuiButton(GUI_OPTIONS_ELEVATORNAME,
-				width / 2 - 60, guiTop + 25, 120, 20, "Rename Elevator...");
+		floorNamesList = new GuiElevatorList(
+				this,
+					GUI_OPTIONS_NAMESLIST,
+					width / 2 - 103,
+					guiTop + 50,
+					130,
+					20,
+					15,
+					50,
+					floorNamesForList,
+					this.mc,
+					this.fontRenderer);
+		RenameFloor = new GuiButton(
+				GUI_OPTIONS_FLOORNAME,
+					width / 2 + 40,
+					guiTop + 50,
+					60,
+					20,
+					"Rename...");
+		RenameElevator = new GuiButton(
+				GUI_OPTIONS_ELEVATORNAME,
+					width / 2 - 60,
+					guiTop + 25,
+					120,
+					20,
+					"Rename Elevator...");
 		controlList.add(RenameFloor);
 		controlList.add(RenameElevator);
 
 		// RenameFloor.enabled = false;
 		// RenameElevator.enabled = false;
 
-		txtEntryBox = new GuiTextField(this.fontRenderer, this.width / 2 - 100,
-				guiTop + 60, 200, 20);
-		nameOk = new GuiButton(GUI_RENAME_OK, width / 2 - 50, guiTop + 90, 40,
-				20, stringtranslate.translateKey("Apply"));
-		nameCancel = new GuiButton(GUI_RENAME_CANCEL, width / 2 + 10,
-				guiTop + 90, 40, 20, stringtranslate.translateKey("gui.cancel"));
+		txtEntryBox = new GuiTextField(
+				this.fontRenderer,
+					this.width / 2 - 100,
+					guiTop + 60,
+					200,
+					20);
+		nameOk = new GuiButton(
+				GUI_RENAME_OK,
+					width / 2 - 50,
+					guiTop + 90,
+					40,
+					20,
+					stringtranslate.translateKey("Apply"));
+		nameCancel = new GuiButton(
+				GUI_RENAME_CANCEL,
+					width / 2 + 10,
+					guiTop + 90,
+					40,
+					20,
+					stringtranslate.translateKey("gui.cancel"));
 		controlList.add(nameOk);
 		controlList.add(nameCancel);
 
-		canProvidePower = new GuiElevatorRadialButton(GUI_OPTIONS_POWER,
-				width / 2 - 100, guiTop + 130,
-				"Stationary elevators provide power");
-		canBeHalted = new GuiElevatorRadialButton(GUI_OPTIONS_HALT,
-				width / 2 - 100, guiTop + 160, "Moving elevators can be halted");
-		mobilePower = new GuiElevatorRadialButton(GUI_OPTIONS_MOBILE,
-				width / 2 - 100, guiTop + 145, "Moving elevators provide power");
+		canProvidePower = new GuiElevatorRadialButton(
+				GUI_OPTIONS_POWER,
+					width / 2 - 100,
+					guiTop + 130,
+					"Stationary elevators provide power");
+		canBeHalted = new GuiElevatorRadialButton(
+				GUI_OPTIONS_HALT,
+					width / 2 - 100,
+					guiTop + 160,
+					"Moving elevators can be halted");
+		mobilePower = new GuiElevatorRadialButton(
+				GUI_OPTIONS_MOBILE,
+					width / 2 - 100,
+					guiTop + 145,
+					"Moving elevators provide power");
 		try {
 			canProvidePower.enabled = props.getCanProvidePower();
 			canBeHalted.enabled = props.getCanHalt();
@@ -292,7 +364,8 @@ public class GuiElevator extends GuiScreen {
 		for (int iter = 0; iter < floorButtons.size(); iter++) {
 			GuiButton curButton = floorButtons.get(iter);
 			curButton.displayString = props.getAbbreviatedFloorName(
-					curButton.id, floorOne);
+					curButton.id,
+					floorOne);
 		}
 		screenSubtitle = props.getExtendedFloorName(curFloor, floorOne);
 	}
@@ -315,24 +388,48 @@ public class GuiElevator extends GuiScreen {
 
 		if (!optionsOpen) {
 			if (!screenTitle.equals("")) {
-				drawUnshadedCenteredString(fontRenderer, screenTitle,
-						width / 2, titleTop, 0x000000);
-				drawUnshadedCenteredString(fontRenderer, "" + screenSubtitle
-						+ "", width / 2, subtitleTop, 0x000000);
+				drawUnshadedCenteredString(
+						fontRenderer,
+						screenTitle,
+						width / 2,
+						titleTop,
+						0x000000);
+				drawUnshadedCenteredString(
+						fontRenderer,
+						"" + screenSubtitle + "",
+						width / 2,
+						subtitleTop,
+						0x000000);
 			} else {
-				drawUnshadedCenteredString(fontRenderer, "" + screenSubtitle
-						+ "", width / 2, titleTop, 0x000000);
+				drawUnshadedCenteredString(
+						fontRenderer,
+						"" + screenSubtitle + "",
+						width / 2,
+						titleTop,
+						0x000000);
 			}
 		} else {
 			if (screenTitle == null || screenTitle.equals("")) {
-				drawUnshadedCenteredString(fontRenderer, "[Unnamed Elevator]",
-						width / 2, subtitleTop, 0x000000);
+				drawUnshadedCenteredString(
+						fontRenderer,
+						"[Unnamed Elevator]",
+						width / 2,
+						subtitleTop,
+						0x000000);
 			} else {
-				drawUnshadedCenteredString(fontRenderer, screenTitle,
-						width / 2, subtitleTop, 0x000000);
+				drawUnshadedCenteredString(
+						fontRenderer,
+						screenTitle,
+						width / 2,
+						subtitleTop,
+						0x000000);
 			}
-			drawUnshadedCenteredString(fontRenderer, "Options", width / 2,
-					titleTop, 0x000000);
+			drawUnshadedCenteredString(
+					fontRenderer,
+					"Options",
+					width / 2,
+					titleTop,
+					0x000000);
 
 			if (nameMode == 0) {
 				floorNamesList.drawScreen(i, j, f);
@@ -385,7 +482,9 @@ public class GuiElevator extends GuiScreen {
 			props.renameElevator(screenTitle);
 			props.setFirstFloorYFromFloor(floorOne);
 
-			props.setBooleans(canProvidePower.enabled, canBeHalted.enabled,
+			props.setBooleans(
+					canProvidePower.enabled,
+					canBeHalted.enabled,
 					mobilePower.enabled);
 
 			if (!isRemote) {
@@ -417,7 +516,8 @@ public class GuiElevator extends GuiScreen {
 				nameMode = NAMING_FLOOR;
 				if (props.isFloorNamed(curSelectedFloor)) {
 					txtEntryBox.setText(props.getExtendedFloorName(
-							curSelectedFloor, floorOne));
+							curSelectedFloor,
+							floorOne));
 				} else {
 					txtEntryBox.setText("");
 				}
@@ -446,7 +546,8 @@ public class GuiElevator extends GuiScreen {
 		case GUI_RESET:
 			if (!isRemote) {
 				DECore.elevator_reset(
-						ModLoader.getMinecraftInstance().theWorld, elevatorPos);
+						ModLoader.getMinecraftInstance().theWorld,
+						elevatorPos);
 			}
 			exit(GUI_RESET);
 			break;
@@ -461,7 +562,8 @@ public class GuiElevator extends GuiScreen {
 
 			if (!isRemote) {
 				DECore.elevator_requestFloor(
-						ModLoader.getMinecraftInstance().theWorld, elevatorPos,
+						ModLoader.getMinecraftInstance().theWorld,
+						elevatorPos,
 						selectedFloor);
 			}
 			exit(selectedFloor);
@@ -484,7 +586,8 @@ public class GuiElevator extends GuiScreen {
 				sentPacket = false;
 			}
 		} else if (elevatorPos != null) {
-			DECore.refreshElevator(ModLoader.getMinecraftInstance().theWorld,
+			DECore.refreshElevator(
+					ModLoader.getMinecraftInstance().theWorld,
 					elevatorPos);
 			sentPacket = close;
 		}
@@ -495,8 +598,7 @@ public class GuiElevator extends GuiScreen {
 		}
 	}
 
-	public void drawUnshadedCenteredString(FontRenderer fontrenderer, String s,
-			int i, int j, int k) {
+	public void drawUnshadedCenteredString(FontRenderer fontrenderer, String s, int i, int j, int k) {
 		fontrenderer
 				.drawString(s, i - fontrenderer.getStringWidth(s) / 2, j, k);
 	}
@@ -525,8 +627,7 @@ public class GuiElevator extends GuiScreen {
 
 	@Override
 	protected void mouseClicked(int x, int y, int par3) {
-		if (par3 == 0 && !floorNamesList.mousePressed(x, y)
-				&& floorNamesList.extended) {
+		if (par3 == 0 && !floorNamesList.mousePressed(x, y) && floorNamesList.extended) {
 			floorNamesList.minimize();
 		} else if (floorNamesList.mousePressed(x, y) && floorNamesList.extended) {
 			return;
@@ -541,13 +642,11 @@ public class GuiElevator extends GuiScreen {
 	@Override
 	public void handleKeyboardInput() {
 		if (Keyboard.getEventKeyState()) {
-			if (Keyboard.getEventKey() == GUI_CANCEL
-					&& floorNamesList.selectedElement > 0) { // up
+			if (Keyboard.getEventKey() == GUI_CANCEL && floorNamesList.selectedElement > 0) { // up
 				floorNamesList.selectedElement--;
 				floorNamesList.setAmountScrolled();
-			} else if (Keyboard.getEventKey() == 208
-					&& floorNamesList.selectedElement < (floorNamesList
-							.getSize() - 1)) { // down
+			} else if (Keyboard.getEventKey() == 208 && floorNamesList.selectedElement < (floorNamesList
+					.getSize() - 1)) { // down
 				floorNamesList.selectedElement++;
 				floorNamesList.setAmountScrolled();
 			}

@@ -30,8 +30,8 @@ public final class Props {
 			try {
 				load();
 			} catch (IOException ex) {
-				System.out.println("[Props] Unable to load " + this.fileName
-						+ "!");
+				System.out
+						.println("[Props] Unable to load " + this.fileName + "!");
 			}
 		else
 			save();
@@ -39,7 +39,8 @@ public final class Props {
 
 	public void load() throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				new FileInputStream(this.fileName), "UTF8"));
+				new FileInputStream(this.fileName),
+					"UTF8"));
 
 		this.lines.clear();
 		this.props.clear();
@@ -49,12 +50,12 @@ public final class Props {
 			char c = '\000';
 			int pos = 0;
 
-			while ((pos < line.length())
-					&& (Character.isWhitespace(c = line.charAt(pos))))
+			while ((pos < line.length()) && (Character.isWhitespace(c = line
+					.charAt(pos))))
 				pos++;
 
-			if ((line.length() - pos == 0) || (line.charAt(pos) == '#')
-					|| (line.charAt(pos) == '!')) {
+			if ((line.length() - pos == 0) || (line.charAt(pos) == '#') || (line
+					.charAt(pos) == '!')) {
 				this.lines.add(line);
 			} else {
 				int start = pos;
@@ -62,9 +63,8 @@ public final class Props {
 				StringBuffer key = needsEscape ? new StringBuffer() : null;
 
 				if (key != null) {
-					while ((pos < line.length())
-							&& (!Character.isWhitespace(c = line.charAt(pos++)))
-							&& (c != '=') && (c != ':')) {
+					while ((pos < line.length()) && (!Character
+							.isWhitespace(c = line.charAt(pos++))) && (c != '=') && (c != ':')) {
 						if ((needsEscape) && (c == '\\')) {
 							if (pos == line.length()) {
 								line = reader.readLine();
@@ -95,7 +95,8 @@ public final class Props {
 								if (pos + 4 > line.length())
 									continue;
 								char uni = (char) Integer.parseInt(
-										line.substring(pos, pos + 4), 16);
+										line.substring(pos, pos + 4),
+										16);
 								key.append(uni);
 								pos += 4;
 								break;
@@ -121,22 +122,22 @@ public final class Props {
 						keyString = line.substring(start, pos);
 					}
 				}
-				while ((pos < line.length())
-						&& (Character.isWhitespace(c = line.charAt(pos))))
+				while ((pos < line.length()) && (Character
+						.isWhitespace(c = line.charAt(pos))))
 					pos++;
 
 				if ((!isDelim) && ((c == ':') || (c == '='))) {
 					pos++;
-					while ((pos < line.length())
-							&& (Character.isWhitespace(c = line.charAt(pos))))
+					while ((pos < line.length()) && (Character
+							.isWhitespace(c = line.charAt(pos))))
 						pos++;
 				}
 
 				if (!needsEscape) {
 					this.lines.add(line);
 				} else {
-					StringBuilder element = new StringBuilder(line.length()
-							- pos);
+					StringBuilder element = new StringBuilder(
+							line.length() - pos);
 					while (pos < line.length()) {
 						c = line.charAt(pos++);
 						if (c == '\\') {
@@ -147,12 +148,12 @@ public final class Props {
 									break;
 								pos = 0;
 
-								while ((pos < line.length())
-										&& (Character.isWhitespace(c = line
-												.charAt(pos))))
+								while ((pos < line.length()) && (Character
+										.isWhitespace(c = line.charAt(pos))))
 									pos++;
-								element.ensureCapacity(line.length() - pos
-										+ element.length());
+								element
+										.ensureCapacity(line.length() - pos + element
+												.length());
 								continue;
 							}
 							c = line.charAt(pos++);
@@ -170,7 +171,8 @@ public final class Props {
 								if (pos + 4 > line.length())
 									continue;
 								char uni = (char) Integer.parseInt(
-										line.substring(pos, pos + 4), 16);
+										line.substring(pos, pos + 4),
+										16);
 								element.append(uni);
 								pos += 4;
 								break;
@@ -204,8 +206,8 @@ public final class Props {
 		try {
 			ps = new PrintStream(os, true, "UTF-8");
 		} catch (UnsupportedEncodingException ex) {
-			System.out.println("[Props] Unable to write to " + this.fileName
-					+ "!");
+			System.out
+					.println("[Props] Unable to write to " + this.fileName + "!");
 		}
 
 		List usedProps = new ArrayList();
@@ -232,8 +234,8 @@ public final class Props {
 		}
 		for (Map.Entry entry : this.props.entrySet()) {
 			if (!usedProps.contains(entry.getKey())) {
-				ps.println((String) entry.getKey() + "="
-						+ (String) entry.getValue());
+				ps.println((String) entry.getKey() + "=" + (String) entry
+						.getValue());
 			}
 		}
 
@@ -253,8 +255,8 @@ public final class Props {
 				new FileReader(this.fileName));
 		String line;
 		while ((line = reader.readLine()) != null) {
-			if ((line.trim().length() != 0) && (line.charAt(0) != '#')
-					&& (line.contains("="))) {
+			if ((line.trim().length() != 0) && (line.charAt(0) != '#') && (line
+					.contains("="))) {
 				int delimPosition = line.indexOf('=');
 				String key = line.substring(0, delimPosition).trim();
 				String value = line.substring(delimPosition + 1).trim();
@@ -267,8 +269,8 @@ public final class Props {
 
 	public boolean containsKey(String var) {
 		for (String line : this.lines)
-			if ((line.trim().length() != 0) && (line.charAt(0) != '#')
-					&& (line.contains("="))) {
+			if ((line.trim().length() != 0) && (line.charAt(0) != '#') && (line
+					.contains("="))) {
 				int delimPosition = line.indexOf('=');
 
 				String key = line.substring(0, delimPosition);
@@ -280,8 +282,8 @@ public final class Props {
 
 	public String getProperty(String var) {
 		for (String line : this.lines)
-			if ((line.trim().length() != 0) && (line.charAt(0) != '#')
-					&& (line.contains("="))) {
+			if ((line.trim().length() != 0) && (line.charAt(0) != '#') && (line
+					.contains("="))) {
 				int delimPosition = line.indexOf('=');
 				String key = line.substring(0, delimPosition).trim();
 				String value = line.substring(delimPosition + 1);
@@ -303,8 +305,8 @@ public final class Props {
 			for (int i = 0; i < this.lines.size(); i++) {
 				String line = this.lines.get(i);
 
-				if ((line.trim().length() == 0) || (line.charAt(0) == '#')
-						|| (!line.contains("=")))
+				if ((line.trim().length() == 0) || (line.charAt(0) == '#') || (!line
+						.contains("=")))
 					continue;
 				int delimPosition = line.indexOf('=');
 				String key = line.substring(0, delimPosition).trim();

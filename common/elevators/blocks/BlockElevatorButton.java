@@ -35,8 +35,7 @@ public class BlockElevatorButton extends BlockButton {
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, int x, int y, int z,
-			int par5) {
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5) {
 		if (par5 == 2 && this.canBePlacedOnBlock(world, x, y, z + 1)) {
 			return true;
 		}
@@ -140,8 +139,7 @@ public class BlockElevatorButton extends BlockButton {
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z,
-			int notifierID) {
+	public void onNeighborBlockChange(World world, int x, int y, int z, int notifierID) {
 		if (!canBlockStay(world, x, y, z)) {
 			dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
 			world.setBlockWithNotify(x, y, z, 0);
@@ -165,20 +163,23 @@ public class BlockElevatorButton extends BlockButton {
 		world.setBlockMetadataWithNotify(x, y, z, i & 7);
 		// world.notifyBlocksOfNeighborChange(x, y, z, blockID);
 
-		world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click",
-				0.3F, 0.5F);
+		world.playSoundEffect(
+				x + 0.5D,
+				y + 0.5D,
+				z + 0.5D,
+				"random.click",
+				0.3F,
+				0.5F);
 		world.markBlocksDirty(x, y, z, x, y, z);
 	}
 
 	@Override
-	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k,
-			int l) {
+	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		return false;
 	}
 
 	@Override
-	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j,
-			int k, int l) {
+	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l) {
 		return false;
 	}
 
@@ -188,8 +189,7 @@ public class BlockElevatorButton extends BlockButton {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k,
-			EntityPlayer player, int side, float par7, float par8, float par9) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int side, float par7, float par8, float par9) {
 		int metadata = world.getBlockMetadata(i, j, k);
 		int direction = metadata & 7;
 		int state = 8 - (metadata & 8);
@@ -199,8 +199,13 @@ public class BlockElevatorButton extends BlockButton {
 		world.setBlockMetadataWithNotify(i, j, k, direction + state);
 		world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
 		world.markBlocksDirty(i, j, k, i, j, k);
-		world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "random.click",
-				0.3F, 0.6F);
+		world.playSoundEffect(
+				i + 0.5D,
+				j + 0.5D,
+				k + 0.5D,
+				"random.click",
+				0.3F,
+				0.6F);
 		// world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 		ChunkPosition newPos = null;
 		if (direction == 1) {
@@ -221,8 +226,12 @@ public class BlockElevatorButton extends BlockButton {
 
 		if (world.getBlockId(newPos.x, newPos.y, newPos.z) == DECore.ElevatorCaller.blockID) {
 			boolean foundElevator = BlockElevatorCaller
-					.findAndActivateElevator(world, newPos.x, newPos.y,
-							newPos.z, 0);
+					.findAndActivateElevator(
+							world,
+							newPos.x,
+							newPos.y,
+							newPos.z,
+							0);
 			if (!world.isRemote && foundElevator) {
 				player.addChatMessage(DECore.message_elevator_called);
 			} else if (!world.isRemote) {
@@ -235,10 +244,16 @@ public class BlockElevatorButton extends BlockButton {
 		elvs.clear();
 		checkForElevators(world, new ChunkPosition(i, j, k), 0);
 		checkForElevators(world, newPos, 0);
-		DECore.say((new StringBuilder()).append("Checked ")
-				.append(checkedBlocks.size()).append(" blocks").toString());
-		DECore.say((new StringBuilder()).append("Found ").append(elvs.size())
-				.append(" elevators").toString());
+		DECore.say((new StringBuilder())
+				.append("Checked ")
+					.append(checkedBlocks.size())
+					.append(" blocks")
+					.toString());
+		DECore.say((new StringBuilder())
+				.append("Found ")
+					.append(elvs.size())
+					.append(" elevators")
+					.toString());
 		newPos = null;
 		int dist = DECore.max_elevator_Y + 5;
 		int destY = -1;
@@ -246,17 +261,21 @@ public class BlockElevatorButton extends BlockButton {
 			Iterator<ChunkPosition> iter = elvs.iterator();
 			while (iter.hasNext()) {
 				ChunkPosition curPos = iter.next();
-				BlockElevator.refreshAndCombineAllAdjacentElevators(world,
+				BlockElevator.refreshAndCombineAllAdjacentElevators(
+						world,
 						curPos);
-				TileEntityElevator curTile = BlockElevator.getTileEntity(world,
-						curPos.x, curPos.y, curPos.z);
+				TileEntityElevator curTile = BlockElevator.getTileEntity(
+						world,
+						curPos.x,
+						curPos.y,
+						curPos.z);
 				if (curTile != null) {
 					int suggestedY = curTile
 							.getClosestFloorFromYCoor_AlwaysDown(j);
 					suggestedY = curTile.getYFromFloor(suggestedY);
 					DECore.say("closest y: " + suggestedY);
-					if (MathHelper.abs(suggestedY - curPos.y) < dist
-							&& curTile.hasFloorAt(suggestedY)) {
+					if (MathHelper.abs(suggestedY - curPos.y) < dist && curTile
+							.hasFloorAt(suggestedY)) {
 						dist = (int) MathHelper.abs(suggestedY - curPos.y);
 						newPos = curPos;
 						destY = suggestedY;
@@ -265,12 +284,15 @@ public class BlockElevatorButton extends BlockButton {
 			}
 		}
 		if (newPos != null) {
-			TileEntityElevator curTile = BlockElevator.getTileEntity(world,
-					newPos.x, newPos.y, newPos.z);
+			TileEntityElevator curTile = BlockElevator.getTileEntity(
+					world,
+					newPos.x,
+					newPos.y,
+					newPos.z);
 			if (!world.isRemote && destY != newPos.y) {
 				if (!curTile.props.getElevatorName().isEmpty()) {
-					player.addChatMessage(curTile.props.getElevatorName() + " "
-							+ DECore.message_named_elevator_called);
+					player
+							.addChatMessage(curTile.props.getElevatorName() + " " + DECore.message_named_elevator_called);
 				} else {
 					player.addChatMessage(DECore.message_elevator_called);
 				}
@@ -302,17 +324,25 @@ public class BlockElevatorButton extends BlockButton {
 		if (isCeiling || DECore.isBlockOpeningMaterial(world, pos)) {
 			// mod_Elevator.say((new
 			// StringBuilder()).append("Checking ").append(pos.x).append(", ").append(pos.y).append(", ").append(pos.z).toString());
-			if (pos.y > 0
-					&& !DECore.isBlockLedgeMaterial(world, pos.x, pos.y - 1,
-							pos.z)) {
-				checkForElevators(world, new ChunkPosition(pos.x, pos.y - 1,
-						pos.z), numSolid);
+			if (pos.y > 0 && !DECore.isBlockLedgeMaterial(
+					world,
+					pos.x,
+					pos.y - 1,
+					pos.z)) {
+				checkForElevators(world, new ChunkPosition(
+						pos.x,
+							pos.y - 1,
+							pos.z), numSolid);
 			}
-			if (pos.y < DECore.max_elevator_Y
-					&& !DECore.isBlockLedgeMaterial(world, pos.x, pos.y + 1,
-							pos.z)) {
-				checkForElevators(world, new ChunkPosition(pos.x, pos.y + 1,
-						pos.z), numSolid);
+			if (pos.y < DECore.max_elevator_Y && !DECore.isBlockLedgeMaterial(
+					world,
+					pos.x,
+					pos.y + 1,
+					pos.z)) {
+				checkForElevators(world, new ChunkPosition(
+						pos.x,
+							pos.y + 1,
+							pos.z), numSolid);
 			}
 		} else {
 			numSolid++;

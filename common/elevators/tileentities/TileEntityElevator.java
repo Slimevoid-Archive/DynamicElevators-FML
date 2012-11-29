@@ -246,10 +246,12 @@ public class TileEntityElevator extends TileEntity {
 		return false;
 	}
 
-	public Packet250CustomPayload createPropertiesPacket(boolean GUI_Request)
-			throws IOException {
-		return props.createPropertiesPacket(this.curFloor(), this.numFloors(),
-				floors, GUI_Request);
+	public Packet250CustomPayload createPropertiesPacket(boolean GUI_Request) throws IOException {
+		return props.createPropertiesPacket(
+				this.curFloor(),
+				this.numFloors(),
+				floors,
+				GUI_Request);
 	}
 
 	@Override

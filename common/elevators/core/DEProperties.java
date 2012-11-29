@@ -80,8 +80,7 @@ public class DEProperties {
 		return this.firstFloorYValue;
 	}
 
-	public void setBooleans(boolean providePower, boolean canHalt,
-			boolean enableMobile) {
+	public void setBooleans(boolean providePower, boolean canHalt, boolean enableMobile) {
 		this.canProvidePower = providePower;
 		this.canBeHalted = canHalt;
 		this.enableMobilePower = enableMobile;
@@ -95,8 +94,7 @@ public class DEProperties {
 		this.readInData(packet);
 	}
 
-	public void mergeProperties(TileEntityElevator otherTile)
-			throws IOException {
+	public void mergeProperties(TileEntityElevator otherTile) throws IOException {
 		if (otherTile == null) {
 			return;
 		}
@@ -120,15 +118,15 @@ public class DEProperties {
 		canBeHalted = dataStream.readBoolean();
 		enableMobilePower = dataStream.readBoolean();
 
-		DECore.say("power: " + canProvidePower + ", halt: " + canBeHalted
-				+ ", mobile:" + enableMobilePower);
+		DECore
+				.say("power: " + canProvidePower + ", halt: " + canBeHalted + ", mobile:" + enableMobilePower);
 
 		elevatorName = dataStream.readUTF();
 		firstFloorYValue = dataStream.readInt();
 		colorData = dataStream.readInt();
 
-		DECore.say("name: " + elevatorName + ", first floor Y: "
-				+ firstFloorYValue + ", color: " + colorData);
+		DECore
+				.say("name: " + elevatorName + ", first floor Y: " + firstFloorYValue + ", color: " + colorData);
 
 		for (int i = 0; i < numFloors; i++) {
 			int curYValue = dataStream.readInt();
@@ -139,21 +137,20 @@ public class DEProperties {
 		return true;
 	}
 
-	public Packet250CustomPayload createPropertiesPacket(boolean GUI_Request)
-			throws IOException {
+	public Packet250CustomPayload createPropertiesPacket(boolean GUI_Request) throws IOException {
 		int numFloors = this.floorNames.keySet().size();
 		return createPropertiesPacket(0, numFloors, GUI_Request);
 	}
 
-	public Packet250CustomPayload createPropertiesPacket(int curFloor,
-			int numFloors, boolean GUI_Request) throws IOException {
-		return createPropertiesPacket(curFloor, numFloors,
-				this.getSortedYCoordList(), GUI_Request);
+	public Packet250CustomPayload createPropertiesPacket(int curFloor, int numFloors, boolean GUI_Request) throws IOException {
+		return createPropertiesPacket(
+				curFloor,
+				numFloors,
+				this.getSortedYCoordList(),
+				GUI_Request);
 	}
 
-	public Packet250CustomPayload createPropertiesPacket(int curFloor,
-			int numFloors, List<Integer> floors, boolean GUI_Request)
-			throws IOException {
+	public Packet250CustomPayload createPropertiesPacket(int curFloor, int numFloors, List<Integer> floors, boolean GUI_Request) throws IOException {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		DataOutputStream data = new DataOutputStream(bytes);
 
@@ -254,13 +251,12 @@ public class DEProperties {
 			return floorNames.get(getYCoordFromFloor(curFloor));
 		}
 		String name = "";
-		int actualFloorNum = (floorOne < 1) ? curFloor : curFloor - floorOne
-				+ 1;
+		int actualFloorNum = (floorOne < 1) ? curFloor : curFloor - floorOne + 1;
 		if (curFloor >= floorOne) {
 			name = DECore.floorName + " " + actualFloorNum;
 		} else {
-			name = DECore.basementName + " "
-					+ String.valueOf((int) MathHelper.abs(actualFloorNum - 1));
+			name = DECore.basementName + " " + String.valueOf((int) MathHelper
+					.abs(actualFloorNum - 1));
 		}
 		return name;
 	}
@@ -271,8 +267,8 @@ public class DEProperties {
 		if (actualFloorNum > 0) {
 			name = String.valueOf(actualFloorNum);
 		} else {
-			name = "B"
-					+ String.valueOf((int) MathHelper.abs(actualFloorNum - 1));
+			name = "B" + String.valueOf((int) MathHelper
+					.abs(actualFloorNum - 1));
 		}
 		return name;
 	}
@@ -284,8 +280,10 @@ public class DEProperties {
 			String curName = floorNames.get(curY);
 			if (curName != null && !curName.isEmpty()) {
 				nbt.setString(
-						(new StringBuilder()).append("x")
-								.append(String.valueOf(curY)).toString(),
+						(new StringBuilder())
+								.append("x")
+									.append(String.valueOf(curY))
+									.toString(),
 						curName);
 			}
 		}
@@ -302,8 +300,10 @@ public class DEProperties {
 		for (int curY = 0; curY < (DECore.max_elevator_Y + 2); curY++) {
 			String curFloorName = "";
 			try {
-				curFloorName = nbt.getString((new StringBuilder()).append("x")
-						.append(String.valueOf(curY)).toString());
+				curFloorName = nbt.getString((new StringBuilder())
+						.append("x")
+							.append(String.valueOf(curY))
+							.toString());
 			} finally {
 			}
 			if (curFloorName != null && !curFloorName.isEmpty()) {

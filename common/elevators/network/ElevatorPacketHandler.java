@@ -33,11 +33,15 @@ import elevators.core.DEProperties;
 import elevators.entities.EntityElevator;
 import elevators.tileentities.TileEntityElevator;
 
-public class ElevatorPacketHandler implements IConnectionHandler,
-		IPacketHandler {
+public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler {
 
-	public static final String[] CHANNELS = { "DE_GUI_REQUEST",
-			"DE_GUI_RESPONSE", "DE_UPDATE", "DE_EPROP", "DE_ERROR", "DE_SHCI" };
+	public static final String[] CHANNELS = {
+			"DE_GUI_REQUEST",
+			"DE_GUI_RESPONSE",
+			"DE_UPDATE",
+			"DE_EPROP",
+			"DE_ERROR",
+			"DE_SHCI" };
 
 	public static final int GUI_REQUEST = 0;
 	public static final int GUI_DATA = 1;
@@ -48,13 +52,11 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 
 	public static HashMap<String, ChunkPosition> elevatorRequests = new HashMap();
 
-	public static void sendRiderUpdates(Set<Entity> entities, int x, int y,
-			int z) {
+	public static void sendRiderUpdates(Set<Entity> entities, int x, int y, int z) {
 		sendRiderUpdates(entities, x, y, z, false);
 	}
 
-	public static void sendRiderUpdates(Set<Entity> entities, int x, int y,
-			int z, boolean ejectRiders) {
+	public static void sendRiderUpdates(Set<Entity> entities, int x, int y, int z, boolean ejectRiders) {
 		boolean noSend = false;
 
 		if (entities == null || entities.isEmpty()) {
@@ -93,7 +95,12 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 			packet.data = bytes.toByteArray();
 			packet.length = packet.data.length;
 
-			PacketDispatcher.sendPacketToAllAround(x, y, z, 400, dimensionID,
+			PacketDispatcher.sendPacketToAllAround(
+					x,
+					y,
+					z,
+					400,
+					dimensionID,
 					packet);
 
 		} catch (IOException e) {
@@ -102,8 +109,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 		}
 	}
 
-	public boolean requestGUIMapping(World world, ChunkPosition loc,
-			EntityPlayer player) {
+	public boolean requestGUIMapping(World world, ChunkPosition loc, EntityPlayer player) {
 		if (world == null || loc == null) {
 			return false;
 		}
@@ -113,11 +119,15 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 
 		DECore.say((new StringBuilder())
 				.append("Received elevator request from ")
-				.append(player.username).toString());
+					.append(player.username)
+					.toString());
 
 		BlockElevator elevator = (BlockElevator) DECore.Elevator;
-		TileEntityElevator elevatorInfo = BlockElevator.getTileEntity(world,
-				loc.x, loc.y, loc.z);
+		TileEntityElevator elevatorInfo = BlockElevator.getTileEntity(
+				world,
+				loc.x,
+				loc.y,
+				loc.z);
 
 		if (elevatorInfo == null) {
 			return false;
@@ -133,16 +143,22 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 				PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
 			} else {
 				DECore.say("Attempting to open GUI locally");
-				((IDECommonProxy) (DEInit.DEM.getProxy())).openGui(world,
-						player, packet, loc);
+				((IDECommonProxy) (DEInit.DEM.getProxy())).openGui(
+						world,
+						player,
+						packet,
+						loc);
 			}
 
 			DECore.say((new StringBuilder())
 					.append("Successfully added request for ")
-					.append(player.username).toString());
+						.append(player.username)
+						.toString());
 		} catch (IOException e) {
-			DECore.say("Error while creating packet - unable to open GUI for "
-					+ player.username, true);
+			DECore
+					.say(
+							"Error while creating packet - unable to open GUI for " + player.username,
+							true);
 			e.printStackTrace();
 			return false;
 		}
@@ -158,8 +174,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 	}
 
 	@Override
-	public void onPacketData(INetworkManager manager,
-			Packet250CustomPayload packet, Player player) {
+	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 		DataInputStream dataStream = new DataInputStream(
 				new ByteArrayInputStream(packet.data));
 
@@ -182,8 +197,11 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 			if (packet.channel.equals(CHANNELS[GUI_REQUEST])) {
 				// Attempt to open GUI screen with received data
 				// EURY EDIT
-				((IDECommonProxy) DEInit.DEM.getProxy()).openGui(world, null,
-						packet, null);
+				((IDECommonProxy) DEInit.DEM.getProxy()).openGui(
+						world,
+						null,
+						packet,
+						null);
 			} else if (packet.channel.equals(CHANNELS[GUI_DATA])) {
 				DEProperties props = new DEProperties();
 
@@ -200,15 +218,17 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 					return;
 				}
 				BlockElevator elevator = (BlockElevator) DECore.Elevator;
-				TileEntityElevator tile = BlockElevator.getTileEntity(world,
-						pos.x, pos.y, pos.z);
+				TileEntityElevator tile = BlockElevator.getTileEntity(
+						world,
+						pos.x,
+						pos.y,
+						pos.z);
 				if (tile == null) {
 					return;
 				}
 
-				DECore.say("Received elevator response from "
-						+ playerMP.username + " requesting GUI command "
-						+ command);
+				DECore
+						.say("Received elevator response from " + playerMP.username + " requesting GUI command " + command);
 
 				switch (command) {
 				case DECore.GUI_OPTIONS_APPLY:
@@ -225,8 +245,8 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 					if (command < 1 || command > DECore.max_elevator_Y) {
 						break;
 					}
-					if (command > tile.numFloors()
-							|| command == tile.curFloor()) {
+					if (command > tile.numFloors() || command == tile
+							.curFloor()) {
 						break;
 					}
 					DECore.elevator_requestFloor(world, pos, command);
@@ -250,17 +270,18 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 					int entity_data = dataStream.readInt(); // Data
 
 					Entity entity = DECore.getEntityByID(entityID);
-					DECore.say("Received request for entity id " + entityID
-							+ " to be set to Y: " + newEntityYPos);
+					DECore
+							.say("Received request for entity id " + entityID + " to be set to Y: " + newEntityYPos);
 					if (entity != null) {
 						if (entity instanceof EntityElevator) {
 							EntityElevator curElevator = (EntityElevator) entity;
-							curElevator.setPosition(entity.posX, newEntityYPos,
+							curElevator.setPosition(
+									entity.posX,
+									newEntityYPos,
 									entity.posZ);
 						} else {
 							if (entity instanceof EntityLiving) {
-								entity.posY = (double) newEntityYPos
-										+ entity.yOffset;
+								entity.posY = (double) newEntityYPos + entity.yOffset;
 								entity.onGround = true;
 								entity.fallDistance = 0.0F;
 								entity.isCollidedVertically = true;
@@ -273,8 +294,8 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 							}
 						}
 
-						DECore.say("Entity with id " + entity.entityId
-								+ " was set to " + newEntityYPos);
+						DECore
+								.say("Entity with id " + entity.entityId + " was set to " + newEntityYPos);
 					} else {
 						DECore.say("Entity with that ID does not exist");
 					}
@@ -285,8 +306,8 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 				boolean center = dataStream.readBoolean();
 				int metadata = dataStream.readInt();
 
-				DECore.say("Received prop update info for elevator id "
-						+ entityID);
+				DECore
+						.say("Received prop update info for elevator id " + entityID);
 
 				Entity entity = DECore.getEntityByID(entityID);
 				if (entity == null || !(entity instanceof EntityElevator)) {
@@ -315,8 +336,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 	}
 
 	@Override
-	public void playerLoggedIn(Player player, NetHandler netHandler,
-			INetworkManager manager) {
+	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
 		if (DECore.shortCircuit) {
 			Packet250CustomPayload packet = new Packet250CustomPayload();
 			packet.channel = CHANNELS[SHORT_CIRCUIT];
@@ -328,22 +348,19 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 	}
 
 	@Override
-	public String connectionReceived(NetLoginHandler netHandler,
-			INetworkManager manager) {
+	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void connectionOpened(NetHandler netClientHandler, String server,
-			int port, INetworkManager manager) {
+	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void connectionOpened(NetHandler netClientHandler,
-			MinecraftServer server, INetworkManager manager) {
+	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager) {
 		// TODO Auto-generated method stub
 
 	}
@@ -370,8 +387,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 	}
 
 	@Override
-	public void clientLoggedIn(NetHandler clientHandler,
-			INetworkManager manager, Packet1Login login) {
+	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login) {
 		DECore.say("Sending channel registration packet...");
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		DataOutputStream data = new DataOutputStream(bytes);

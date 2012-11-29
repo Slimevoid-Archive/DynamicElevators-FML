@@ -167,24 +167,31 @@ public class DECore {
 
 		say("Starting in verbose mode!");
 
-		ElevatorButton = (new BlockElevatorButton(elevator_button_blockID,
-				Block.blockSteel.blockIndexInTexture, false)).setHardness(0.5F)
-				.setStepSound(Block.soundMetalFootstep)
-				.setBlockName("elevatorbutton");
-		Elevator = (new BlockElevator(elevator_blockID).setHardness(3.0F)
-				.setStepSound(Block.soundMetalFootstep).setResistance(15F)
-				.setBlockName("elevator"));
-		ElevatorCaller = (new BlockElevatorCaller(elevator_caller_blockID,
-				Material.ground)).setHardness(0.5F)
-				.setStepSound(Block.soundMetalFootstep)
-				.setBlockName("elevatorcaller");
+		ElevatorButton = (new BlockElevatorButton(
+				elevator_button_blockID,
+					Block.blockSteel.blockIndexInTexture,
+					false))
+				.setHardness(0.5F)
+					.setStepSound(Block.soundMetalFootstep)
+					.setBlockName("elevatorbutton");
+		Elevator = (new BlockElevator(elevator_blockID)
+				.setHardness(3.0F)
+					.setStepSound(Block.soundMetalFootstep)
+					.setResistance(15F).setBlockName("elevator"));
+		ElevatorCaller = (new BlockElevatorCaller(
+				elevator_caller_blockID,
+					Material.ground))
+				.setHardness(0.5F)
+					.setStepSound(Block.soundMetalFootstep)
+					.setBlockName("elevatorcaller");
 		Transient = (new BlockTransientElevator(transient_elevator_blockID))
-				.setBlockUnbreakable().setBlockName("transient");
+				.setBlockUnbreakable()
+					.setBlockName("transient");
 
 		GameRegistry.registerBlock(Elevator, ItemElevator.class);
 		Item.itemsList[Elevator.blockID] = null;
-		Item.itemsList[Elevator.blockID] = new ItemElevator(Elevator.blockID
-				- OFFSET).setItemName("ElevatorItem");
+		Item.itemsList[Elevator.blockID] = new ItemElevator(
+				Elevator.blockID - OFFSET).setItemName("ElevatorItem");
 
 		GameRegistry.registerBlock(ElevatorButton);
 		GameRegistry.registerBlock(ElevatorCaller);
@@ -261,8 +268,9 @@ public class DECore {
 		props.getInt("Max_Elevator_Y", 255);
 
 		props.getInt("Elevator_GUI_ID", 553);
-		props.getInt("elevator_entityID",
-				EntityRegistry.instance().findGlobalUniqueEntityId());
+		props.getInt("elevator_entityID", EntityRegistry
+				.instance()
+					.findGlobalUniqueEntityId());
 
 		props.getBoolean("invertElevatorKeys", false);
 		props.getBoolean("entireShaftMustBeClear", true);
@@ -270,12 +278,15 @@ public class DECore {
 		props.getBoolean("kill_below", false);
 		props.getBoolean("shortcircuit_floorRequests", false);
 
-		props.getInt("Elevator_Top_Texture",
+		props.getInt(
+				"Elevator_Top_Texture",
 				Block.blockDiamond.blockIndexInTexture);
-		props.getInt("Elevator_SideAndBottom_Texture",
+		props.getInt(
+				"Elevator_SideAndBottom_Texture",
 				Block.blockSteel.blockIndexInTexture);
 
-		props.getString("opening_disallowed_renderTypes",
+		props.getString(
+				"opening_disallowed_renderTypes",
 				"0, 10, 11, 13, 14, 16, 17, 18, 24, 25, 26");
 		props.getString("opening_allowed_blockIDs", "215, 77, 34");
 		props.getString("opening_disallowed_blockIDs", "");
@@ -289,7 +300,8 @@ public class DECore {
 
 		props.getString("arrival_message", "You have arrived at the");
 
-		props.getString("outoforder_message",
+		props.getString(
+				"outoforder_message",
 				"Out of order. Please replace elevator.");
 
 		props.getString("floor_title", "Floor");
@@ -305,20 +317,36 @@ public class DECore {
 		LanguageRegistry.addName(ElevatorCaller, "Elevator Caller");
 		LanguageRegistry.addName(Transient, "You shouldn't have this!");
 		LanguageRegistry.instance().addStringLocalization(
-				"entity.ironclad_elevator.name", "en_US", "Elevator");
+				"entity.ironclad_elevator.name",
+				"en_US",
+				"Elevator");
 
 	}
 
 	public static void addRecipes() {
 		GameRegistry.addRecipe(new ItemStack(ElevatorButton, 1), new Object[] {
-				"I", "I", Character.valueOf('I'), Item.ingotIron });
+				"I",
+				"I",
+				Character.valueOf('I'),
+				Item.ingotIron });
 		GameRegistry.addRecipe(new ItemStack(Elevator, 4), new Object[] {
-				"IDI", "IRI", "III", Character.valueOf('I'), Item.ingotIron,
-				Character.valueOf('D'), Item.diamond, Character.valueOf('R'),
+				"IDI",
+				"IRI",
+				"III",
+				Character.valueOf('I'),
+				Item.ingotIron,
+				Character.valueOf('D'),
+				Item.diamond,
+				Character.valueOf('R'),
 				Item.redstone });
 		GameRegistry.addRecipe(new ItemStack(ElevatorCaller, 1), new Object[] {
-				"SSS", "SRS", "SSS", Character.valueOf('S'), Block.stone,
-				Character.valueOf('R'), Item.redstone });
+				"SSS",
+				"SRS",
+				"SSS",
+				Character.valueOf('S'),
+				Block.stone,
+				Character.valueOf('R'),
+				Item.redstone });
 	}
 
 	public static boolean canShortCircuit(String username) {
@@ -326,12 +354,15 @@ public class DECore {
 	}
 
 	// Determine if a given entity is on a the block at a given chunk position
-	public static boolean isEntityOnBlock(World world, ChunkPosition pos,
-			Entity entity) {
-		AxisAlignedBB box = Elevator.getCollisionBoundingBoxFromPool(world,
-				pos.x, pos.y, pos.z);
+	public static boolean isEntityOnBlock(World world, ChunkPosition pos, Entity entity) {
+		AxisAlignedBB box = Elevator.getCollisionBoundingBoxFromPool(
+				world,
+				pos.x,
+				pos.y,
+				pos.z);
 		box.maxY = box.maxY + 0.5;
-		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null,
+		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(
+				null,
 				box);
 		return list.contains(entity);
 	}
@@ -359,8 +390,13 @@ public class DECore {
 
 	// Convert chunk position to a printable string
 	public static String pos2Str(ChunkPosition pos) {
-		return (new StringBuilder()).append(pos.x).append(", ").append(pos.y)
-				.append(", ").append(pos.z).toString();
+		return (new StringBuilder())
+				.append(pos.x)
+					.append(", ")
+					.append(pos.y)
+					.append(", ")
+					.append(pos.z)
+					.toString();
 	}
 
 	public static boolean isNamed(int curFloor, String[] properties) {
@@ -406,8 +442,7 @@ public class DECore {
 		return isBlockOpeningMaterial(world, pos.x, pos.y, pos.z);
 	}
 
-	public static boolean isBlockOpeningMaterial(World world, int x, int y,
-			int z) {
+	public static boolean isBlockOpeningMaterial(World world, int x, int y, int z) {
 		Block block = Block.blocksList[world.getBlockId(x, y, z)];
 		if (block == null) {
 			return true;
@@ -467,10 +502,12 @@ public class DECore {
 		world.scheduleBlockUpdate(pos.x, pos.y, pos.z, blockID, delay);
 	}
 
-	public static void elevator_requestFloor(World world, ChunkPosition pos,
-			int floor) {
-		TileEntityElevator info = BlockElevator.getTileEntity(world, pos.x,
-				pos.y, pos.z);
+	public static void elevator_requestFloor(World world, ChunkPosition pos, int floor) {
+		TileEntityElevator info = BlockElevator.getTileEntity(
+				world,
+				pos.x,
+				pos.y,
+				pos.z);
 		if (info == null) {
 			return;
 		}
@@ -481,8 +518,11 @@ public class DECore {
 	}
 
 	public static void elevator_demandY(World world, ChunkPosition pos, int Y) {
-		TileEntityElevator info = BlockElevator.getTileEntity(world, pos.x,
-				pos.y, pos.z);
+		TileEntityElevator info = BlockElevator.getTileEntity(
+				world,
+				pos.x,
+				pos.y,
+				pos.z);
 		if (info == null) {
 			return;
 		}
@@ -493,8 +533,11 @@ public class DECore {
 	}
 
 	public static void elevator_reset(World world, ChunkPosition pos) {
-		TileEntityElevator info = BlockElevator.getTileEntity(world, pos.x,
-				pos.y, pos.z);
+		TileEntityElevator info = BlockElevator.getTileEntity(
+				world,
+				pos.x,
+				pos.y,
+				pos.z);
 		if (info == null) {
 			return;
 		}
@@ -505,8 +548,11 @@ public class DECore {
 	}
 
 	public static void elevator_powerOn(World world, ChunkPosition pos) {
-		TileEntityElevator info = BlockElevator.getTileEntity(world, pos.x,
-				pos.y, pos.z);
+		TileEntityElevator info = BlockElevator.getTileEntity(
+				world,
+				pos.x,
+				pos.y,
+				pos.z);
 		if (info == null) {
 			return;
 		}
@@ -517,7 +563,9 @@ public class DECore {
 	public static void addConfig() {
 
 		// --------LEDGES AND OPENINGS--------//
-		popIntSetFromString(disallowed_renderTypes, DRT,
+		popIntSetFromString(
+				disallowed_renderTypes,
+				DRT,
 				"0, 10, 11, 13, 14, 16, 17, 18, 24, 25, 26");
 		popIntSetFromString(allowed_blockIDs, OABID, "215, 77, 34");
 		popIntSetFromString(disallowed_blockIDs, ODBID, "");
@@ -535,27 +583,33 @@ public class DECore {
 		}
 
 		if (!disallowed_renderTypes.isEmpty())
-			say("Opening: Disallowed render types: "
-					+ convertIntSetToString(disallowed_renderTypes), true);
+			say(
+					"Opening: Disallowed render types: " + convertIntSetToString(disallowed_renderTypes),
+					true);
 		if (!disallowed_blockIDs.isEmpty())
-			say("Opening: Disallowed block IDs: "
-					+ convertIntSetToString(disallowed_blockIDs), true);
+			say(
+					"Opening: Disallowed block IDs: " + convertIntSetToString(disallowed_blockIDs),
+					true);
 		if (!allowed_blockIDs.isEmpty())
-			say("Opening: Allowed block IDs: "
-					+ convertIntSetToString(allowed_blockIDs), true);
+			say(
+					"Opening: Allowed block IDs: " + convertIntSetToString(allowed_blockIDs),
+					true);
 		if (!solid_disallowed_blockIDs.isEmpty())
-			say("Ledge: Disallowed block IDs: "
-					+ convertIntSetToString(solid_disallowed_blockIDs), true);
+			say(
+					"Ledge: Disallowed block IDs: " + convertIntSetToString(solid_disallowed_blockIDs),
+					true);
 		if (!solid_allowed_blockIDs.isEmpty())
-			say("Ledge: Allowed block IDs: "
-					+ convertIntSetToString(solid_allowed_blockIDs), true);
+			say(
+					"Ledge: Allowed block IDs: " + convertIntSetToString(solid_allowed_blockIDs),
+					true);
 	}
 
 	public static final ElevatorPacketHandler packetHandler = new ElevatorPacketHandler();
 
 	public static void registerPackets() {
 		for (int i = 0; i < ElevatorPacketHandler.CHANNELS.length; i++) {
-			NetworkRegistry.instance().registerChannel(packetHandler,
+			NetworkRegistry.instance().registerChannel(
+					packetHandler,
 					ElevatorPacketHandler.CHANNELS[i]);
 		}
 	}

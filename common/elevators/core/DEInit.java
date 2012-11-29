@@ -22,8 +22,10 @@ public class DEInit {
 		DEM = new Core(proxy);
 		DEM.setModName("DynamicElevators");
 		DEM.setModChannel("DELEVATORS");
-		DECore.props = new Props(new File(DEM.getProxy().getMinecraftDir()
-				+ "/config/DynamicElevators.cfg").getPath());
+		DECore.props = new Props(
+				new File(
+						DEM.getProxy().getMinecraftDir() + "/config/DynamicElevators.cfg")
+						.getPath());
 		load();
 		DECore.props.save();
 	}
@@ -33,14 +35,21 @@ public class DEInit {
 
 		DECore.addItems();
 
-		GameRegistry.registerTileEntity(TileEntityElevator.class,
+		GameRegistry.registerTileEntity(
+				TileEntityElevator.class,
 				"dynamicelevator");
 
-		//EntityRegistry.registerGlobalEntityID(EntityElevator.class, 
-		//		"delv", DECore.elevator_entityID);
-		EntityRegistry.instance().registerModEntity(EntityElevator.class, 
-				"delv", DECore.elevator_entityID,
-		DynamicElevators.instance, 400, 1, true);
+		EntityRegistry.instance();
+		// EntityRegistry.registerGlobalEntityID(EntityElevator.class,
+		// "delv", DECore.elevator_entityID);
+		EntityRegistry.registerModEntity(
+				EntityElevator.class,
+				"delv",
+				DECore.elevator_entityID,
+				DynamicElevators.instance,
+				400,
+				1,
+				true);
 
 		DEInit.DEM.getProxy().registerRenderInformation();
 

@@ -8,7 +8,6 @@ import eurysmods.api.ICommonProxy;
 
 public interface IDECommonProxy extends ICommonProxy {
 
-	void openGui(World world, EntityPlayer player,
-			Packet250CustomPayload packet, ChunkPosition loc);
+	void openGui(World world, EntityPlayer player, Packet250CustomPayload packet, ChunkPosition loc);
 
 }
