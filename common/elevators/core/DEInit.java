@@ -36,11 +36,11 @@ public class DEInit {
 		GameRegistry.registerTileEntity(TileEntityElevator.class,
 				"dynamicelevator");
 
-		EntityRegistry.registerGlobalEntityID(EntityElevator.class,
-				"dynamicelevator", DECore.elevator_entityID);
-		// EntityRegistry.registerModEntity(EntityElevator.class,
-		// "dynamicelevator", DECore.elevator_entityID,
-		// DynamicElevators.instance, 400, 1, true);
+		//EntityRegistry.registerGlobalEntityID(EntityElevator.class, 
+		//		"delv", DECore.elevator_entityID);
+		EntityRegistry.instance().registerModEntity(EntityElevator.class, 
+				"delv", DECore.elevator_entityID,
+		DynamicElevators.instance, 400, 1, true);
 
 		DEInit.DEM.getProxy().registerRenderInformation();
 

@@ -262,7 +262,7 @@ public class DECore {
 
 		props.getInt("Elevator_GUI_ID", 553);
 		props.getInt("elevator_entityID",
-				EntityRegistry.findGlobalUniqueEntityId());
+				EntityRegistry.instance().findGlobalUniqueEntityId());
 
 		props.getBoolean("invertElevatorKeys", false);
 		props.getBoolean("entireShaftMustBeClear", true);
