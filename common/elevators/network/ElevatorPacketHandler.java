@@ -31,7 +31,9 @@ import elevators.core.DECore;
 import elevators.core.DEInit;
 import elevators.core.DEProperties;
 import elevators.entities.EntityElevator;
+import elevators.network.packets.PacketButtonUpdate;
 import elevators.tileentities.TileEntityElevator;
+import eurysmods.network.packets.core.PacketIds;
 
 public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler {
 
@@ -41,7 +43,8 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 			"DE_UPDATE",
 			"DE_EPROP",
 			"DE_ERROR",
-			"DE_SHCI" };
+			"DE_SHCI",
+			"DE_BUPDATE" };
 
 	public static final int GUI_REQUEST = 0;
 	public static final int GUI_DATA = 1;
@@ -49,6 +52,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 	public static final int ELEVATOR_PROPERTIES = 3;
 	public static final int GUI_COMMUNICATION_ERROR = 4;
 	public static final int SHORT_CIRCUIT = 5;
+	public static final int BLOCK_UPDATE = 6;
 
 	public static HashMap<String, ChunkPosition> elevatorRequests = new HashMap();
 
@@ -171,6 +175,25 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 	public boolean sendGUIPacketToServer(Packet250CustomPayload packet) {
 		PacketDispatcher.sendPacketToServer(packet);
 		return true;
+	}
+
+	public static void sendButtonTickUpdate(World world, int x, int y, int z, int metadata) {
+		PacketButtonUpdate packet = new PacketButtonUpdate(x, y, z, metadata);
+		PacketDispatcher.sendPacketToAllAround(x, y, z, 400, world.getWorldInfo().getDimension(), packet.getPacket());
+	}
+
+	private void handleButtonUpdatePacket(Player player, PacketButtonUpdate packetBU) {
+		if (player instanceof EntityPlayer) {
+			EntityPlayer entityplayer = (EntityPlayer)player;
+			World world = entityplayer.worldObj;
+			if (packetBU.targetExists(world)) {
+				int metadata = world.getBlockMetadata(packetBU.xPosition, packetBU.yPosition, packetBU.zPosition);
+				if ((metadata & 8) != 0) {
+					world.setBlockMetadataWithNotify(packetBU.xPosition, packetBU.yPosition, packetBU.zPosition, metadata & 7);
+	                world.markBlocksDirty(packetBU.xPosition, packetBU.yPosition, packetBU.zPosition, packetBU.xPosition, packetBU.yPosition, packetBU.zPosition);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -315,6 +338,13 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 				} else {
 					EntityElevator elevator = (EntityElevator) entity;
 					elevator.setProperties(dest, center, true, metadata);
+				}
+			} else if (packet.channel.equals(CHANNELS[BLOCK_UPDATE])) {
+				int packetID = dataStream.read();
+				if (packetID == PacketIds.UPDATE) {
+					PacketButtonUpdate packetBU = new PacketButtonUpdate();
+					packetBU.readData(dataStream);
+					handleButtonUpdatePacket(player, packetBU);
 				}
 			}
 		} catch (IOException e) {

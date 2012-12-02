@@ -1,6 +1,11 @@
 package elevators.blocks;
 
 // D.E. - 1.6
+import static net.minecraftforge.common.ForgeDirection.EAST;
+import static net.minecraftforge.common.ForgeDirection.NORTH;
+import static net.minecraftforge.common.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.ForgeDirection.WEST;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,7 +20,9 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
+import net.minecraftforge.common.ForgeDirection;
 import elevators.core.DECore;
+import elevators.network.ElevatorPacketHandler;
 import elevators.tileentities.TileEntityElevator;
 
 public class BlockElevatorButton extends BlockButton {
@@ -25,168 +32,8 @@ public class BlockElevatorButton extends BlockButton {
 		this.setCreativeTab(CreativeTabs.tabTransport);
 	}
 
-	public boolean canBePlacedOnBlock(World world, int i, int j, int k) {
-		return (world.isBlockNormalCube(i, j, k) || world.getBlockId(i, j, k) == DECore.ElevatorCaller.blockID);
-	}
-
-	@Override
-	public void addCreativeItems(ArrayList itemList) {
-		itemList.add(new ItemStack(this));
-	}
-
-	@Override
-	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5) {
-		if (par5 == 2 && this.canBePlacedOnBlock(world, x, y, z + 1)) {
-			return true;
-		}
-
-		if (par5 == 3 && this.canBePlacedOnBlock(world, x, y, z - 1)) {
-			return true;
-		}
-
-		if (par5 == 4 && this.canBePlacedOnBlock(world, x + 1, y, z)) {
-			return true;
-		}
-
-		return par5 == 5 && this.canBePlacedOnBlock(world, x - 1, y, z);
-	}
-
-	/**
-	 * Checks to see if its valid to put this block at the specified
-	 * coordinates. Args: world, x, y, z
-	 */
-	@Override
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		if (this.canBePlacedOnBlock(world, x - 1, y, z)) {
-			return true;
-		}
-
-		if (this.canBePlacedOnBlock(world, x + 1, y, z)) {
-			return true;
-		}
-
-		if (this.canBePlacedOnBlock(world, x, y, z - 1)) {
-			return true;
-		}
-
-		return this.canBePlacedOnBlock(world, x, y, z + 1);
-	}
-
-	// @Override
-	// public void updateBlockMetadata(World world, int x, int y, int z, int
-	// side, float playerX, float playerY, float playerZ) {
-	// int i = world.getBlockMetadata(x, y, z);
-	// int j = i & 8;Block block;block.
-	// i &= 7;
-	//
-	// if (side == 2 && this.canBePlacedOnBlock(world, x, y, z + 1)) {
-	// i = 4;
-	// }
-	// else if (side == 3 && this.canBePlacedOnBlock(world, x, y, z - 1)) {
-	// i = 3;
-	// }
-	// else if (side == 4 && this.canBePlacedOnBlock(world, x + 1, y, z)) {
-	// i = 2;
-	// }
-	// else if (side == 5 && this.canBePlacedOnBlock(world, x - 1, y, z)) {
-	// i = 1;
-	// }
-	// else {
-	// i = getOrientation(world, x, y, z);
-	// }
-	//
-	// world.setBlockMetadataWithNotify(x, y, z, i + j);
-	// }
-
-	/**
-	 * Get side which this button is facing.
-	 */
-	private int getOrientation(World world, int x, int y, int z) {
-		if (this.canBePlacedOnBlock(world, x - 1, y, z)) {
-			return 1;
-		}
-
-		if (this.canBePlacedOnBlock(world, x + 1, y, z)) {
-			return 2;
-		}
-
-		if (this.canBePlacedOnBlock(world, x, y, z - 1)) {
-			return 3;
-		}
-
-		return !this.canBePlacedOnBlock(world, x, y, z + 1) ? 1 : 4;
-	}
-
-	/**
-	 * Can this block stay at this position. Similar to canPlaceBlockAt except
-	 * gets checked often with plants.
-	 */
-	public boolean canBlockStay(World world, int x, int y, int z) {
-		int side = world.getBlockMetadata(x, y, z) & 7;
-
-		switch (side) {
-		case 1:
-			return this.canBePlacedOnBlock(world, x - 1, y, z);
-		case 2:
-			return this.canBePlacedOnBlock(world, x + 1, y, z);
-		case 3:
-			return this.canBePlacedOnBlock(world, x, y, z - 1);
-		case 4:
-			return this.canBePlacedOnBlock(world, x, y, z + 1);
-		default:
-			return false;
-		}
-	}
-
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int notifierID) {
-		if (!canBlockStay(world, x, y, z)) {
-			dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-			world.setBlockWithNotify(x, y, z, 0);
-		}
-	}
-
-	public void onBlockRemoval(World par1World, int par2, int par3, int par4) {
-	}
-
-	public void updateTick(World world, int x, int y, int z, Random par5Random) {
-		if (world.isRemote) {
-			return;
-		}
-
-		int i = world.getBlockMetadata(x, y, z);
-
-		if ((i & 8) == 0) {
-			return;
-		}
-
-		world.setBlockMetadataWithNotify(x, y, z, i & 7);
-		// world.notifyBlocksOfNeighborChange(x, y, z, blockID);
-
-		world.playSoundEffect(
-				x + 0.5D,
-				y + 0.5D,
-				z + 0.5D,
-				"random.click",
-				0.3F,
-				0.5F);
-		world.markBlocksDirty(x, y, z, x, y, z);
-	}
-
-	@Override
-	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-		return false;
-	}
-
-	@Override
-	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l) {
-		return false;
-	}
-
-	@Override
-	public boolean canProvidePower() {
-		return false;
-	}
+	Set<ChunkPosition> elvs = new HashSet<ChunkPosition>();
+	Set<ChunkPosition> checkedBlocks = new HashSet<ChunkPosition>();
 
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int side, float par7, float par8, float par9) {
@@ -197,7 +44,6 @@ public class BlockElevatorButton extends BlockButton {
 			return true;
 		}
 		world.setBlockMetadataWithNotify(i, j, k, direction + state);
-		world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
 		world.markBlocksDirty(i, j, k, i, j, k);
 		world.playSoundEffect(
 				i + 0.5D,
@@ -206,6 +52,7 @@ public class BlockElevatorButton extends BlockButton {
 				"random.click",
 				0.3F,
 				0.6F);
+		world.scheduleBlockUpdate(i, j, k, this.blockID, this.tickRate());
 		// world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 		ChunkPosition newPos = null;
 		if (direction == 1) {
@@ -367,6 +214,80 @@ public class BlockElevatorButton extends BlockButton {
 		}
 	}
 
-	Set<ChunkPosition> elvs = new HashSet<ChunkPosition>();
-	Set<ChunkPosition> checkedBlocks = new HashSet<ChunkPosition>();
+	public boolean canBePlacedOnBlock(World world, int i, int j, int k) {
+		return (world.isBlockNormalCube(i, j, k) || world.getBlockId(i, j, k) == DECore.ElevatorCaller.blockID);
+	}
+
+	@Override
+	public void addCreativeItems(ArrayList itemList) {
+		itemList.add(new ItemStack(this));
+	}
+
+	/**
+	 * Can this block stay at this position. Similar to canPlaceBlockAt except
+	 * gets checked often with plants.
+	 */
+	@Override
+	public boolean canBlockStay(World world, int x, int y, int z) {
+		int side = world.getBlockMetadata(x, y, z) & 7;
+
+		switch (side) {
+		case 1:
+			return this.canBePlacedOnBlock(world, x - 1, y, z);
+		case 2:
+			return this.canBePlacedOnBlock(world, x + 1, y, z);
+		case 3:
+			return this.canBePlacedOnBlock(world, x, y, z - 1);
+		case 4:
+			return this.canBePlacedOnBlock(world, x, y, z + 1);
+		default:
+			return false;
+		}
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, int notifierID) {
+		if (!canBlockStay(world, x, y, z)) {
+			dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+			world.setBlockWithNotify(x, y, z, 0);
+		}
+	}
+
+	public void onBlockRemoval(World par1World, int par2, int par3, int par4) {
+	}
+
+    /**
+     * Ticks the block if it's been scheduled
+     */
+	@Override
+    public void updateTick(World world, int x, int y, int z, Random random)
+    {
+        if (!world.isRemote)
+        {
+            int metadata = world.getBlockMetadata(x, y, z);
+
+            if ((metadata & 8) != 0)
+            {            	
+                world.setBlockMetadataWithNotify(x, y, z, metadata & 7);
+                world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.3F, 0.5F);
+                world.markBlocksDirty(x, y, z, x, y, z);
+                ElevatorPacketHandler.sendButtonTickUpdate(world, x, y, z, metadata);
+            }
+        }
+    }
+
+	@Override
+	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
+		return false;
+	}
+
+	@Override
+	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l) {
+		return false;
+	}
+
+	@Override
+	public boolean canProvidePower() {
+		return false;
+	}
 }

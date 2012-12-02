@@ -53,7 +53,7 @@ public class DEInit {
 				EntityElevator.class,
 				"delv",
 				DECore.elevator_entityID);
-		
+
 		DEInit.DEM.getProxy().registerRenderInformation();
 
 		DECore.addConfig();
