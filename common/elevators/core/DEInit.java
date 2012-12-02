@@ -48,7 +48,8 @@ public class DEInit {
 				1,
 				true);
 
-		EntityRegistry.instance().registerGlobalEntityID(
+		EntityRegistry.instance();
+		EntityRegistry.registerGlobalEntityID(
 				EntityElevator.class,
 				"delv",
 				DECore.elevator_entityID);
