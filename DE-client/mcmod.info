@@ -1,0 +1,17 @@
+[
+{
+  "modid": "DynamicElevators",
+  "name": "Dynacmid Elevators",
+  "description": "The Dynamic Elevators mod",
+  "version": "1.7.5",
+  "mcversion": "1.4.4",
+  "url": "https://github.com/SlimeVoid/DynamicElevators-FML",
+  "updateUrl": "",
+  "credits": "",
+  "authors": ["IronClad49er","Eurymachus","Slime Void Crew"],
+  "logoFile": "elevators/logo.png",
+  "screenshots": [""],
+  "parent":"",
+  "dependencies": ["EurysCore"]
+}
+]
