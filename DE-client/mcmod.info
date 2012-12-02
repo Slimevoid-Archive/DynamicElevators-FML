@@ -1,9 +1,9 @@
 [
 {
   "modid": "DynamicElevators",
-  "name": "Dynacmid Elevators",
+  "name": "Dynamic Elevators",
   "description": "The Dynamic Elevators mod",
-  "version": "1.7.5",
+  "version": "2.0.0.0",
   "mcversion": "1.4.4",
   "url": "https://github.com/SlimeVoid/DynamicElevators-FML",
   "updateUrl": "",

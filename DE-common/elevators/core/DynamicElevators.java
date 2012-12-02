@@ -10,10 +10,11 @@ import elevators.network.ElevatorPacketHandler;
 import eurysmods.api.ICommonProxy;
 
 @Mod(
-		modid = "dynamic_elevators",
+		modid = "DynamicElevators",
 		name = "Dynamic Elevators",
-		version = "1.7.5",
-		useMetadata = true)
+		version = "2.0.0.0",
+		useMetadata = true,
+		dependencies = "after:EurysCore")
 @NetworkMod(
 		clientSideRequired = true,
 		channels = {
