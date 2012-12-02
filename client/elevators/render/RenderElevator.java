@@ -23,119 +23,132 @@ public class RenderElevator extends Render {
 		shadowSize = 0.5F;
 	}
 
-	public void renderElevatorEntity(Block elevator, World world, int i, int j, int k, int textureData[]) {
-		System.out.println("renderElevatorEntity");
-		float f = 0.5F;
-		float f1 = 1.0F;
-		float f2 = 0.8F;
-		float f3 = 0.6F;
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.setBrightness(elevator.getMixedBrightnessForBlock(
-				world,
-				i,
-				j,
-				k));
-		float f4 = 1.0F;
-		float f5 = 1.0F;
-
-		if (f5 < f4) {
-			f5 = f4;
-		}
-
-		tessellator.setColorOpaque_F(f * f5, f * f5, f * f5);
-		renderBlocks.renderBottomFace(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[0]);
-		f5 = 1.0F;
-
-		if (f5 < f4) {
-			f5 = f4;
-		}
-
-		tessellator.setColorOpaque_F(f1 * f5, f1 * f5, f1 * f5);
-		System.out.println("topFace");
-		renderBlocks.renderTopFace(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[1]);
-		f5 = 1.0F;
-
-		if (f5 < f4) {
-			f5 = f4;
-		}
-
-		tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
-		System.out.println("eastFace");
-		renderBlocks.renderEastFace(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[2]);
-		f5 = 1.0F;
-
-		if (f5 < f4) {
-			f5 = f4;
-		}
-
-		tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
-		System.out.println("westFace");
-		renderBlocks.renderWestFace(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[2]);
-		f5 = 1.0F;
-
-		if (f5 < f4) {
-			f5 = f4;
-		}
-
-		tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
-		System.out.println("northFace");
-		renderBlocks.renderNorthFace(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[2]);
-		f5 = 1.0F;
-
-		if (f5 < f4) {
-			f5 = f4;
-		}
-
-		tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
-		System.out.println("southFace");
-		renderBlocks.renderSouthFace(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[2]);
-		tessellator.draw();
+	public void renderElevatorEntity(Block elevator, World world, int x, int y, int z, int textureData[]) {
+		System.out.println("texture: " + textureData[0] + " | " + textureData[1] + " | " + textureData[2]);
+		renderBlocks.renderBottomFace(elevator, x, y, z, textureData[0]);
+		renderBlocks.renderTopFace(elevator, x, y, z, textureData[1]);
+		renderBlocks.renderEastFace(elevator, x, y, z, textureData[2]);
+		renderBlocks.renderWestFace(elevator, x, y, z, textureData[2]);
+		renderBlocks.renderNorthFace(elevator, x, y, z, textureData[2]);
+		renderBlocks.renderSouthFace(elevator, x, y, z, textureData[2]);
+//		float f = 0.5F;
+//		float f1 = 1.0F;
+//		float f2 = 0.8F;
+//		float f3 = 0.6F;
+//		Tessellator tessellator = Tessellator.instance;
+//		tessellator.startDrawingQuads();
+//		tessellator.setBrightness(elevator.getMixedBrightnessForBlock(
+//				world,
+//				x,
+//				y,
+//				z));
+//		float f4 = 1.0F;
+//		float f5 = 1.0F;
+//
+//		if (f5 < f4) {
+//			f5 = f4;
+//		}
+//
+//		tessellator.setColorOpaque_F(f * f5, f * f5, f * f5);
+//		renderBlocks.renderBottomFace(
+//				elevator,
+//				-0.5D,
+//				-0.5D,
+//				-0.5D,
+//				textureData[0]);
+//		f5 = 1.0F;
+//
+//		if (f5 < f4) {
+//			f5 = f4;
+//		}
+//
+//		tessellator.setColorOpaque_F(f1 * f5, f1 * f5, f1 * f5);
+//		System.out.println("topFace");
+//		renderBlocks.renderTopFace(
+//				elevator,
+//				-0.5D,
+//				-0.5D,
+//				-0.5D,
+//				textureData[1]);
+//		f5 = 1.0F;
+//
+//		if (f5 < f4) {
+//			f5 = f4;
+//		}
+//
+//		tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
+//		System.out.println("eastFace");
+//		renderBlocks.renderEastFace(
+//				elevator,
+//				-0.5D,
+//				-0.5D,
+//				-0.5D,
+//				textureData[2]);
+//		f5 = 1.0F;
+//
+//		if (f5 < f4) {
+//			f5 = f4;
+//		}
+//
+//		tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
+//		System.out.println("westFace");
+//		renderBlocks.renderWestFace(
+//				elevator,
+//				-0.5D,
+//				-0.5D,
+//				-0.5D,
+//				textureData[2]);
+//		f5 = 1.0F;
+//
+//		if (f5 < f4) {
+//			f5 = f4;
+//		}
+//
+//		tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
+//		System.out.println("northFace");
+//		renderBlocks.renderNorthFace(
+//				elevator,
+//				-0.5D,
+//				-0.5D,
+//				-0.5D,
+//				textureData[2]);
+//		f5 = 1.0F;
+//
+//		if (f5 < f4) {
+//			f5 = f4;
+//		}
+//
+//		tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
+//		System.out.println("southFace");
+//		renderBlocks.renderSouthFace(
+//				elevator,
+//				-0.5D,
+//				-0.5D,
+//				-0.5D,
+//				textureData[2]);
+//		tessellator.draw();
 	}
 
 	public void doRenderElevator(EntityElevator elevator, double d, double d1, double d2, float f, float f1) {
 		GL11.glPushMatrix();
-		Block block = Block.blocksList[DECore.Elevator.blockID];
-		World world = elevator.getWorld();
-		GL11.glDisable(2896 /* GL_LIGHTING */);
 		GL11.glTranslatef((float) d, (float) d1, (float) d2);
 		// GL11.glScalef(-1F, -1F, 1.0F); - ceilings?
 		this.loadTexture("/terrain.png");
+		
+		Block block = Block.blocksList[DECore.Elevator.blockID];
+		World world = elevator.getWorld();
+		GL11.glDisable(2896 /* GL_LIGHTING */);
+		this.renderBlocks.blockAccess = world;
 
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		
+        tessellator.setTranslation((double)((float)(-MathHelper.floor_double(elevator.posX)) - 0.5F), (double)((float)(-MathHelper.floor_double(elevator.posY)) - 0.5F), (double)((float)(-MathHelper.floor_double(elevator.posZ)) - 0.5F));
+        
 		// int textureData[] = elevator.getTextureData();
 		int textureData[] = {
-				DECore.sideTexture,
-				DECore.sideTexture,
+				DECore.topTexture,
+				DECore.topTexture,
 				DECore.sideTexture };
 
 		// Bottom
@@ -152,6 +165,8 @@ public class RenderElevator extends Render {
 				MathHelper.floor_double(elevator.posY),
 				MathHelper.floor_double(elevator.posZ),
 				textureData);
+		tessellator.setTranslation(0.0D, 0.0D, 0.0D);
+        tessellator.draw();
 		GL11.glEnable(2896 /* GL_LIGHTING */);
 		GL11.glPopMatrix();
 	}
