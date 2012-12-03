@@ -750,7 +750,9 @@ public class BlockElevator extends BlockContainer {
 					pos.x,
 					pos.y,
 					pos.z);
-			curInfo.setPower(newPowerState);
+			if (curInfo != null) {
+				curInfo.setPower(newPowerState);
+			}
 		}
 	}
 
