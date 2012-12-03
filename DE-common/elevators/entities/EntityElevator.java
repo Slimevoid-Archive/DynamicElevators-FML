@@ -296,7 +296,7 @@ public class EntityElevator extends Entity {
 				(int) this.posX,
 				(int) this.posY,
 				(int) this.posZ,
-				false);
+				true);
 		mountedEntities.clear();
 	}
 
