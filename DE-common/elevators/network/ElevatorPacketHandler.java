@@ -179,18 +179,33 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 
 	public static void sendButtonTickUpdate(World world, int x, int y, int z, int metadata) {
 		PacketButtonUpdate packet = new PacketButtonUpdate(x, y, z, metadata);
-		PacketDispatcher.sendPacketToAllAround(x, y, z, 400, world.getWorldInfo().getDimension(), packet.getPacket());
+		PacketDispatcher.sendPacketToAllAround(x, y, z, 400, world
+				.getWorldInfo()
+					.getDimension(), packet.getPacket());
 	}
 
 	private void handleButtonUpdatePacket(Player player, PacketButtonUpdate packetBU) {
 		if (player instanceof EntityPlayer) {
-			EntityPlayer entityplayer = (EntityPlayer)player;
+			EntityPlayer entityplayer = (EntityPlayer) player;
 			World world = entityplayer.worldObj;
 			if (packetBU.targetExists(world)) {
-				int metadata = world.getBlockMetadata(packetBU.xPosition, packetBU.yPosition, packetBU.zPosition);
+				int metadata = world.getBlockMetadata(
+						packetBU.xPosition,
+						packetBU.yPosition,
+						packetBU.zPosition);
 				if ((metadata & 8) != 0) {
-					world.setBlockMetadataWithNotify(packetBU.xPosition, packetBU.yPosition, packetBU.zPosition, metadata & 7);
-	                world.markBlocksDirty(packetBU.xPosition, packetBU.yPosition, packetBU.zPosition, packetBU.xPosition, packetBU.yPosition, packetBU.zPosition);
+					world.setBlockMetadataWithNotify(
+							packetBU.xPosition,
+							packetBU.yPosition,
+							packetBU.zPosition,
+							metadata & 7);
+					world.markBlocksDirty(
+							packetBU.xPosition,
+							packetBU.yPosition,
+							packetBU.zPosition,
+							packetBU.xPosition,
+							packetBU.yPosition,
+							packetBU.zPosition);
 				}
 			}
 		}
@@ -302,6 +317,9 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 									entity.posX,
 									newEntityYPos,
 									entity.posZ);
+							if (entity_data == 1) {
+								entity.updateRiderPosition();
+							}
 						} else {
 							if (entity instanceof EntityLiving) {
 								entity.posY = (double) newEntityYPos + entity.yOffset;

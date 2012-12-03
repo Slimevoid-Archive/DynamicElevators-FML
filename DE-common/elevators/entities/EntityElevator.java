@@ -289,6 +289,7 @@ public class EntityElevator extends Entity {
 			}
 			rider.motionY = 0.1F;
 			updateRider(rider);
+			rider.unmountEntity(this);
 			say("Ejected rider #" + rider.entityId);
 		}
 		ElevatorPacketHandler.sendRiderUpdates(
@@ -301,7 +302,7 @@ public class EntityElevator extends Entity {
 	}
 
 	public double getMountedYOffset() {
-		return 0.75D;
+		return 0.5D;
 	}
 
 	public void updateRider(Entity rider) {
