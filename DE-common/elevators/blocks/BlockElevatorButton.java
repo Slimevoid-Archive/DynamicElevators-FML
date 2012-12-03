@@ -1,11 +1,6 @@
 package elevators.blocks;
 
 // D.E. - 1.6
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.ForgeDirection.WEST;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,7 +15,6 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
-import net.minecraftforge.common.ForgeDirection;
 import elevators.core.DECore;
 import elevators.network.ElevatorPacketHandler;
 import elevators.tileentities.TileEntityElevator;
@@ -256,25 +250,33 @@ public class BlockElevatorButton extends BlockButton {
 	public void onBlockRemoval(World par1World, int par2, int par3, int par4) {
 	}
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
+	/**
+	 * Ticks the block if it's been scheduled
+	 */
 	@Override
-    public void updateTick(World world, int x, int y, int z, Random random)
-    {
-        if (!world.isRemote)
-        {
-            int metadata = world.getBlockMetadata(x, y, z);
+	public void updateTick(World world, int x, int y, int z, Random random) {
+		if (!world.isRemote) {
+			int metadata = world.getBlockMetadata(x, y, z);
 
-            if ((metadata & 8) != 0)
-            {            	
-                world.setBlockMetadataWithNotify(x, y, z, metadata & 7);
-                world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.3F, 0.5F);
-                world.markBlocksDirty(x, y, z, x, y, z);
-                ElevatorPacketHandler.sendButtonTickUpdate(world, x, y, z, metadata);
-            }
-        }
-    }
+			if ((metadata & 8) != 0) {
+				world.setBlockMetadataWithNotify(x, y, z, metadata & 7);
+				world.playSoundEffect(
+						x + 0.5D,
+						y + 0.5D,
+						z + 0.5D,
+						"random.click",
+						0.3F,
+						0.5F);
+				world.markBlocksDirty(x, y, z, x, y, z);
+				ElevatorPacketHandler.sendButtonTickUpdate(
+						world,
+						x,
+						y,
+						z,
+						metadata);
+			}
+		}
+	}
 
 	@Override
 	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
