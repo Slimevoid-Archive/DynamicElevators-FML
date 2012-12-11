@@ -285,7 +285,6 @@ public class EntityElevator extends Entity {
 			if (pos < 1.0) {
 				if (this.motionY > 0)
 					rider.posY += 1F;
-				// System.out.println("Pos:" + pos);
 			}
 			rider.motionY = 0.1F;
 			updateRider(rider);
