@@ -444,7 +444,7 @@ public class DECore {
 		if (block == null) {
 			return true;
 		}
-		if (block.blockMaterial.isGroundCover()) {
+		if (block.blockMaterial.func_85157_q()) {
 			return true;
 		}
 		if (disallowed_blockIDs.contains(world.getBlockId(x, y, z))) {
@@ -467,7 +467,7 @@ public class DECore {
 		if (solid_disallowed_blockIDs.contains(world.getBlockId(x, y, z))) {
 			return false;
 		}
-		if (block.blockMaterial.isGroundCover()) {
+		if (block.blockMaterial.func_85157_q()) {
 			return false;
 		}
 		if (block.blockID == Elevator.blockID) {

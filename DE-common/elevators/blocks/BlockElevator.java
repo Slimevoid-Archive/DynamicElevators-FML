@@ -593,12 +593,12 @@ public class BlockElevator extends BlockContainer {
 	}
 
 	@Override
-	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l) {
-		return isPoweringTo(world, i, j, k, l);
+	public boolean isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
+		return isProvidingStrongPower(world, i, j, k, l);
 	}
 
 	@Override
-	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
+	public boolean isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		if (isCeiling(iblockaccess.getBlockMetadata(i, j, k))) {
 			return false;
 		}

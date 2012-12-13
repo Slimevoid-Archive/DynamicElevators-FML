@@ -199,7 +199,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 							packetBU.yPosition,
 							packetBU.zPosition,
 							metadata & 7);
-					world.markBlocksDirty(
+					world.markBlockRangeForRenderUpdate(
 							packetBU.xPosition,
 							packetBU.yPosition,
 							packetBU.zPosition,

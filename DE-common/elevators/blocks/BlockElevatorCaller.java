@@ -48,7 +48,7 @@ public class BlockElevatorCaller extends Block {
 			DECore
 					.say("Checking: " + tempX + ", " + tempY + ", " + tempZ + ": has block ID" + ID);
 			if (ID > 0 && ID != DECore.Elevator.blockID && Block.blocksList[ID]
-					.isIndirectlyPoweringTo(world, tempX, tempY, tempZ, iter)) {
+					.isProvidingWeakPower(world, tempX, tempY, tempZ, iter)) {
 				return true;
 			}
 		}

@@ -38,7 +38,7 @@ public class BlockElevatorButton extends BlockButton {
 			return true;
 		}
 		world.setBlockMetadataWithNotify(i, j, k, direction + state);
-		world.markBlocksDirty(i, j, k, i, j, k);
+		world.markBlockRangeForRenderUpdate(i, j, k, i, j, k);
 		world.playSoundEffect(
 				i + 0.5D,
 				j + 0.5D,
@@ -267,7 +267,7 @@ public class BlockElevatorButton extends BlockButton {
 						"random.click",
 						0.3F,
 						0.5F);
-				world.markBlocksDirty(x, y, z, x, y, z);
+				world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
 				ElevatorPacketHandler.sendButtonTickUpdate(
 						world,
 						x,
@@ -279,12 +279,12 @@ public class BlockElevatorButton extends BlockButton {
 	}
 
 	@Override
-	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
+	public boolean isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		return false;
 	}
 
 	@Override
-	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l) {
+	public boolean isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
 		return false;
 	}
 
