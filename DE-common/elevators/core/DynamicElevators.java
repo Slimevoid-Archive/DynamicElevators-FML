@@ -12,7 +12,7 @@ import eurysmods.api.ICommonProxy;
 @Mod(
 		modid = "DynamicElevators",
 		name = "Dynamic Elevators",
-		version = "2.0.0.0",
+		version = "2.0.0.1",
 		useMetadata = true,
 		dependencies = "after:EurysCore")
 @NetworkMod(
