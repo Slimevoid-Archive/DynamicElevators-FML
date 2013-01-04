@@ -1,6 +1,6 @@
 package elevators.network.packets;
 
-import net.minecraft.src.World;
+import net.minecraft.world.World;
 import elevators.core.DECore;
 import elevators.network.ElevatorPacketHandler;
 import eurysmods.network.packets.core.PacketIds;

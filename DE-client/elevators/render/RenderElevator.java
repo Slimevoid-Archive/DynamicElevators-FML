@@ -1,11 +1,11 @@
 package elevators.render;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.Entity;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.Render;
-import net.minecraft.src.Tessellator;
-import net.minecraft.src.World;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
@@ -19,7 +19,7 @@ public class RenderElevator extends Render {
 	}
 
 	public void renderElevatorEntity(Block elevator, World world, int x, int y, int z, int textureData[]) {
-		this.renderBlocks.func_83018_a(elevator);
+		this.renderBlocks.updateCustomBlockBounds(elevator);
 
 		float f1 = 0.5F;
 		float f2 = 1.0F;
