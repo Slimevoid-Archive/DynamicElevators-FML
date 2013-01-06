@@ -188,14 +188,14 @@ public class DECore {
 				.setBlockUnbreakable()
 					.setBlockName("transient");
 
-		GameRegistry.registerBlock(Elevator, ItemElevator.class);
+		GameRegistry.registerBlock(Elevator, ItemElevator.class, "Elevator");
 		Item.itemsList[Elevator.blockID] = null;
 		Item.itemsList[Elevator.blockID] = new ItemElevator(
 				Elevator.blockID - OFFSET).setItemName("ElevatorItem");
 
-		GameRegistry.registerBlock(ElevatorButton);
-		GameRegistry.registerBlock(ElevatorCaller);
-		GameRegistry.registerBlock(Transient);
+		GameRegistry.registerBlock(ElevatorButton, "Elevator Button");
+		GameRegistry.registerBlock(ElevatorCaller, "Elevator Caller");
+		GameRegistry.registerBlock(Transient, "Elevator Transient");
 	}
 
 	private static void loadProps() {
