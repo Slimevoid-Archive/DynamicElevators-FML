@@ -14,6 +14,7 @@ import slimevoid.elevators.blocks.BlockTransientElevator;
 import slimevoid.elevators.items.ItemElevator;
 import slimevoid.elevators.network.ElevatorPacketHandler;
 import slimevoid.elevators.tileentities.TileEntityElevator;
+import slimevoid.lib.ICommonProxy;
 
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.block.Block;
@@ -30,7 +31,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import eurysmods.api.ICommonProxy;
 
 public class DECore {
 

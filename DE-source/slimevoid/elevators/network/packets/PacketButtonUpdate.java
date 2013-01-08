@@ -2,10 +2,10 @@ package slimevoid.elevators.network.packets;
 
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.network.ElevatorPacketHandler;
+import slimevoid.lib.network.PacketIds;
+import slimevoid.lib.network.PacketPayload;
+import slimevoid.lib.network.PacketUpdate;
 import net.minecraft.world.World;
-import eurysmods.network.packets.core.PacketIds;
-import eurysmods.network.packets.core.PacketPayload;
-import eurysmods.network.packets.core.PacketUpdate;
 
 public class PacketButtonUpdate extends PacketUpdate {
 

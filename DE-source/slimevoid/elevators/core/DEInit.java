@@ -4,13 +4,13 @@ import java.io.File;
 
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.tileentities.TileEntityElevator;
+import slimevoid.lib.ICommonProxy;
+import slimevoid.lib.ICore;
+import slimevoid.lib.core.Core;
+import slimevoid.lib.core.SlimevoidCore;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import eurysmods.api.ICommonProxy;
-import eurysmods.api.ICore;
-import eurysmods.core.Core;
-import eurysmods.core.EurysCore;
 
 public class DEInit {
 	public static ICore DEM;
@@ -32,7 +32,7 @@ public class DEInit {
 	}
 
 	public static void load() {
-		EurysCore.console(DEM.getModName(), "Registering Items...");
+		SlimevoidCore.console(DEM.getModName(), "Registering Items...");
 
 		DECore.addItems();
 

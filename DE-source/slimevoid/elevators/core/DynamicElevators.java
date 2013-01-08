@@ -1,13 +1,13 @@
 package slimevoid.elevators.core;
 
 import slimevoid.elevators.network.ElevatorPacketHandler;
+import slimevoid.lib.ICommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import eurysmods.api.ICommonProxy;
 
 @Mod(
 		modid = "DynamicElevators",

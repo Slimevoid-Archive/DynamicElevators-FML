@@ -17,6 +17,7 @@ import slimevoid.elevators.core.DEProperties;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.network.packets.PacketButtonUpdate;
 import slimevoid.elevators.tileentities.TileEntityElevator;
+import slimevoid.lib.network.PacketIds;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.ChunkPosition;
@@ -34,7 +35,6 @@ import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import eurysmods.network.packets.core.PacketIds;
 
 public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler {
 
