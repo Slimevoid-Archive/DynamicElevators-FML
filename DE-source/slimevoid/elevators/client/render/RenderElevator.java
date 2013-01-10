@@ -20,7 +20,7 @@ public class RenderElevator extends Render {
 	}
 
 	public void renderElevatorEntity(Block elevator, World world, int x, int y, int z, int textureData[]) {
-		this.renderBlocks.updateCustomBlockBounds(elevator);
+		this.renderBlocks.setRenderBoundsFromBlock(elevator);
 
 		float f1 = 0.5F;
 		float f2 = 1.0F;

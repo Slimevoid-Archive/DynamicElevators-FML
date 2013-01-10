@@ -14,7 +14,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 		name = "Dynamic Elevators",
 		version = "2.0.0.3",
 		useMetadata = true,
-		dependencies = "after:EurysCore")
+		dependencies = "after:SlimevoidLib")
 @NetworkMod(
 		clientSideRequired = true,
 		channels = {
