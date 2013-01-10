@@ -12,7 +12,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 @Mod(
 		modid = "DynamicElevators",
 		name = "Dynamic Elevators",
-		version = "2.0.0.3",
+		version = "2.0.0.4",
 		useMetadata = true,
 		dependencies = "after:SlimevoidLib")
 @NetworkMod(
