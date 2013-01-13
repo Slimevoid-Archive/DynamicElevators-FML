@@ -2,17 +2,16 @@ package slimevoid.elevators.client.proxy;
 
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.src.ModLoader;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 import slimevoid.elevators.client.gui.GuiElevator;
 import slimevoid.elevators.client.render.RenderElevator;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.proxy.DE_CommonProxy;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.src.ModLoader;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.world.World;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

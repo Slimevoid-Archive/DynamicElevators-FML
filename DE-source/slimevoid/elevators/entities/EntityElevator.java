@@ -5,22 +5,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 import slimevoid.elevators.blocks.BlockElevator;
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
 import slimevoid.elevators.network.ElevatorPacketHandler;
 import slimevoid.elevators.tileentities.TileEntityElevator;
-
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.block.Block;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class EntityElevator extends Entity {
 
@@ -143,6 +142,7 @@ public class EntityElevator extends Entity {
 		return false;
 	}
 
+	@Override
 	public boolean canBePushed() {
 		return true;
 	}
@@ -301,6 +301,7 @@ public class EntityElevator extends Entity {
 		mountedEntities.clear();
 	}
 
+	@Override
 	public double getMountedYOffset() {
 		return 0.5D;
 	}
@@ -337,17 +338,21 @@ public class EntityElevator extends Entity {
 					.toString());
 	}
 
+	@Override
 	protected void entityInit() {
 	}
 
+	@Override
 	protected boolean canTriggerWalking() {
 		return true;
 	}
 
+	@Override
 	public boolean canBeCollidedWith() {
 		return true;
 	}
 
+	@Override
 	public void onUpdate() {
 
 		if (worldObj.isRemote) {
@@ -619,6 +624,7 @@ public class EntityElevator extends Entity {
 		}
 	}
 
+	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, int i) {
 		if (isDead) {
 			return true;
@@ -700,6 +706,7 @@ public class EntityElevator extends Entity {
 		conjoinedHasBeenSet = true;
 	}
 
+	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
 		nbttagcompound.setInteger("destY", dest);
 		nbttagcompound.setBoolean("emerHalt", emerHalt);
@@ -713,6 +720,7 @@ public class EntityElevator extends Entity {
 		}
 	}
 
+	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
 		try {
 			dest = nbttagcompound.getInteger("destY");
@@ -734,10 +742,12 @@ public class EntityElevator extends Entity {
 		}
 	}
 
+	@Override
 	public AxisAlignedBB getCollisionBox(Entity entity) {
 		return entity.getBoundingBox();
 	}
 
+	@Override
 	public AxisAlignedBB getBoundingBox() {
 		return AxisAlignedBB.getBoundingBox(
 				posX - 0.5,
@@ -748,6 +758,7 @@ public class EntityElevator extends Entity {
 				posZ + 0.5);
 	}
 
+	@Override
 	public float getShadowSize() {
 		return 0.0F;
 	}

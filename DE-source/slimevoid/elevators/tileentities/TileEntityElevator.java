@@ -7,13 +7,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import slimevoid.elevators.core.DECore;
-import slimevoid.elevators.core.DEProperties;
-
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkPosition;
+import slimevoid.elevators.core.DECore;
+import slimevoid.elevators.core.DEProperties;
 
 public class TileEntityElevator extends TileEntity {
 

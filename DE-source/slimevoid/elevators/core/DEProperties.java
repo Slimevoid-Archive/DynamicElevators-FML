@@ -12,12 +12,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import slimevoid.elevators.network.ElevatorPacketHandler;
-import slimevoid.elevators.tileentities.TileEntityElevator;
-
-import net.minecraft.util.MathHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.MathHelper;
+import slimevoid.elevators.network.ElevatorPacketHandler;
+import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class DEProperties {
 	private Map<Integer, String> floorNames = new HashMap<Integer, String>();
