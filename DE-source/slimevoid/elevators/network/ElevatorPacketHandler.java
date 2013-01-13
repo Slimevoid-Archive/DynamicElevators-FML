@@ -17,6 +17,7 @@ import slimevoid.elevators.core.DEProperties;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.network.packets.PacketButtonUpdate;
 import slimevoid.elevators.tileentities.TileEntityElevator;
+import slimevoid.lib.entity.EntityHelper;
 import slimevoid.lib.network.PacketIds;
 
 import net.minecraft.server.MinecraftServer;
@@ -308,7 +309,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 					float newEntityYPos = dataStream.readFloat(); // Ypos
 					int entity_data = dataStream.readInt(); // Data
 
-					Entity entity = DECore.getEntityByID(entityID);
+					Entity entity = EntityHelper.getEntityByID(entityID);
 					DECore
 							.say("Received request for entity id " + entityID + " to be set to Y: " + newEntityYPos);
 					if (entity != null) {
@@ -351,7 +352,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 				DECore
 						.say("Received prop update info for elevator id " + entityID);
 
-				Entity entity = DECore.getEntityByID(entityID);
+				Entity entity = EntityHelper.getEntityByID(entityID);
 				if (entity == null || !(entity instanceof EntityElevator)) {
 					DECore.say("Entity with that ID does not exist");
 				} else {
@@ -398,20 +399,15 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 
 	@Override
 	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
