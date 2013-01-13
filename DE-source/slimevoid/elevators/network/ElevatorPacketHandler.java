@@ -309,7 +309,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 					float newEntityYPos = dataStream.readFloat(); // Ypos
 					int entity_data = dataStream.readInt(); // Data
 
-					Entity entity = EntityHelper.getEntityByID(entityID);
+					Entity entity = ((EntityPlayer)player).worldObj.getEntityByID(/**EntityHelper.getEntityByID(**/entityID);
 					DECore
 							.say("Received request for entity id " + entityID + " to be set to Y: " + newEntityYPos);
 					if (entity != null) {
@@ -352,7 +352,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 				DECore
 						.say("Received prop update info for elevator id " + entityID);
 
-				Entity entity = EntityHelper.getEntityByID(entityID);
+				Entity entity = world.getEntityByID(entityID);
 				if (entity == null || !(entity instanceof EntityElevator)) {
 					DECore.say("Entity with that ID does not exist");
 				} else {
