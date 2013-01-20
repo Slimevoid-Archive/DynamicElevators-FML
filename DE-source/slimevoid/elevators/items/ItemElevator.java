@@ -1,11 +1,11 @@
 package slimevoid.elevators.items;
 
-import slimevoid.elevators.core.DECore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import slimevoid.elevators.core.DECore;
 
 public class ItemElevator extends ItemBlock {
 

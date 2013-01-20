@@ -7,18 +7,17 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.block.BlockButton;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.network.ElevatorPacketHandler;
 import slimevoid.elevators.tileentities.TileEntityElevator;
-
-import net.minecraft.block.BlockButton;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 
 public class BlockElevatorButton extends BlockButton {
 

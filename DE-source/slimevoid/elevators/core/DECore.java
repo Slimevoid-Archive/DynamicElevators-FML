@@ -7,6 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.src.ModLoader;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 import slimevoid.elevators.blocks.BlockElevator;
 import slimevoid.elevators.blocks.BlockElevatorButton;
 import slimevoid.elevators.blocks.BlockElevatorCaller;
@@ -15,19 +25,6 @@ import slimevoid.elevators.items.ItemElevator;
 import slimevoid.elevators.network.ElevatorPacketHandler;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 import slimevoid.lib.ICommonProxy;
-
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.block.Block;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.block.material.Material;
-import net.minecraft.src.ModLoader;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -361,27 +358,6 @@ public class DECore {
 				null,
 				box);
 		return list.contains(entity);
-	}
-
-	// Get the entity with the given entity ID
-	@SideOnly(Side.CLIENT)
-	public static Entity getEntityByID(int i) {
-		if (i == ModLoader.getMinecraftInstance().thePlayer.entityId) {
-			return ModLoader.getMinecraftInstance().thePlayer;
-		} else {
-			for (int j = 0; j < ModLoader.getMinecraftInstance().theWorld.loadedEntityList
-					.size(); j++) {
-				Entity entity = (Entity) ModLoader.getMinecraftInstance().theWorld.loadedEntityList
-						.get(j);
-				if (entity == null) {
-					return null;
-				}
-				if (entity.entityId == i) {
-					return entity;
-				}
-			}
-		}
-		return null;
 	}
 
 	// Convert chunk position to a printable string

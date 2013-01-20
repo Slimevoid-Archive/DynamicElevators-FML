@@ -9,6 +9,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.NetLoginHandler;
+import net.minecraft.network.packet.NetHandler;
+import net.minecraft.network.packet.Packet1Login;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 import slimevoid.elevators.api.IDECommonProxy;
 import slimevoid.elevators.blocks.BlockElevator;
 import slimevoid.elevators.core.DECore;
@@ -18,19 +30,6 @@ import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.network.packets.PacketButtonUpdate;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 import slimevoid.lib.network.PacketIds;
-
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.NetLoginHandler;
-import net.minecraft.network.packet.Packet1Login;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -308,7 +307,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 					float newEntityYPos = dataStream.readFloat(); // Ypos
 					int entity_data = dataStream.readInt(); // Data
 
-					Entity entity = DECore.getEntityByID(entityID);
+					Entity entity = ((EntityPlayer)player).worldObj.getEntityByID(/**EntityHelper.getEntityByID(**/entityID);
 					DECore
 							.say("Received request for entity id " + entityID + " to be set to Y: " + newEntityYPos);
 					if (entity != null) {
@@ -351,7 +350,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 				DECore
 						.say("Received prop update info for elevator id " + entityID);
 
-				Entity entity = DECore.getEntityByID(entityID);
+				Entity entity = world.getEntityByID(entityID);
 				if (entity == null || !(entity instanceof EntityElevator)) {
 					DECore.say("Entity with that ID does not exist");
 				} else {

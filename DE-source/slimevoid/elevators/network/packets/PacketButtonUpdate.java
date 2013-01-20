@@ -1,11 +1,11 @@
 package slimevoid.elevators.network.packets;
 
+import net.minecraft.world.World;
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.network.ElevatorPacketHandler;
 import slimevoid.lib.network.PacketIds;
 import slimevoid.lib.network.PacketPayload;
 import slimevoid.lib.network.PacketUpdate;
-import net.minecraft.world.World;
 
 public class PacketButtonUpdate extends PacketUpdate {
 

@@ -7,8 +7,8 @@ import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.util.MathHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.MathHelper;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;

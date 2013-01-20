@@ -6,18 +6,17 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
-import slimevoid.elevators.core.DECore;
-import slimevoid.elevators.tileentities.TileEntityElevator;
-
 import net.minecraft.block.Block;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.item.ItemStack;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import slimevoid.elevators.core.DECore;
+import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class BlockElevatorCaller extends Block {
 
@@ -81,6 +80,7 @@ public class BlockElevatorCaller extends Block {
 		return false;
 	}
 
+	@Override
 	public void updateTick(World world, int x, int y, int z, Random par5Random) {
 		if (isBeingPoweredByNonElevator(world, x, y, z) && !previouslyPowered) {
 			findAndActivateElevator(world, x, y, z, 0);

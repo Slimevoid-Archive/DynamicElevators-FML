@@ -17,6 +17,7 @@ public class GuiElevatorRadialButton extends GuiButton {
 		super(i, j, k, 35, 16, s);
 	}
 
+	@Override
 	public void drawButton(Minecraft minecraft, int i, int j) {
 		if (!this.drawButton) {
 			return;
@@ -38,12 +39,15 @@ public class GuiElevatorRadialButton extends GuiButton {
 				color);
 	}
 
+	@Override
 	protected void mouseDragged(Minecraft minecraft, int i, int j) {
 	}
 
+	@Override
 	public void mouseReleased(int i, int j) {
 	}
 
+	@Override
 	public boolean mousePressed(Minecraft minecraft, int i, int j) {
 		if (!drawButton) {
 			return false;

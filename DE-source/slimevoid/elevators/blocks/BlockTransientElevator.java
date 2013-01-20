@@ -5,13 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import slimevoid.elevators.entities.EntityElevator;
-
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.block.Block;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import slimevoid.elevators.entities.EntityElevator;
 
 public class BlockTransientElevator extends Block {
 
@@ -27,10 +26,12 @@ public class BlockTransientElevator extends Block {
 	public void getCollidingBoundingBoxes(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, ArrayList par6ArrayList) {
 	}
 
+	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
 		return null;
 	}
 
+	@Override
 	public int tickRate() {
 		return 2;
 	}
@@ -40,6 +41,7 @@ public class BlockTransientElevator extends Block {
 		return false;
 	}
 
+	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
@@ -62,18 +64,22 @@ public class BlockTransientElevator extends Block {
 		return true;
 	}
 
+	@Override
 	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
 		return true;// false;
 	}
 
+	@Override
 	public boolean isCollidable() {
 		return false;
 	}
 
+	@Override
 	public int quantityDropped(Random par1Random) {
 		return 0;
 	}
 
+	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
 		return 0;
 	}
@@ -127,6 +133,7 @@ public class BlockTransientElevator extends Block {
 		}
 	}
 
+	@Override
 	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return false;
 	}

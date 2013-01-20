@@ -8,20 +8,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.tileentities.TileEntityElevator;
-
-import net.minecraft.block.BlockContainer;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.item.ItemStack;
-import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class BlockElevator extends BlockContainer {
 
