@@ -83,8 +83,7 @@ public class DECore {
 	public static boolean shortCircuit;// =
 										// props.getBoolean("shortcircuit_floorRequests");
 
-	// TODO: Add option for allowing/disallowing elevator options to be
-	// changed/accessed
+	// TODO :: Add option for allowing/disallowing elevator options to be changed/accessed
 	public static boolean invertKeys;// =
 										// props.getBoolean("invertElevatorKeys");
 	public static boolean strictShaft;// =
@@ -120,8 +119,8 @@ public class DECore {
 	private static String SDBID;// =
 								// props.getString("solid_disallowed_blockIDs");
 
-	// TODO: Make these specific to individual elevators using the GUI
-	// TODO: Add custom rendering for elevators to allow for individual
+	// TODO :: Make these specific to individual elevators using the GUI
+	// TODO :: Add custom rendering for elevators to allow for individual
 	// selection of elevator chunk textures
 	public static int topTexture;// = props.getInt("Elevator_Top_Texture");
 	public static int sideTexture;// =
@@ -219,8 +218,7 @@ public class DECore {
 		// Use short circuit evaluation?
 		shortCircuit = props.getBoolean("shortcircuit_floorRequests");
 
-		// TODO: Add option for allowing/disallowing elevator options to be
-		// changed/accessed
+		// TODO :: Add option for allowing/disallowing elevator options to be changed/accessed
 		invertKeys = props.getBoolean("invertElevatorKeys");
 		strictShaft = props.getBoolean("entireShaftMustBeClear");
 		elevator_entityID = props.getInt("elevator_entityID");
@@ -247,8 +245,8 @@ public class DECore {
 		SABID = props.getString("solid_allowed_blockIDs");
 		SDBID = props.getString("solid_disallowed_blockIDs");
 
-		// TODO: Make these specific to individual elevators using the GUI
-		// TODO: Add custom rendering for elevators to allow for individual
+		// TODO :: Make these specific to individual elevators using the GUI
+		// TODO :: Add custom rendering for elevators to allow for individual
 		// selection of elevator chunk textures
 		topTexture = props.getInt("Elevator_Top_Texture");
 		sideTexture = props.getInt("Elevator_SideAndBottom_Texture");

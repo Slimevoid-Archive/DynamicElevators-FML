@@ -44,7 +44,6 @@ public class DE_ClientProxy extends DE_CommonProxy {
 				ModLoader.openGUI(entityplayer, new GuiElevator(packet));
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -398,20 +398,15 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 
 	@Override
 	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -88,7 +88,5 @@ public class DE_CommonProxy implements IDECommonProxy {
 
 	@Override
 	public void preInit() {
-		// TODO Auto-generated method stub
-		
 	}
 }

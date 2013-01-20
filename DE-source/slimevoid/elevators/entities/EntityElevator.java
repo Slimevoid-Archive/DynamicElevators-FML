@@ -256,9 +256,8 @@ public class EntityElevator extends Entity {
 
 	@Override
 	public void updateRiderPosition() {
-		// TODO: Add ability to crush riders who don't have enough room above
-		// their heads
-		// should depend on amount of room and rider height
+		// TODO :: Add ability to crush riders who don't have enough room above their heads
+		// TODO :: Should depend on amount of room and rider height
 		if (this.isDead) {
 			return;
 		}

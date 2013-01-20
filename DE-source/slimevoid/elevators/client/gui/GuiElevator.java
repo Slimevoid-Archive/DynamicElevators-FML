@@ -267,8 +267,7 @@ public class GuiElevator extends GuiScreen {
 					"First Floor: ");
 		controlList.add(floorZeroSlider);
 
-		// TODO: Add interface for selecting textures for elevator floor,
-		// ceiling, and sides
+		// TODO :: Add interface for selecting textures for elevator floor, ceiling, and sides
 
 		Set<Integer> floorNamesForList = new HashSet<Integer>();
 		for (int i = 1; i <= numFloors; i++) {
