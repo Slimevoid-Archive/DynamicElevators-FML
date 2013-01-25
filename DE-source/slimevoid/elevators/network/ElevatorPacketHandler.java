@@ -54,7 +54,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 	public static final int SHORT_CIRCUIT = 5;
 	public static final int BLOCK_UPDATE = 6;
 
-	public static HashMap<String, ChunkPosition> elevatorRequests = new HashMap();
+	public static HashMap<String, ChunkPosition> elevatorRequests = new HashMap<String, ChunkPosition>();
 
 	public static void sendRiderUpdates(Set<Entity> entities, int x, int y, int z) {
 		sendRiderUpdates(entities, x, y, z, false);
@@ -126,7 +126,6 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 					.append(player.username)
 					.toString());
 
-		BlockElevator elevator = (BlockElevator) DECore.Elevator;
 		TileEntityElevator elevatorInfo = BlockElevator.getTileEntity(
 				world,
 				loc.x,
@@ -255,7 +254,6 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 				if (world.getBlockId(pos.x, pos.y, pos.z) != DECore.Elevator.blockID) {
 					return;
 				}
-				BlockElevator elevator = (BlockElevator) DECore.Elevator;
 				TileEntityElevator tile = BlockElevator.getTileEntity(
 						world,
 						pos.x,

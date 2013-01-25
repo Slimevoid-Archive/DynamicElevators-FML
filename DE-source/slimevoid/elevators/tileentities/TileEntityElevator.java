@@ -172,7 +172,6 @@ public class TileEntityElevator extends TileEntity {
 			return NO_FLOOR;
 		}
 		if (floors.contains(y)) {
-			Iterator<Integer> iter = floors.iterator();
 			for (int i = 0; i < floors.size(); i++) {
 				if (floors.get(i) == y) {
 					return i;
