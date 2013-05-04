@@ -388,13 +388,13 @@ public class EntityElevator extends Entity {
 					}
 				}
 				if (!this.isCeiling() && props.getMobilePower()) {
-					worldObj.setBlockWithNotify(
+					worldObj.setBlock(
 							i,
 							j,
 							k,
-							DECore.Transient.blockID);
+							DECore.Transient.blockID, 0, 3);
 				} else {
-					worldObj.setBlockWithNotify(i, j, k, 0);
+					worldObj.setBlock(i, j, k, 0, 0, 3);
 				}
 				worldObj.notifyBlocksOfNeighborChange(i, j, k, blockID);
 				worldObj.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
@@ -424,11 +424,11 @@ public class EntityElevator extends Entity {
 			int underId = worldObj.getBlockId(curX, curY, curZ);
 
 			if (underId == 0) {
-				worldObj.setBlockWithNotify(
+				worldObj.setBlock(
 						curX,
 						curY,
 						curZ,
-						DECore.Transient.blockID);
+						DECore.Transient.blockID, 0, 3);
 			}
 		}
 		DECore
@@ -592,12 +592,12 @@ public class EntityElevator extends Entity {
 				k,
 				true,
 				1,
-				(Entity) null) && worldObj.setBlockAndMetadataWithNotify(
+				(Entity) null, null) && worldObj.setBlock(
 				i,
 				curY,
 				k,
 				blockID,
-				this.dataWatcher.getWatchableObjectInt(17)));
+				this.dataWatcher.getWatchableObjectInt(17), 3));
 
 		if (!worldObj.isRemote && !blockPlaced) {
 			dropItem(blockID, 1);

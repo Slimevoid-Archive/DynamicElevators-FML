@@ -22,7 +22,7 @@ public class BlockElevatorCaller extends Block {
 
 	public BlockElevatorCaller(int i, Material material) {
 		super(i, material);
-		this.blockIndexInTexture = Block.stoneOvenIdle.blockIndexInTexture + 17;
+		this.blockIcon = Block.furnaceIdle.getIcon(1, 0);
 		this.setCreativeTab(CreativeTabs.tabTransport);
 	}
 
@@ -48,7 +48,7 @@ public class BlockElevatorCaller extends Block {
 			DECore
 					.say("Checking: " + tempX + ", " + tempY + ", " + tempZ + ": has block ID" + ID);
 			if (ID > 0 && ID != DECore.Elevator.blockID && Block.blocksList[ID]
-					.isProvidingWeakPower(world, tempX, tempY, tempZ, iter)) {
+					.isProvidingWeakPower(world, tempX, tempY, tempZ, iter) > 0) {
 				return true;
 			}
 		}

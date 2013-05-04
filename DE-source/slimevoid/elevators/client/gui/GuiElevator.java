@@ -217,23 +217,23 @@ public class GuiElevator extends GuiScreen {
 			}
 			floorButtons.add(curButton);
 		}
-		controlList.addAll(floorButtons);
+		buttonList.addAll(floorButtons);
 
 		titleTop = guiTop + 5;
 		subtitleTop = guiTop + 15;
 
-		controlList.add(new GuiElevatorOptionsButton(
+		buttonList.add(new GuiElevatorOptionsButton(
 				GUI_OPTIONS,
 					guiLeft + 4,
 					guiTop + 4));
-		controlList.add(new GuiButton(
+		buttonList.add(new GuiButton(
 				GUI_RESET,
 					width / 2 - 95,
 					guiTop + 180,
 					90,
 					20,
 					"Reset Elevator"));
-		controlList.add(new GuiButton(
+		buttonList.add(new GuiButton(
 				GUI_CANCEL,
 					width / 2 + 5,
 					guiTop + 180,
@@ -241,14 +241,14 @@ public class GuiElevator extends GuiScreen {
 					20,
 					"Close"));
 
-		controlList.add(new GuiButton(
+		buttonList.add(new GuiButton(
 				GUI_OPTIONS_APPLY,
 					width / 2 - 95,
 					guiTop + 180,
 					90,
 					20,
 					"Apply"));
-		controlList.add(new GuiButton(
+		buttonList.add(new GuiButton(
 				GUI_OPTIONS_CANCEL,
 					width / 2 + 5,
 					guiTop + 180,
@@ -264,7 +264,7 @@ public class GuiElevator extends GuiScreen {
 					numFloors,
 					true,
 					"First Floor: ");
-		controlList.add(floorZeroSlider);
+		buttonList.add(floorZeroSlider);
 
 		// TODO: Add interface for selecting textures for elevator floor,
 		// ceiling, and sides
@@ -300,8 +300,8 @@ public class GuiElevator extends GuiScreen {
 					120,
 					20,
 					"Rename Elevator...");
-		controlList.add(RenameFloor);
-		controlList.add(RenameElevator);
+		buttonList.add(RenameFloor);
+		buttonList.add(RenameElevator);
 
 		// RenameFloor.enabled = false;
 		// RenameElevator.enabled = false;
@@ -326,8 +326,8 @@ public class GuiElevator extends GuiScreen {
 					40,
 					20,
 					stringtranslate.translateKey("gui.cancel"));
-		controlList.add(nameOk);
-		controlList.add(nameCancel);
+		buttonList.add(nameOk);
+		buttonList.add(nameCancel);
 
 		canProvidePower = new GuiElevatorRadialButton(
 				GUI_OPTIONS_POWER,
@@ -352,9 +352,9 @@ public class GuiElevator extends GuiScreen {
 			DECore.say("Error occurred when getting properties");
 		}
 
-		controlList.add(canProvidePower);
-		controlList.add(canBeHalted);
-		controlList.add(mobilePower);
+		buttonList.add(canProvidePower);
+		buttonList.add(canBeHalted);
+		buttonList.add(mobilePower);
 
 		toggleVisibility();
 		renameButtons();
@@ -377,8 +377,7 @@ public class GuiElevator extends GuiScreen {
 		guiTop = (height - ySize) / 2;
 		GL11.glPushMatrix();
 		GL11.glTranslatef(guiLeft, guiTop, 0.0F);
-		mc.renderEngine.bindTexture(mc.renderEngine
-				.getTexture("/gui/elevatorgui.png"));
+		mc.renderEngine.bindTexture("/gui/elevatorgui.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 		GL11.glTranslatef(0.0F, 0.0F, 0.0F);
@@ -448,8 +447,8 @@ public class GuiElevator extends GuiScreen {
 	}
 
 	private void toggleVisibility() {
-		for (int i = 0; i < controlList.size(); i++) {
-			GuiButton button = (GuiButton) controlList.get(i);
+		for (int i = 0; i < buttonList.size(); i++) {
+			GuiButton button = (GuiButton) buttonList.get(i);
 			if (button.id < GUI_OPTIONS_CANCEL) {
 				button.drawButton = !optionsOpen;
 			} else {

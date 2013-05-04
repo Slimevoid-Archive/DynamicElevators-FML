@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -19,7 +20,7 @@ public class RenderElevator extends Render {
 		shadowSize = 0.5F;
 	}
 
-	public void renderElevatorEntity(Block elevator, World world, int x, int y, int z, int textureData[]) {
+	public void renderElevatorEntity(Block elevator, World world, int x, int y, int z, Icon[] textureData) {
 		this.renderBlocks.setRenderBoundsFromBlock(elevator);
 
 		float f1 = 0.5F;
@@ -125,7 +126,7 @@ public class RenderElevator extends Render {
 		loadTexture("/terrain.png");
 
 		// int textureData[] = elevator.getTextureData();
-		int textureData[] = {
+		Icon textureData[] = {
 				DECore.sideTexture,
 				DECore.sideTexture,
 				DECore.sideTexture };

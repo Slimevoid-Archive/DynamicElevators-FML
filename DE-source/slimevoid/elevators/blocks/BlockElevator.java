@@ -14,6 +14,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -25,7 +26,7 @@ import slimevoid.elevators.tileentities.TileEntityElevator;
 public class BlockElevator extends BlockContainer {
 
 	public BlockElevator(int i) {
-		super(i, 22, Material.iron);
+		super(i, Material.iron);
 		this.minX = 0.0D;
 		this.maxX = 1.0D;
 		this.minY = 0.0D;
@@ -70,7 +71,7 @@ public class BlockElevator extends BlockContainer {
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		if (isCeiling(meta)) {
 			if (side != 0) {
 				return DECore.sideTexture;
@@ -206,10 +207,10 @@ public class BlockElevator extends BlockContainer {
 		int metadata = world.getBlockMetadata(i, j, k);
 		if (hasFloor(world, i, j, k) && !isCeiling(world, i, j, k)) {
 			metadata |= 0x01;
-			world.setBlockMetadataWithNotify(i, j, k, metadata);
+			world.setBlockMetadataWithNotify(i, j, k, metadata, 3);
 		} else if (!hasFloor(world, i, j, k) && isCeiling(world, i, j, k)) {
 			dropBlockAsItem(world, i, j, k, 0, 0);
-			world.setBlockWithNotify(i, j, k, 0);
+			world.setBlock(i, j, k, 0, 0, 3);
 		}
 	}
 
@@ -593,17 +594,17 @@ public class BlockElevator extends BlockContainer {
 	}
 
 	@Override
-	public boolean isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
+	public int isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
 		return isProvidingStrongPower(world, i, j, k, l);
 	}
 
 	@Override
-	public boolean isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
+	public int isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		if (isCeiling(iblockaccess.getBlockMetadata(i, j, k))) {
-			return false;
+			return 0;
 		}
 		if (l == 0) {
-			return false;
+			return 0;
 		} else {
 			TileEntityElevator elevatorInfo = getTileEntity(
 					iblockaccess,
@@ -612,7 +613,7 @@ public class BlockElevator extends BlockContainer {
 					k);
 
 			if (elevatorInfo == null) {
-				return false;
+				return 0;
 			}
 			return elevatorInfo.getProvidesPower();
 		}
@@ -629,7 +630,7 @@ public class BlockElevator extends BlockContainer {
 
 		int curState = elevatorInfo.getCurrentState();
 		int curDest = elevatorInfo.getDestination();
-		boolean providesPower = elevatorInfo.getProvidesPower();
+		int providesPower = elevatorInfo.getProvidesPower();
 
 		say("Elevator Updated at " + DECore.pos2Str(curPos));
 		say("Current Y: " + j + ", requested Y: " + curDest + "; Proving power: " + providesPower);
@@ -639,12 +640,12 @@ public class BlockElevator extends BlockContainer {
 		switch (curState) {
 		case NO_ACTION:
 			say("No action is currently required");
-			if (providesPower) {
+			if (providesPower > 0) {
 				break;
 			}
 		case POWER_ON:
 			say("Block needs to be powered on!");
-			toggleConjoinedPower(world, true);
+			toggleConjoinedPower(world, 16);
 			notifyNeighbors(world, i, j, k);
 			elevatorInfo.clearState();
 			break;
@@ -666,9 +667,9 @@ public class BlockElevator extends BlockContainer {
 				break;
 			}
 		case REQUEST_NEW_FLOOR:
-			if (providesPower && curDest != j) {
+			if (providesPower > 0 && curDest != j) {
 				say("Block has been demanded to " + curDest + " - toggling power in preparation for travel");
-				toggleConjoinedPower(world, false);
+				toggleConjoinedPower(world, 0);
 				// Refresh for actual movement
 				DECore.refreshElevator(world, curPos, 2);
 			} else if (!world.isRemote && (curDest != j) && (elevatorInfo
@@ -742,7 +743,7 @@ public class BlockElevator extends BlockContainer {
 		// End switch statement
 	}
 
-	public void toggleConjoinedPower(World world, boolean newPowerState) {
+	public void toggleConjoinedPower(World world, int newPowerState) {
 		for (int iter = 0; iter < conjoinedElevators.size(); iter++) {
 			ChunkPosition pos = conjoinedElevators.get(iter);
 			TileEntityElevator curInfo = getTileEntity(

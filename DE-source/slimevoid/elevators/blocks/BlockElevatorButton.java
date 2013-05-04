@@ -11,6 +11,7 @@ import net.minecraft.block.BlockButton;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
@@ -21,8 +22,9 @@ import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class BlockElevatorButton extends BlockButton {
 
-	public BlockElevatorButton(int i, int j, boolean sensible) {
-		super(i, j, sensible);
+	public BlockElevatorButton(int id, Icon icon, boolean sensible) {
+		super(id, sensible);
+		this.blockIcon = icon;
 		this.setCreativeTab(CreativeTabs.tabTransport);
 	}
 
@@ -37,7 +39,7 @@ public class BlockElevatorButton extends BlockButton {
 		if (state == 0) {
 			return true;
 		}
-		world.setBlockMetadataWithNotify(i, j, k, direction + state);
+		world.setBlockMetadataWithNotify(i, j, k, direction + state, 3);
 		world.markBlockRangeForRenderUpdate(i, j, k, i, j, k);
 		world.playSoundEffect(
 				i + 0.5D,
@@ -46,7 +48,7 @@ public class BlockElevatorButton extends BlockButton {
 				"random.click",
 				0.3F,
 				0.6F);
-		world.scheduleBlockUpdate(i, j, k, this.blockID, this.tickRate());
+		world.scheduleBlockUpdate(i, j, k, this.blockID, this.tickRate(world));
 		// world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 		ChunkPosition newPos = null;
 		if (direction == 1) {
@@ -59,7 +61,7 @@ public class BlockElevatorButton extends BlockButton {
 			newPos = new ChunkPosition(i, j, k + 1);
 		} else {
 			dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
-			world.setBlockWithNotify(i, j, k, 0);
+			world.setBlock(i, j, k, 0, 0, 3);
 		}
 		if (newPos == null) {
 			return false;
@@ -243,7 +245,7 @@ public class BlockElevatorButton extends BlockButton {
 	public void onNeighborBlockChange(World world, int x, int y, int z, int notifierID) {
 		if (!canBlockStay(world, x, y, z)) {
 			dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-			world.setBlockWithNotify(x, y, z, 0);
+			world.setBlock(x, y, z, 0, 0, 3);
 		}
 	}
 
@@ -259,7 +261,7 @@ public class BlockElevatorButton extends BlockButton {
 			int metadata = world.getBlockMetadata(x, y, z);
 
 			if ((metadata & 8) != 0) {
-				world.setBlockMetadataWithNotify(x, y, z, metadata & 7);
+				world.setBlockMetadataWithNotify(x, y, z, metadata & 7, 3);
 				world.playSoundEffect(
 						x + 0.5D,
 						y + 0.5D,
@@ -279,13 +281,13 @@ public class BlockElevatorButton extends BlockButton {
 	}
 
 	@Override
-	public boolean isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-		return false;
+	public int isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
+		return 0;
 	}
 
 	@Override
-	public boolean isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
-		return false;
+	public int isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
+		return 0;
 	}
 
 	@Override
