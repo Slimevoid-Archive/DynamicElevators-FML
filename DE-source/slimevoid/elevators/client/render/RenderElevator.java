@@ -42,7 +42,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f1 * f6, f1 * f6, f1 * f6);
-		this.renderBlocks.renderBottomFace(
+		this.renderBlocks.renderFaceYNeg(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -55,7 +55,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f2 * f6, f2 * f6, f2 * f6);
-		this.renderBlocks.renderTopFace(
+		this.renderBlocks.renderFaceYPos(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -68,7 +68,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f3 * f6, f3 * f6, f3 * f6);
-		this.renderBlocks.renderEastFace(
+		this.renderBlocks.renderFaceXPos(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -81,7 +81,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f3 * f6, f3 * f6, f3 * f6);
-		this.renderBlocks.renderWestFace(
+		this.renderBlocks.renderFaceXNeg(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -94,7 +94,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f4 * f6, f4 * f6, f4 * f6);
-		this.renderBlocks.renderNorthFace(
+		this.renderBlocks.renderFaceZNeg(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -107,7 +107,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f4 * f6, f4 * f6, f4 * f6);
-		this.renderBlocks.renderSouthFace(
+		this.renderBlocks.renderFaceZPos(
 				elevator,
 				-0.5D,
 				-0.5D,
