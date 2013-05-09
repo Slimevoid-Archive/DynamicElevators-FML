@@ -8,6 +8,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -22,8 +23,11 @@ public class BlockElevatorCaller extends Block {
 
 	public BlockElevatorCaller(int i, Material material) {
 		super(i, material);
-		this.blockIcon = Block.furnaceIdle.getIcon(1, 0);
 		this.setCreativeTab(CreativeTabs.tabTransport);
+	}
+	
+	public void registerIcons(IconRegister iconRegister) {
+		this.blockIcon = Block.furnaceIdle.getIcon(1, 0);
 	}
 
 	private boolean isBeingPoweredByNonElevator(World world, int i, int j, int k) {

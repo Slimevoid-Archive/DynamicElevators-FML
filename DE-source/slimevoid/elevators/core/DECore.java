@@ -26,9 +26,11 @@ import slimevoid.elevators.items.ItemElevator;
 import slimevoid.elevators.network.ElevatorPacketHandler;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 import slimevoid.lib.ICommonProxy;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class DECore {
 
@@ -167,7 +169,6 @@ public class DECore {
 
 		ElevatorButton = (new BlockElevatorButton(
 				elevator_button_blockID,
-					Block.blockIron.getIcon(0, 0),
 					false))
 				.setHardness(0.5F)
 					.setStepSound(Block.soundMetalFootstep)
@@ -248,8 +249,10 @@ public class DECore {
 		// TODO: Make these specific to individual elevators using the GUI
 		// TODO: Add custom rendering for elevators to allow for individual
 		// selection of elevator chunk textures
-		topTexture = Block.blockDiamond.getIcon(0, 0);//props.getInt("Elevator_Top_Texture");
-		sideTexture = Block.blockIron.getIcon(0, 0);//props.getInt("Elevator_SideAndBottom_Texture");
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+			topTexture = Block.blockDiamond.getIcon(0, 0);//props.getInt("Elevator_Top_Texture");
+			sideTexture = Block.blockIron.getIcon(0, 0);//props.getInt("Elevator_SideAndBottom_Texture");
+		}
 
 		elevator_button_blockID = props.getInt("ElevatorButton_blockID");
 		elevator_caller_blockID = props.getInt("ElevatorCaller_blockID");

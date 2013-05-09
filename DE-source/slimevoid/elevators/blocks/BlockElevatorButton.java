@@ -7,11 +7,12 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
@@ -22,10 +23,13 @@ import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class BlockElevatorButton extends BlockButton {
 
-	public BlockElevatorButton(int id, Icon icon, boolean sensible) {
+	public BlockElevatorButton(int id, boolean sensible) {
 		super(id, sensible);
-		this.blockIcon = icon;
 		this.setCreativeTab(CreativeTabs.tabTransport);
+	}
+	
+	public void registerIcons(IconRegister iconRegister) {
+		this.blockIcon =Block.blockIron.getIcon(0, 0);
 	}
 
 	Set<ChunkPosition> elvs = new HashSet<ChunkPosition>();
