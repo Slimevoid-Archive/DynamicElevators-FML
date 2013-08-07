@@ -23,6 +23,7 @@ import org.lwjgl.opengl.GL11;
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
 import slimevoid.elevators.core.lib.ResourceLib;
+import slimevoid.elevators.tileentities.TileEntityElevator;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -97,14 +98,14 @@ public class GuiElevator extends GuiScreen {
 	int floorOne = 1;
 
 	// Constructor for local (SSP) GUI
-	public GuiElevator(Packet250CustomPayload packet, ChunkPosition pos) throws IOException {
+/*	public GuiElevator(Packet250CustomPayload packet, ChunkPosition pos) throws IOException {
 		this(packet);
 		elevatorPos = pos;
 		isRemote = false;
-	}
+	}*/
 
 	// Constructor for remote (SMP) GUI
-	public GuiElevator(Packet250CustomPayload packet) throws IOException {
+/*	public GuiElevator(Packet250CustomPayload packet) throws IOException {
 		isRemote = true;
 		buttonId = -1;
 		screenTitle = "";
@@ -119,6 +120,24 @@ public class GuiElevator extends GuiScreen {
 		DECore.say("floors: " + numFloors + ", current: " + curFloor);
 
 		props.readInData(packet);
+		floorOne = props.getFloorOne();
+		yCoordList = props.getSortedYCoordList();
+		screenTitle = props.getElevatorName();
+	}*/
+
+	public GuiElevator(TileEntityElevator tileentity, ChunkPosition pos) {
+		isRemote = true;
+		buttonId = -1;
+		screenTitle = "";
+
+		DECore.say("GUI LOADING...");
+
+		curFloor = tileentity.curFloor();
+		numFloors = tileentity.numFloors();
+
+		DECore.say("floors: " + numFloors + ", current: " + curFloor);
+
+		props = tileentity.props;
 		floorOne = props.getFloorOne();
 		yCoordList = props.getSortedYCoordList();
 		screenTitle = props.getElevatorName();

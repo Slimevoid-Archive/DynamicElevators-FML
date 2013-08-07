@@ -6,6 +6,7 @@ import slimevoid.elevators.core.lib.CoreLib;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 import slimevoidlib.core.SlimevoidCore;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -47,6 +48,8 @@ public class DEInit {
 				EntityElevator.class,
 				"delv",
 				DECore.elevator_entityID);
+		
+		NetworkRegistry.instance().registerGuiHandler(DynamicElevators.instance, DynamicElevators.proxy);
 
 		DynamicElevators.proxy.registerRenderInformation();
 

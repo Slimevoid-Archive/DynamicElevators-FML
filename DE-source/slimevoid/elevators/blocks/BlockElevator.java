@@ -20,6 +20,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
+import slimevoid.elevators.core.DynamicElevators;
+import slimevoid.elevators.core.lib.GuiLib;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
@@ -53,8 +55,9 @@ public class BlockElevator extends BlockContainer {
 	// ------------------ SERVER/CLIENT SENSITIVE CODE! ------------------- //
 	static boolean isClient = true;
 
-	private static void openGUI(World world, ChunkPosition loc, EntityPlayer player) {
-		DECore.packetHandler.requestGUIMapping(world, loc, player);
+	private static void openGUI(World world, int x, int y, int z, EntityPlayer player) {
+		player.openGui(DynamicElevators.instance, GuiLib.GUIID_ELEVATOR, world, x, y, z);
+		//DECore.packetHandler.requestGUIMapping(world, loc, player);
 	}
 
 	// ---------------- END SERVER/CLIENT SENSITIVE CODE ------------------ //
@@ -537,7 +540,7 @@ public class BlockElevator extends BlockContainer {
 		 * mod_Elevator.elevator_requestFloor(world, loc, curFloor + 1); } else
 		 * {
 		 */
-		openGUI(world, loc, player);
+		openGUI(world, i, j, k, player);
 		// }
 		say("----------------------------------------------------");
 		return true;

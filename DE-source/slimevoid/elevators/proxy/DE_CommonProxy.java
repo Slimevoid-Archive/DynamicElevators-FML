@@ -9,10 +9,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import slimevoid.elevators.api.IDECommonProxy;
+import slimevoid.elevators.core.lib.GuiLib;
+import slimevoid.elevators.tileentities.ContainerElevator;
 import slimevoidlib.IPacketHandling;
 import cpw.mods.fml.common.network.Player;
 
 public class DE_CommonProxy implements IDECommonProxy {
+	
 	@Override
 	public void registerRenderInformation() {
 	}
@@ -23,6 +26,9 @@ public class DE_CommonProxy implements IDECommonProxy {
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		if (ID == GuiLib.GUIID_ELEVATOR) {
+			return new ContainerElevator(world.getBlockTileEntity(x, y, z));
+		}
 		return null;
 	}
 

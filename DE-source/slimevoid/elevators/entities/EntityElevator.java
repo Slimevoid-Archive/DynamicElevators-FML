@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -288,7 +287,7 @@ public class EntityElevator extends Entity {
 			}
 			rider.motionY = 0.1F;
 			updateRider(rider);
-			rider.ridingEntity = null; // TODO :: .unmountEntity(this);
+			rider.ridingEntity.mountEntity(null);
 			say("Ejected rider #" + rider.entityId);
 		}
 		ElevatorPacketHandler.sendRiderUpdates(
@@ -373,7 +372,7 @@ public class EntityElevator extends Entity {
 		if (unUpdated) {
 			if (worldObj.getBlockId(i, j, k) == blockID) {
 				if (!isCeiling()) {
-					BlockElevator elevator = (BlockElevator) Block.blocksList[blockID];
+					//BlockElevator elevator = (BlockElevator) Block.blocksList[blockID];
 					TileEntityElevator curTile = BlockElevator.getTileEntity(
 							worldObj,
 							i,
