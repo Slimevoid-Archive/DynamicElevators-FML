@@ -32,7 +32,7 @@ public class BlockTransientElevator extends Block {
 	}
 
 	@Override
-	public int tickRate() {
+	public int tickRate(World world) {
 		return 2;
 	}
 
@@ -52,16 +52,16 @@ public class BlockTransientElevator extends Block {
 	}
 
 	@Override
-	public boolean isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
+	public int isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
 		return isProvidingStrongPower(world, i, j, k, l);
 	}
 
 	@Override
-	public boolean isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
+	public int isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		if (l == 0) {
-			return false;
+			return 0;
 		}
-		return true;
+		return 16;
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class BlockTransientElevator extends Block {
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {
 		if (checkForEntity(world, i, j, k)) {
-			world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+			world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
 			notifyExtendedNeighbors(world, i, j, k, blockID);
 		}
 	}
@@ -120,7 +120,7 @@ public class BlockTransientElevator extends Block {
 			hasEntity = (iter.next() instanceof EntityElevator);
 		}
 		if (!hasEntity) {
-			world.setBlockWithNotify(i, j, k, 0);
+			world.setBlock(i, j, k, 0, 0, 0x3);
 			return false;
 		}
 		return true;
@@ -129,7 +129,7 @@ public class BlockTransientElevator extends Block {
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random rand) {
 		if (checkForEntity(world, i, j, k)) {
-			world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+			world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
 		}
 	}
 

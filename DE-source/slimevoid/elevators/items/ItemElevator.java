@@ -45,18 +45,19 @@ public class ItemElevator extends ItemBlock {
 				return false;
 			}
 			itemstack.stackSize--;
-			world.setBlockAndMetadataWithNotify(
+			world.setBlock(
 					i,
 					j + 2,
 					k,
 					DECore.Elevator.blockID,
+					0,
 					0x01);
 		} else if (!clickElevator || (clickElevator && l != 0)) {
 			if (!world.isAirBlock(i, j, k)) {
 				return false;
 			}
 			itemstack.stackSize--;
-			world.setBlockWithNotify(i, j, k, DECore.Elevator.blockID);
+			world.setBlock(i, j, k, DECore.Elevator.blockID, 0, 3);
 		}
 
 		return true;

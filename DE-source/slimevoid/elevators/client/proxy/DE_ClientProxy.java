@@ -12,6 +12,7 @@ import slimevoid.elevators.client.gui.GuiElevator;
 import slimevoid.elevators.client.render.RenderElevator;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.proxy.DE_CommonProxy;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,13 +29,13 @@ public class DE_ClientProxy extends DE_CommonProxy {
 
 	@Override
 	public String getMinecraftDir() {
-		return Minecraft.getMinecraftDir().getPath();
+		return Minecraft.getMinecraft().mcDataDir.getPath();
 	}
 
 	@Override
 	public void openGui(World world, EntityPlayer entityplayer, Packet250CustomPayload packet, ChunkPosition loc) {
 		if (entityplayer == null) {
-			entityplayer = ModLoader.getMinecraftInstance().thePlayer;
+			entityplayer = FMLClientHandler.instance().getClient().thePlayer;
 		}
 		try {
 			if (loc != null) {

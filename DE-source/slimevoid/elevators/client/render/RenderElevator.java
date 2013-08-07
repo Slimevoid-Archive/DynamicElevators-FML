@@ -4,7 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -19,7 +21,7 @@ public class RenderElevator extends Render {
 		shadowSize = 0.5F;
 	}
 
-	public void renderElevatorEntity(Block elevator, World world, int x, int y, int z, int textureData[]) {
+	public void renderElevatorEntity(Block elevator, World world, int x, int y, int z, Icon[] textureData) {
 		this.renderBlocks.setRenderBoundsFromBlock(elevator);
 
 		float f1 = 0.5F;
@@ -41,7 +43,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f1 * f6, f1 * f6, f1 * f6);
-		this.renderBlocks.renderBottomFace(
+		this.renderBlocks.renderFaceYNeg(//.renderBottomFace(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -54,7 +56,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f2 * f6, f2 * f6, f2 * f6);
-		this.renderBlocks.renderTopFace(
+		this.renderBlocks.renderFaceYPos(//.renderTopFace(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -67,7 +69,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f3 * f6, f3 * f6, f3 * f6);
-		this.renderBlocks.renderEastFace(
+		this.renderBlocks.renderFaceXPos(//.renderEastFace(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -80,7 +82,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f3 * f6, f3 * f6, f3 * f6);
-		this.renderBlocks.renderWestFace(
+		this.renderBlocks.renderFaceXNeg(//.renderWestFace(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -93,7 +95,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f4 * f6, f4 * f6, f4 * f6);
-		this.renderBlocks.renderNorthFace(
+		this.renderBlocks.renderFaceZPos(//.renderNorthFace(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -106,7 +108,7 @@ public class RenderElevator extends Render {
 		}
 
 		tessellator.setColorOpaque_F(f4 * f6, f4 * f6, f4 * f6);
-		this.renderBlocks.renderSouthFace(
+		this.renderBlocks.renderFaceZNeg(//.renderSouthFace(
 				elevator,
 				-0.5D,
 				-0.5D,
@@ -122,10 +124,9 @@ public class RenderElevator extends Render {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glTranslatef((float) d, (float) d1, (float) d2);
 		// GL11.glScalef(-1F, -1F, 1.0F); - ceilings?
-		loadTexture("/terrain.png");
 
 		// int textureData[] = elevator.getTextureData();
-		int textureData[] = {
+		Icon textureData[] = {
 				DECore.sideTexture,
 				DECore.sideTexture,
 				DECore.sideTexture };
@@ -151,5 +152,10 @@ public class RenderElevator extends Render {
 	@Override
 	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
 		doRenderElevator((EntityElevator) entity, d, d1, d2, f, f1);
+	}
+
+	@Override
+	protected ResourceLocation func_110775_a(Entity entity) {
+		return null;
 	}
 }

@@ -6,6 +6,8 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import slimevoid.elevators.core.lib.ResourceLib;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -19,9 +21,11 @@ public class GuiElevatorOptionsButton extends GuiButton {
 	@Override
 	public void drawButton(Minecraft minecraft, int i, int j) {
 		FontRenderer fontrenderer = minecraft.fontRenderer;
-		GL11.glBindTexture(
-				3553 /* GL_TEXTURE_2D */,
-				minecraft.renderEngine.getTexture("/gui/elevatorgui.png"));
+		/**GL11.glBindTexture(
+				GL11.GL_TEXTURE_2D,
+				minecraft.renderEngine.getTexture("/gui/elevatorgui.png"));**/
+		minecraft.renderEngine.func_110577_a(ResourceLib.GUI_ELEVATOR);
+		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		boolean overButton = i >= this.xPosition && j >= this.yPosition && i < this.xPosition + this.width && j < this.yPosition + this.height;
 		int selected = this.getHoverState(overButton) - 1;

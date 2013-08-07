@@ -31,7 +31,7 @@ public class TileEntityElevator extends TileEntity {
 
 	public static final int NO_FLOOR = 0;
 
-	private boolean providesPower = false;
+	private int providedPower = 0;
 
 	private int destination_Y;
 
@@ -54,17 +54,17 @@ public class TileEntityElevator extends TileEntity {
 		return destination_Y;
 	}
 
-	public void setPower(boolean providing) {
+	public void setPower(int power) {
 		if (!props.getCanProvidePower()) {
-			providesPower = false;
+			providedPower = 0;
 			return;
 		}
-		providesPower = providing;
+		providedPower = power;
 		this.onInventoryChanged();
 	}
 
-	public boolean getProvidesPower() {
-		return providesPower;
+	public int getProvidedPower() {
+		return providedPower;
 	}
 
 	public int getCurrentState() {
@@ -256,14 +256,14 @@ public class TileEntityElevator extends TileEntity {
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setBoolean("provides", providesPower);
+		nbt.setInteger("power", providedPower);
 		props.writeToNBT(nbt);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		providesPower = nbt.getBoolean("provides");
+		providedPower = nbt.getInteger("power");
 		props.readFromNBT(nbt);
 	}
 

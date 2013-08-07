@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.src.ModLoader;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import slimevoid.elevators.blocks.BlockElevator;
@@ -24,7 +25,7 @@ import slimevoid.elevators.blocks.BlockTransientElevator;
 import slimevoid.elevators.items.ItemElevator;
 import slimevoid.elevators.network.ElevatorPacketHandler;
 import slimevoid.elevators.tileentities.TileEntityElevator;
-import slimevoid.lib.ICommonProxy;
+import slimevoidlib.ICommonProxy;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -119,8 +120,8 @@ public class DECore {
 	// TODO :: Make these specific to individual elevators using the GUI
 	// TODO :: Add custom rendering for elevators to allow for individual
 	// selection of elevator chunk textures
-	public static int topTexture;// = props.getInt("Elevator_Top_Texture");
-	public static int sideTexture;// =
+	public static Icon topTexture;// = props.getInt("Elevator_Top_Texture");
+	public static Icon sideTexture;// =
 									// props.getInt("Elevator_SideAndBottom_Texture");
 
 	public static int elevator_button_blockID;// =
@@ -153,8 +154,8 @@ public class DECore {
 		}
 	}
 
-	public void initialize(ICommonProxy proxy) {
-		DEInit.initialize(proxy);
+	public void initialize() {
+		DEInit.initialize();
 	}
 
 	public static void addItems() {
@@ -165,29 +166,29 @@ public class DECore {
 
 		ElevatorButton = (new BlockElevatorButton(
 				elevator_button_blockID,
-					Block.blockSteel.blockIndexInTexture,
+					Block.blockIron.getIcon(0, 0),
 					false))
 				.setHardness(0.5F)
 					.setStepSound(Block.soundMetalFootstep)
-					.setBlockName("elevatorbutton");
+					.setUnlocalizedName("elevatorbutton");
 		Elevator = (new BlockElevator(elevator_blockID)
 				.setHardness(3.0F)
 					.setStepSound(Block.soundMetalFootstep)
-					.setResistance(15F).setBlockName("elevator"));
+					.setResistance(15F).setUnlocalizedName("elevator"));
 		ElevatorCaller = (new BlockElevatorCaller(
 				elevator_caller_blockID,
 					Material.ground))
 				.setHardness(0.5F)
 					.setStepSound(Block.soundMetalFootstep)
-					.setBlockName("elevatorcaller");
+					.setUnlocalizedName("elevatorcaller");
 		Transient = (new BlockTransientElevator(transient_elevator_blockID))
 				.setBlockUnbreakable()
-					.setBlockName("transient");
+					.setUnlocalizedName("transient");
 
 		GameRegistry.registerBlock(Elevator, ItemElevator.class, "Elevator");
 		Item.itemsList[Elevator.blockID] = null;
 		Item.itemsList[Elevator.blockID] = new ItemElevator(
-				Elevator.blockID - OFFSET).setItemName("ElevatorItem");
+				Elevator.blockID - OFFSET).setUnlocalizedName("ElevatorItem");
 
 		GameRegistry.registerBlock(ElevatorButton, "Elevator Button");
 		GameRegistry.registerBlock(ElevatorCaller, "Elevator Caller");
@@ -245,8 +246,8 @@ public class DECore {
 		// TODO :: Make these specific to individual elevators using the GUI
 		// TODO :: Add custom rendering for elevators to allow for individual
 		// selection of elevator chunk textures
-		topTexture = props.getInt("Elevator_Top_Texture");
-		sideTexture = props.getInt("Elevator_SideAndBottom_Texture");
+		topTexture = Block.blocksList[props.getInt("Elevator_Top_Texture")].getIcon(0, 0);
+		sideTexture = Block.blocksList[props.getInt("Elevator_SideAndBottom_Texture")].getIcon(0, 0);
 
 		elevator_button_blockID = props.getInt("ElevatorButton_blockID");
 		elevator_caller_blockID = props.getInt("ElevatorCaller_blockID");
@@ -273,10 +274,10 @@ public class DECore {
 
 		props.getInt(
 				"Elevator_Top_Texture",
-				Block.blockDiamond.blockIndexInTexture);
+				Block.blockDiamond.blockID);
 		props.getInt(
 				"Elevator_SideAndBottom_Texture",
-				Block.blockSteel.blockIndexInTexture);
+				Block.blockIron.blockID);
 
 		props.getString(
 				"opening_disallowed_renderTypes",
@@ -419,7 +420,7 @@ public class DECore {
 		if (block == null) {
 			return true;
 		}
-		if (block.blockMaterial.func_85157_q()) {
+		if (block.blockMaterial.isSolid()) {
 			return true;
 		}
 		if (disallowed_blockIDs.contains(world.getBlockId(x, y, z))) {
@@ -442,7 +443,7 @@ public class DECore {
 		if (solid_disallowed_blockIDs.contains(world.getBlockId(x, y, z))) {
 			return false;
 		}
-		if (block.blockMaterial.func_85157_q()) {
+		if (block.blockMaterial.isSolid()) {
 			return false;
 		}
 		if (block.blockID == Elevator.blockID) {

@@ -13,6 +13,8 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import slimevoid.elevators.core.lib.ResourceLib;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -339,9 +341,10 @@ public class GuiElevatorList {
 		GL11.glDisable(GL11.GL_FOG);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		GL11.glBindTexture(
+		/**GL11.glBindTexture(
 				GL11.GL_TEXTURE_2D,
-				this.mc.renderEngine.getTexture("/gui/elevatorbg.png"));
+				this.mc.renderEngine.getTexture("/gui/elevatorbg.png"));**/
+		mc.renderEngine.func_110577_a(ResourceLib.BG_ELEVATOR);
 
 		float var17 = 32.0F;
 		tess.startDrawingQuads();
@@ -542,9 +545,10 @@ public class GuiElevatorList {
 	 */
 	private void overlayBackground(int par1, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
-		GL11.glBindTexture(
+		/**GL11.glBindTexture(
 				GL11.GL_TEXTURE_2D,
-				this.mc.renderEngine.getTexture("/gui/background.png"));
+				this.mc.renderEngine.getTexture("/gui/background.png"));**/
+		mc.renderEngine.func_110577_a(ResourceLib.BACKGROUND);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var6 = 32.0F;
 		var5.startDrawingQuads();

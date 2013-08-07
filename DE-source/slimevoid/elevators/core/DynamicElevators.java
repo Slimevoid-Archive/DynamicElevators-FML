@@ -1,7 +1,8 @@
 package slimevoid.elevators.core;
 
+import slimevoid.elevators.core.lib.CoreLib;
 import slimevoid.elevators.network.ElevatorPacketHandler;
-import slimevoid.lib.ICommonProxy;
+import slimevoidlib.ICommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -10,11 +11,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
 @Mod(
-		modid = "DynamicElevators",
-		name = "Dynamic Elevators",
-		version = "2.0.0.4",
+		modid = CoreLib.MOD_ID,
+		name = CoreLib.MOD_NAME,
+		version = CoreLib.MOD_VERSION,
 		useMetadata = true,
-		dependencies = "after:SlimevoidLib")
+		dependencies = CoreLib.MOD_DEPENDENCIES)
 @NetworkMod(
 		clientSideRequired = true,
 		channels = {
@@ -31,12 +32,12 @@ public class DynamicElevators {
 			serverSide = "slimevoid.elevators.proxy.DE_CommonProxy")
 	public static ICommonProxy proxy;
 
-	@Instance("DynamicElevators")
+	@Instance(CoreLib.MOD_ID)
 	public static DynamicElevators instance;
 
 	@Init
 	public void load(FMLInitializationEvent evt) {
 		instance = this;
-		DEInit.initialize(proxy);
+		DEInit.initialize();
 	}
 }

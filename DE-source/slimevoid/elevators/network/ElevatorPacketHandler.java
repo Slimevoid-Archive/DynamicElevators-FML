@@ -26,10 +26,11 @@ import slimevoid.elevators.blocks.BlockElevator;
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEInit;
 import slimevoid.elevators.core.DEProperties;
+import slimevoid.elevators.core.DynamicElevators;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.network.packets.PacketButtonUpdate;
 import slimevoid.elevators.tileentities.TileEntityElevator;
-import slimevoid.lib.network.PacketIds;
+import slimevoidlib.network.PacketIds;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -85,7 +86,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 			Iterator<Entity> iter = entities.iterator();
 			while (iter.hasNext()) {
 				Entity curEntity = iter.next();
-				dimensionID = curEntity.worldObj.getWorldInfo().getDimension();
+				dimensionID = curEntity.worldObj.getWorldInfo().getVanillaDimension();
 				data.writeInt(curEntity.entityId); // ID
 				data.writeFloat((float) curEntity.posY); // Ypos
 				if (ejectRiders) {
@@ -146,7 +147,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 				PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
 			} else {
 				DECore.say("Attempting to open GUI locally");
-				((IDECommonProxy) (DEInit.DEM.getProxy())).openGui(
+				((IDECommonProxy) DynamicElevators.proxy).openGui(
 						world,
 						player,
 						packet,
@@ -180,7 +181,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 		PacketButtonUpdate packet = new PacketButtonUpdate(x, y, z, metadata);
 		PacketDispatcher.sendPacketToAllAround(x, y, z, 400, world
 				.getWorldInfo()
-					.getDimension(), packet.getPacket());
+					.getVanillaDimension(), packet.getPacket());
 	}
 
 	private void handleButtonUpdatePacket(Player player, PacketButtonUpdate packetBU) {
@@ -197,7 +198,8 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 							packetBU.xPosition,
 							packetBU.yPosition,
 							packetBU.zPosition,
-							metadata & 7);
+							metadata & 7,
+							0x3);
 					world.markBlockRangeForRenderUpdate(
 							packetBU.xPosition,
 							packetBU.yPosition,
@@ -234,7 +236,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 			if (packet.channel.equals(CHANNELS[GUI_REQUEST])) {
 				// Attempt to open GUI screen with received data
 				// EURY EDIT
-				((IDECommonProxy) DEInit.DEM.getProxy()).openGui(
+				((IDECommonProxy) DynamicElevators.proxy).openGui(
 						world,
 						null,
 						packet,

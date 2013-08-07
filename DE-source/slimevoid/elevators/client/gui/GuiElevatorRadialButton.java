@@ -6,6 +6,8 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import slimevoid.elevators.core.lib.ResourceLib;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,9 +25,10 @@ public class GuiElevatorRadialButton extends GuiButton {
 			return;
 		}
 		FontRenderer fontrenderer = minecraft.fontRenderer;
-		GL11.glBindTexture(
-				3553 /* GL_TEXTURE_2D */,
-				minecraft.renderEngine.getTexture("/gui/elevatorgui.png"));
+		/**GL11.glBindTexture(
+				GL11.GL_TEXTURE_2D,
+				minecraft.renderEngine.getTexture("/gui/elevatorgui.png"));**/
+		minecraft.renderEngine.func_110577_a(ResourceLib.GUI_ELEVATOR);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		int k = (enabled) ? 0 : 1;
