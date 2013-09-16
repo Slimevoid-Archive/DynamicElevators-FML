@@ -395,7 +395,7 @@ public class GuiElevator extends GuiScreen {
 		guiTop = (height - ySize) / 2;
 		GL11.glPushMatrix();
 		GL11.glTranslatef(guiLeft, guiTop, 0.0F);
-		mc.renderEngine.func_110577_a(ResourceLib.GUI_ELEVATOR); //mc.renderEngine.getTexture("/gui/elevatorgui.png")
+		mc.renderEngine.bindTexture(ResourceLib.GUI_ELEVATOR); //mc.renderEngine.getTexture("/gui/elevatorgui.png")
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 		GL11.glTranslatef(0.0F, 0.0F, 0.0F);

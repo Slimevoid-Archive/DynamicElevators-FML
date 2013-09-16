@@ -28,7 +28,7 @@ public class GuiElevatorRadialButton extends GuiButton {
 		/**GL11.glBindTexture(
 				GL11.GL_TEXTURE_2D,
 				minecraft.renderEngine.getTexture("/gui/elevatorgui.png"));**/
-		minecraft.renderEngine.func_110577_a(ResourceLib.GUI_ELEVATOR);
+		minecraft.renderEngine.bindTexture(ResourceLib.GUI_ELEVATOR);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		int k = (enabled) ? 0 : 1;

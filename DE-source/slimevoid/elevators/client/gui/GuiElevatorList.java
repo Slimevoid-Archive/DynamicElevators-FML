@@ -344,7 +344,7 @@ public class GuiElevatorList {
 		/**GL11.glBindTexture(
 				GL11.GL_TEXTURE_2D,
 				this.mc.renderEngine.getTexture("/gui/elevatorbg.png"));**/
-		mc.renderEngine.func_110577_a(ResourceLib.BG_ELEVATOR);
+		mc.renderEngine.bindTexture(ResourceLib.BG_ELEVATOR);
 
 		float var17 = 32.0F;
 		tess.startDrawingQuads();
@@ -548,7 +548,7 @@ public class GuiElevatorList {
 		/**GL11.glBindTexture(
 				GL11.GL_TEXTURE_2D,
 				this.mc.renderEngine.getTexture("/gui/background.png"));**/
-		mc.renderEngine.func_110577_a(ResourceLib.BACKGROUND);
+		mc.renderEngine.bindTexture(ResourceLib.BACKGROUND);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var6 = 32.0F;
 		var5.startDrawingQuads();
