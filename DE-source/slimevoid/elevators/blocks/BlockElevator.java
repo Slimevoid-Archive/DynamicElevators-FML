@@ -57,7 +57,7 @@ public class BlockElevator extends BlockContainer {
 
 	private static void openGUI(World world, int x, int y, int z, EntityPlayer player) {
 		player.openGui(DynamicElevators.instance, GuiLib.GUIID_ELEVATOR, world, x, y, z);
-		//DECore.packetHandler.requestGUIMapping(world, loc, player);
+		DECore.packetHandler.requestGUIMapping(world, new ChunkPosition(x, y, z), player);
 	}
 
 	// ---------------- END SERVER/CLIENT SENSITIVE CODE ------------------ //

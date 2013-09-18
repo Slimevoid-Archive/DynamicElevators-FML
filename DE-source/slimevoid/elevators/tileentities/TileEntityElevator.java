@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkPosition;
@@ -245,6 +247,13 @@ public class TileEntityElevator extends TileEntity {
 		return false;
 	}
 
+    public Packet getDescriptionPacket() {
+		NBTTagCompound nbttagcompound = new NBTTagCompound();
+		this.writeToNBT(nbttagcompound);
+		Packet packet = new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbttagcompound);
+		return packet;
+    }
+    
 	public Packet250CustomPayload createPropertiesPacket(boolean GUI_Request) throws IOException {
 		return props.createPropertiesPacket(
 				this.curFloor(),
