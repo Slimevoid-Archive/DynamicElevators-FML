@@ -23,20 +23,25 @@ public class GuiElevatorRadialButton extends GuiButton {
 			return;
 		}
 		FontRenderer fontrenderer = minecraft.fontRenderer;
-		GL11.glBindTexture(
-				3553 /* GL_TEXTURE_2D */,
-				minecraft.renderEngine.getTexture("/gui/elevatorgui.png"));
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.renderEngine.bindTexture("/gui/elevatorgui.png");
+		GL11.glColor4f(	1.0F,
+						1.0F,
+						1.0F,
+						1.0F);
 
 		int k = (enabled) ? 0 : 1;
-		drawTexturedModalRect(xPosition, yPosition, 215, 42 + k * 13, 13, 13);
+		drawTexturedModalRect(	xPosition,
+								yPosition,
+								215,
+								42 + k * 13,
+								13,
+								13);
 
 		int color = enabled ? 0x000000 : 0x3D3D3D;
-		fontrenderer.drawString(
-				displayString,
-				xPosition + 13 + 1,
-				yPosition + height / 2 - 4,
-				color);
+		fontrenderer.drawString(displayString,
+								xPosition + 13 + 1,
+								yPosition + height / 2 - 4,
+								color);
 	}
 
 	@Override
@@ -56,7 +61,8 @@ public class GuiElevatorRadialButton extends GuiButton {
 		// StringBuilder()).append(i).append(", ").append(j).toString());
 		// mod_ExpandedArt.say((new
 		// StringBuilder()).append(xPosition).append(", ").append(yPosition).append(": ").append(width).append(", ").append(height).toString());
-		if (i >= xPosition && j >= yPosition && i < xPosition + width && j < yPosition + height) {
+		if (i >= xPosition && j >= yPosition && i < xPosition + width
+			&& j < yPosition + height) {
 			enabled = !enabled;
 			return true;
 		}
