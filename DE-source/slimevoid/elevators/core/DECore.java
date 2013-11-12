@@ -25,7 +25,7 @@ import slimevoid.elevators.blocks.BlockTransientElevator;
 import slimevoid.elevators.items.ItemElevator;
 import slimevoid.elevators.network.ElevatorPacketHandler;
 import slimevoid.elevators.tileentities.TileEntityElevator;
-import slimevoid.lib.ICommonProxy;
+import slimevoidlib.ICommonProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;

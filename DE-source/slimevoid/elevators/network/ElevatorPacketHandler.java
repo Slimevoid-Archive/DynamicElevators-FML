@@ -24,40 +24,45 @@ import net.minecraft.world.World;
 import slimevoid.elevators.api.IDECommonProxy;
 import slimevoid.elevators.blocks.BlockElevator;
 import slimevoid.elevators.core.DECore;
-import slimevoid.elevators.core.DEInit;
 import slimevoid.elevators.core.DEProperties;
+import slimevoid.elevators.core.DynamicElevators;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.network.packets.PacketButtonUpdate;
 import slimevoid.elevators.tileentities.TileEntityElevator;
-import slimevoid.lib.network.PacketIds;
+import slimevoidlib.network.PacketIds;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
-public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler {
+public class ElevatorPacketHandler implements IConnectionHandler,
+		IPacketHandler {
 
-	public static final String[] CHANNELS = {
+	public static final String[]					CHANNELS				= {
 			"DE_GUI_REQUEST",
 			"DE_GUI_RESPONSE",
 			"DE_UPDATE",
 			"DE_EPROP",
 			"DE_ERROR",
 			"DE_SHCI",
-			"DE_BUPDATE" };
+			"DE_BUPDATE"													};
 
-	public static final int GUI_REQUEST = 0;
-	public static final int GUI_DATA = 1;
-	public static final int UPDATE_RIDERS = 2;
-	public static final int ELEVATOR_PROPERTIES = 3;
-	public static final int GUI_COMMUNICATION_ERROR = 4;
-	public static final int SHORT_CIRCUIT = 5;
-	public static final int BLOCK_UPDATE = 6;
+	public static final int							GUI_REQUEST				= 0;
+	public static final int							GUI_DATA				= 1;
+	public static final int							UPDATE_RIDERS			= 2;
+	public static final int							ELEVATOR_PROPERTIES		= 3;
+	public static final int							GUI_COMMUNICATION_ERROR	= 4;
+	public static final int							SHORT_CIRCUIT			= 5;
+	public static final int							BLOCK_UPDATE			= 6;
 
-	public static HashMap<String, ChunkPosition> elevatorRequests = new HashMap();
+	public static HashMap<String, ChunkPosition>	elevatorRequests		= new HashMap();
 
 	public static void sendRiderUpdates(Set<Entity> entities, int x, int y, int z) {
-		sendRiderUpdates(entities, x, y, z, false);
+		sendRiderUpdates(	entities,
+							x,
+							y,
+							z,
+							false);
 	}
 
 	public static void sendRiderUpdates(Set<Entity> entities, int x, int y, int z, boolean ejectRiders) {
@@ -99,16 +104,16 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 			packet.data = bytes.toByteArray();
 			packet.length = packet.data.length;
 
-			PacketDispatcher.sendPacketToAllAround(
-					x,
-					y,
-					z,
-					400,
-					dimensionID,
-					packet);
+			PacketDispatcher.sendPacketToAllAround(	x,
+													y,
+													z,
+													400,
+													dimensionID,
+													packet);
 
 		} catch (IOException e) {
-			DECore.say("Error while creating entity update packet.", true);
+			DECore.say(	"Error while creating entity update packet.",
+						true);
 			e.printStackTrace();
 		}
 	}
@@ -117,52 +122,46 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 		if (world == null || loc == null) {
 			return false;
 		}
-		if (world.getBlockId(loc.x, loc.y, loc.z) != DECore.Elevator.blockID) {
+		if (world.getBlockId(	loc.x,
+								loc.y,
+								loc.z) != DECore.Elevator.blockID) {
 			return false;
 		}
 
-		DECore.say((new StringBuilder())
-				.append("Received elevator request from ")
-					.append(player.username)
-					.toString());
+		DECore.say((new StringBuilder()).append("Received elevator request from ").append(player.username).toString());
 
 		BlockElevator elevator = (BlockElevator) DECore.Elevator;
-		TileEntityElevator elevatorInfo = BlockElevator.getTileEntity(
-				world,
-				loc.x,
-				loc.y,
-				loc.z);
+		TileEntityElevator elevatorInfo = BlockElevator.getTileEntity(	world,
+																		loc.x,
+																		loc.y,
+																		loc.z);
 
 		if (elevatorInfo == null) {
 			return false;
 		}
 
 		try {
-			Packet250CustomPayload packet = elevatorInfo
-					.createPropertiesPacket(true);
+			Packet250CustomPayload packet = elevatorInfo.createPropertiesPacket(true);
 
-			elevatorRequests.put(player.username, loc);
+			elevatorRequests.put(	player.username,
+									loc);
 			if (player instanceof EntityPlayerMP) {
 				DECore.say("Attempting to open GUI via packet");
-				PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
+				PacketDispatcher.sendPacketToPlayer(packet,
+													(Player) player);
 			} else {
 				DECore.say("Attempting to open GUI locally");
-				((IDECommonProxy) (DEInit.DEM.getProxy())).openGui(
-						world,
-						player,
-						packet,
-						loc);
+				((IDECommonProxy) DynamicElevators.proxy).openGui(	world,
+																	player,
+																	packet,
+																	loc);
 			}
 
-			DECore.say((new StringBuilder())
-					.append("Successfully added request for ")
-						.append(player.username)
-						.toString());
+			DECore.say((new StringBuilder()).append("Successfully added request for ").append(player.username).toString());
 		} catch (IOException e) {
-			DECore
-					.say(
-							"Error while creating packet - unable to open GUI for " + player.username,
-							true);
+			DECore.say(	"Error while creating packet - unable to open GUI for "
+								+ player.username,
+						true);
 			e.printStackTrace();
 			return false;
 		}
@@ -179,9 +178,12 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 
 	public static void sendButtonTickUpdate(World world, int x, int y, int z, int metadata) {
 		PacketButtonUpdate packet = new PacketButtonUpdate(x, y, z, metadata);
-		PacketDispatcher.sendPacketToAllAround(x, y, z, 400, world
-				.getWorldInfo()
-					.getDimension(), packet.getPacket());
+		PacketDispatcher.sendPacketToAllAround(	x,
+												y,
+												z,
+												400,
+												world.getWorldInfo().getDimension(),
+												packet.getPacket());
 	}
 
 	private void handleButtonUpdatePacket(Player player, PacketButtonUpdate packetBU) {
@@ -189,24 +191,21 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 			EntityPlayer entityplayer = (EntityPlayer) player;
 			World world = entityplayer.worldObj;
 			if (packetBU.targetExists(world)) {
-				int metadata = world.getBlockMetadata(
-						packetBU.xPosition,
-						packetBU.yPosition,
-						packetBU.zPosition);
+				int metadata = world.getBlockMetadata(	packetBU.xPosition,
+														packetBU.yPosition,
+														packetBU.zPosition);
 				if ((metadata & 8) != 0) {
-					world.setBlockMetadataWithNotify(
-							packetBU.xPosition,
-							packetBU.yPosition,
-							packetBU.zPosition,
-							metadata & 7,
-							3);
-					world.markBlockRangeForRenderUpdate(
-							packetBU.xPosition,
-							packetBU.yPosition,
-							packetBU.zPosition,
-							packetBU.xPosition,
-							packetBU.yPosition,
-							packetBU.zPosition);
+					world.setBlockMetadataWithNotify(	packetBU.xPosition,
+														packetBU.yPosition,
+														packetBU.zPosition,
+														metadata & 7,
+														3);
+					world.markBlockRangeForRenderUpdate(packetBU.xPosition,
+														packetBU.yPosition,
+														packetBU.zPosition,
+														packetBU.xPosition,
+														packetBU.yPosition,
+														packetBU.zPosition);
 				}
 			}
 		}
@@ -214,8 +213,7 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
-		DataInputStream dataStream = new DataInputStream(
-				new ByteArrayInputStream(packet.data));
+		DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 
 		DECore.say("Packet received on channel " + packet.channel);
 
@@ -236,11 +234,10 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 			if (packet.channel.equals(CHANNELS[GUI_REQUEST])) {
 				// Attempt to open GUI screen with received data
 				// EURY EDIT
-				((IDECommonProxy) DEInit.DEM.getProxy()).openGui(
-						world,
-						null,
-						packet,
-						null);
+				((IDECommonProxy) DynamicElevators.proxy).openGui(	world,
+																	null,
+																	packet,
+																	null);
 			} else if (packet.channel.equals(CHANNELS[GUI_DATA])) {
 				DEProperties props = new DEProperties();
 
@@ -253,29 +250,34 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 					return;
 				}
 
-				if (world.getBlockId(pos.x, pos.y, pos.z) != DECore.Elevator.blockID) {
+				if (world.getBlockId(	pos.x,
+										pos.y,
+										pos.z) != DECore.Elevator.blockID) {
 					return;
 				}
 				BlockElevator elevator = (BlockElevator) DECore.Elevator;
-				TileEntityElevator tile = BlockElevator.getTileEntity(
-						world,
-						pos.x,
-						pos.y,
-						pos.z);
+				TileEntityElevator tile = BlockElevator.getTileEntity(	world,
+																		pos.x,
+																		pos.y,
+																		pos.z);
 				if (tile == null) {
 					return;
 				}
 
-				DECore
-						.say("Received elevator response from " + playerMP.username + " requesting GUI command " + command);
+				DECore.say("Received elevator response from "
+							+ playerMP.username + " requesting GUI command "
+							+ command);
 
 				switch (command) {
 				case DECore.GUI_OPTIONS_APPLY:
-					DECore.checkedProperties.put(pos, packet);
-					DECore.refreshElevator(world, pos);
+					DECore.checkedProperties.put(	pos,
+													packet);
+					DECore.refreshElevator(	world,
+											pos);
 					break;
 				case DECore.GUI_RESET:
-					DECore.elevator_reset(world, pos);
+					DECore.elevator_reset(	world,
+											pos);
 					if (elevatorRequests.containsKey(playerMP.username)) {
 						elevatorRequests.remove(playerMP.username);
 					}
@@ -284,11 +286,13 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 					if (command < 1 || command > DECore.max_elevator_Y) {
 						break;
 					}
-					if (command > tile.numFloors() || command == tile
-							.curFloor()) {
+					if (command > tile.numFloors()
+						|| command == tile.curFloor()) {
 						break;
 					}
-					DECore.elevator_requestFloor(world, pos, command);
+					DECore.elevator_requestFloor(	world,
+													pos,
+													command);
 					if (elevatorRequests.containsKey(playerMP.username)) {
 						elevatorRequests.remove(playerMP.username);
 					}
@@ -308,22 +312,27 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 					float newEntityYPos = dataStream.readFloat(); // Ypos
 					int entity_data = dataStream.readInt(); // Data
 
-					Entity entity = ((EntityPlayer)player).worldObj.getEntityByID(/**EntityHelper.getEntityByID(**/entityID);
-					DECore
-							.say("Received request for entity id " + entityID + " to be set to Y: " + newEntityYPos);
+					Entity entity = ((EntityPlayer) player).worldObj.getEntityByID(/**
+					 * 
+					 * 
+					 * EntityHelper.getEntityByID(
+					 **/
+					entityID);
+					DECore.say("Received request for entity id " + entityID
+								+ " to be set to Y: " + newEntityYPos);
 					if (entity != null) {
 						if (entity instanceof EntityElevator) {
 							EntityElevator curElevator = (EntityElevator) entity;
-							curElevator.setPosition(
-									entity.posX,
-									newEntityYPos,
-									entity.posZ);
+							curElevator.setPosition(entity.posX,
+													newEntityYPos,
+													entity.posZ);
 							if (entity_data == 1) {
 								entity.updateRiderPosition();
 							}
 						} else {
 							if (entity instanceof EntityLiving) {
-								entity.posY = (double) newEntityYPos + entity.yOffset;
+								entity.posY = (double) newEntityYPos
+												+ entity.yOffset;
 								entity.onGround = true;
 								entity.fallDistance = 0.0F;
 								entity.isCollidedVertically = true;
@@ -336,8 +345,8 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 							}
 						}
 
-						DECore
-								.say("Entity with id " + entity.entityId + " was set to " + newEntityYPos);
+						DECore.say("Entity with id " + entity.entityId
+									+ " was set to " + newEntityYPos);
 					} else {
 						DECore.say("Entity with that ID does not exist");
 					}
@@ -348,22 +357,26 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 				boolean center = dataStream.readBoolean();
 				int metadata = dataStream.readInt();
 
-				DECore
-						.say("Received prop update info for elevator id " + entityID);
+				DECore.say("Received prop update info for elevator id "
+							+ entityID);
 
 				Entity entity = world.getEntityByID(entityID);
 				if (entity == null || !(entity instanceof EntityElevator)) {
 					DECore.say("Entity with that ID does not exist");
 				} else {
 					EntityElevator elevator = (EntityElevator) entity;
-					elevator.setProperties(dest, center, true, metadata);
+					elevator.setProperties(	dest,
+											center,
+											true,
+											metadata);
 				}
 			} else if (packet.channel.equals(CHANNELS[BLOCK_UPDATE])) {
 				int packetID = dataStream.read();
 				if (packetID == PacketIds.UPDATE) {
 					PacketButtonUpdate packetBU = new PacketButtonUpdate();
 					packetBU.readData(dataStream);
-					handleButtonUpdatePacket(player, packetBU);
+					handleButtonUpdatePacket(	player,
+												packetBU);
 				}
 			}
 		} catch (IOException e) {
@@ -378,7 +391,8 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 				PacketDispatcher.sendPacketToServer(responsePacket);
 
 			}
-			DECore.say("Error while reading incoming packet.", true);
+			DECore.say(	"Error while reading incoming packet.",
+						true);
 			e.printStackTrace();
 			return;
 		}
@@ -426,7 +440,8 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 			packet.length = packet.data.length;
 			PacketDispatcher.sendPacketToServer(packet);
 		} catch (Exception e) {
-			DECore.say("Unable to unregister channels!!", true);
+			DECore.say(	"Unable to unregister channels!!",
+						true);
 		}
 	}
 
@@ -448,7 +463,8 @@ public class ElevatorPacketHandler implements IConnectionHandler, IPacketHandler
 			packet.length = packet.data.length;
 			PacketDispatcher.sendPacketToServer(packet);
 		} catch (Exception e) {
-			DECore.say("Unable to register channels!!", true);
+			DECore.say(	"Unable to register channels!!",
+						true);
 		}
 	}
 }

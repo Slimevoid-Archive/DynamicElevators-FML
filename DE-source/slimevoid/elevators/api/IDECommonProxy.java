@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
-import slimevoid.lib.ICommonProxy;
+import slimevoidlib.ICommonProxy;
 
 public interface IDECommonProxy extends ICommonProxy {
 
