@@ -92,7 +92,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 				Entity curEntity = iter.next();
 				dimensionID = curEntity.worldObj.getWorldInfo().getDimension();
 				data.writeInt(curEntity.entityId); // ID
-				data.writeFloat((float) curEntity.posY); // Ypos
+				data.writeFloat((float) curEntity.motionY); // Ypos
 				if (ejectRiders) {
 					data.writeInt(1); // Data (version 2)
 				} else {
@@ -315,6 +315,8 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 					Entity entity = ((EntityPlayer) player).worldObj.getEntityByID(/**
 					 * 
 					 * 
+					 * 
+					 * 
 					 * EntityHelper.getEntityByID(
 					 **/
 					entityID);
@@ -331,14 +333,15 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 							}
 						} else {
 							if (entity instanceof EntityLiving) {
-								entity.posY = (double) newEntityYPos
-												+ entity.yOffset;
-								entity.onGround = true;
-								entity.fallDistance = 0.0F;
-								entity.isCollidedVertically = true;
+								// entity.posY = (double) newEntityYPos
+								// + entity.yOffset;
+								entity.motionY = newEntityYPos;
+								// entity.onGround = true;
+								// entity.fallDistance = 0.0F;
+								// entity.isCollidedVertically = true;
 							} else {
-								entity.posY = newEntityYPos;
-								entity.onGround = false;
+								// entity.posY = newEntityYPos;
+								// entity.onGround = false;
 							}
 							if (entity_data == 1) {
 								entity.motionY = 0.1;
