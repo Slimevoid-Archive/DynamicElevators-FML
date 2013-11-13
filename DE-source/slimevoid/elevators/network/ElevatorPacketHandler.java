@@ -317,6 +317,8 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 					 * 
 					 * 
 					 * 
+					 * 
+					 * 
 					 * EntityHelper.getEntityByID(
 					 **/
 					entityID);
@@ -336,12 +338,12 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 								// entity.posY = (double) newEntityYPos
 								// + entity.yOffset;
 								entity.motionY = newEntityYPos;
-								// entity.onGround = true;
-								// entity.fallDistance = 0.0F;
-								// entity.isCollidedVertically = true;
+								entity.onGround = true;
+								entity.fallDistance = 0.0F;
+								entity.isCollidedVertically = true;
 							} else {
-								// entity.posY = newEntityYPos;
-								// entity.onGround = false;
+								entity.motionY = newEntityYPos;
+								entity.onGround = false;
 							}
 							if (entity_data == 1) {
 								entity.motionY = 0.1;

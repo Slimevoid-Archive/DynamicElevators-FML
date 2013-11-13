@@ -299,7 +299,7 @@ public class EntityElevator extends Entity {
 
 	@Override
 	public double getMountedYOffset() {
-		return 1.5D;
+		return 0.5D;
 	}
 
 	public void updateRider(Entity rider) {
@@ -320,13 +320,13 @@ public class EntityElevator extends Entity {
 			// / rider.setPosition(rider.posX, centerElevator.posY +
 			// getMountedYOffset() + rider.getYOffset(), rider.posZ);
 			// }
-			// rider.onGround = true;
-			// rider.fallDistance = 0.0F;
-			// rider.isCollidedVertically = true;
+			rider.onGround = true;
+			rider.fallDistance = 0.0F;
+			rider.isCollidedVertically = true;
 		} else if (!(rider instanceof EntityElevator)) {
 			rider.posY = centerElevator.posY + getMountedYOffset()
 							+ rider.yOffset;
-			// rider.onGround = false;
+			rider.onGround = false;
 		}
 
 		say((new StringBuilder()).append("Updating rider with id #").append(rider.entityId).append(" to ").append(rider.posY).toString());
