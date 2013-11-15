@@ -1,12 +1,12 @@
 @echo off
 
-set programdir="C:\Programming"
-set packagedir="%programdir%\Packages"
-set repodir="%programdir%\Repositories"
-set forgedir="%repodir%\MinecraftForge"
-set mcpdir="%forgedir%\mcp"
-set euryscore="%repodir%\EurysCore-FML"
-set elevators="%repodir%\DynamicElevators-FML"
+set programdir=%CD%\..\..
+set packagedir=%programdir%\Packages
+set repodir=%programdir%\Git
+set forgedir=%programdir%\Forge
+set mcpdir=%forgedir%\mcp
+set euryscore=%repodir%\SlimevoidLibrary
+set elevators=%repodir%\DynamicElevators-FML
 cd %mcpdir%
 
 if not exist %euryscore% GOTO :ECFAIL
