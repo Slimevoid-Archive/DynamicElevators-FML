@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.entities.EntityElevator;
 
-
 public class RenderElevator extends Render {
 
 	public RenderElevator() {
@@ -29,11 +28,10 @@ public class RenderElevator extends Render {
 		float f4 = 0.6F;
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		tessellator.setBrightness(elevator.getMixedBrightnessForBlock(
-				world,
-				x,
-				y,
-				z));
+		tessellator.setBrightness(elevator.getMixedBrightnessForBlock(	world,
+																		x,
+																		y,
+																		z));
 		float f5 = 1.0F;
 		float f6 = 1.0F;
 
@@ -41,78 +39,84 @@ public class RenderElevator extends Render {
 			f6 = f5;
 		}
 
-		tessellator.setColorOpaque_F(f1 * f6, f1 * f6, f1 * f6);
-		this.renderBlocks.renderFaceYNeg(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[0]);
+		tessellator.setColorOpaque_F(	f1 * f6,
+										f1 * f6,
+										f1 * f6);
+		this.renderBlocks.renderFaceYNeg(	elevator,
+											-0.5D,
+											-0.5D,
+											-0.5D,
+											textureData[0]);
 		f6 = 1.0F;
 
 		if (f6 < f5) {
 			f6 = f5;
 		}
 
-		tessellator.setColorOpaque_F(f2 * f6, f2 * f6, f2 * f6);
-		this.renderBlocks.renderFaceYPos(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[1]);
+		tessellator.setColorOpaque_F(	f2 * f6,
+										f2 * f6,
+										f2 * f6);
+		this.renderBlocks.renderFaceYPos(	elevator,
+											-0.5D,
+											-0.5D,
+											-0.5D,
+											textureData[1]);
 		f6 = 1.0F;
 
 		if (f6 < f5) {
 			f6 = f5;
 		}
 
-		tessellator.setColorOpaque_F(f3 * f6, f3 * f6, f3 * f6);
-		this.renderBlocks.renderFaceXPos(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[2]);
+		tessellator.setColorOpaque_F(	f3 * f6,
+										f3 * f6,
+										f3 * f6);
+		this.renderBlocks.renderFaceXPos(	elevator,
+											-0.5D,
+											-0.5D,
+											-0.5D,
+											textureData[2]);
 		f6 = 1.0F;
 
 		if (f6 < f5) {
 			f6 = f5;
 		}
 
-		tessellator.setColorOpaque_F(f3 * f6, f3 * f6, f3 * f6);
-		this.renderBlocks.renderFaceXNeg(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[2]);
+		tessellator.setColorOpaque_F(	f3 * f6,
+										f3 * f6,
+										f3 * f6);
+		this.renderBlocks.renderFaceXNeg(	elevator,
+											-0.5D,
+											-0.5D,
+											-0.5D,
+											textureData[2]);
 		f6 = 1.0F;
 
 		if (f6 < f5) {
 			f6 = f5;
 		}
 
-		tessellator.setColorOpaque_F(f4 * f6, f4 * f6, f4 * f6);
-		this.renderBlocks.renderFaceZNeg(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[2]);
+		tessellator.setColorOpaque_F(	f4 * f6,
+										f4 * f6,
+										f4 * f6);
+		this.renderBlocks.renderFaceZNeg(	elevator,
+											-0.5D,
+											-0.5D,
+											-0.5D,
+											textureData[2]);
 		f6 = 1.0F;
 
 		if (f6 < f5) {
 			f6 = f5;
 		}
 
-		tessellator.setColorOpaque_F(f4 * f6, f4 * f6, f4 * f6);
-		this.renderBlocks.renderFaceZPos(
-				elevator,
-				-0.5D,
-				-0.5D,
-				-0.5D,
-				textureData[2]);
+		tessellator.setColorOpaque_F(	f4 * f6,
+										f4 * f6,
+										f4 * f6);
+		this.renderBlocks.renderFaceZPos(	elevator,
+											-0.5D,
+											-0.5D,
+											-0.5D,
+											textureData[2]);
 		tessellator.draw();
 	}
 
@@ -121,7 +125,9 @@ public class RenderElevator extends Render {
 		Block block = DECore.Elevator;
 		World world = elevator.getWorld();
 		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glTranslatef((float) d, (float) d1, (float) d2);
+		GL11.glTranslatef(	(float) d,
+							(float) d1,
+							(float) d2);
 		// GL11.glScalef(-1F, -1F, 1.0F); - ceilings?
 		loadTexture("/terrain.png");
 
@@ -138,19 +144,23 @@ public class RenderElevator extends Render {
 		// Sides
 		textureData[2] = DECore.sideTexture;
 
-		renderElevatorEntity(
-				block,
-				world,
-				MathHelper.floor_double(elevator.posX),
-				MathHelper.floor_double(elevator.posY),
-				MathHelper.floor_double(elevator.posZ),
-				textureData);
+		renderElevatorEntity(	block,
+								world,
+								MathHelper.floor_double(elevator.posX),
+								MathHelper.floor_double(elevator.posY),
+								MathHelper.floor_double(elevator.posZ),
+								textureData);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
 	}
 
 	@Override
 	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
-		doRenderElevator((EntityElevator) entity, d, d1, d2, f, f1);
+		doRenderElevator(	(EntityElevator) entity,
+							d,
+							d1,
+							d2,
+							f,
+							f1);
 	}
 }

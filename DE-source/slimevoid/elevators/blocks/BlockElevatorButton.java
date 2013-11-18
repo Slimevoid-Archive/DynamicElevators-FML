@@ -27,32 +27,47 @@ public class BlockElevatorButton extends BlockButton {
 		super(id, sensible);
 		this.setCreativeTab(CreativeTabs.tabTransport);
 	}
-	
+
 	public void registerIcons(IconRegister iconRegister) {
-		this.blockIcon =Block.blockIron.getIcon(0, 0);
+		this.blockIcon = Block.blockIron.getIcon(	0,
+													0);
 	}
 
-	Set<ChunkPosition> elvs = new HashSet<ChunkPosition>();
-	Set<ChunkPosition> checkedBlocks = new HashSet<ChunkPosition>();
+	Set<ChunkPosition>	elvs			= new HashSet<ChunkPosition>();
+	Set<ChunkPosition>	checkedBlocks	= new HashSet<ChunkPosition>();
 
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int side, float par7, float par8, float par9) {
-		int metadata = world.getBlockMetadata(i, j, k);
+		int metadata = world.getBlockMetadata(	i,
+												j,
+												k);
 		int direction = metadata & 7;
 		int state = 8 - (metadata & 8);
 		if (state == 0) {
 			return true;
 		}
-		world.setBlockMetadataWithNotify(i, j, k, direction + state, 3);
-		world.markBlockRangeForRenderUpdate(i, j, k, i, j, k);
-		world.playSoundEffect(
-				i + 0.5D,
-				j + 0.5D,
-				k + 0.5D,
-				"random.click",
-				0.3F,
-				0.6F);
-		world.scheduleBlockUpdate(i, j, k, this.blockID, this.tickRate(world));
+		world.setBlockMetadataWithNotify(	i,
+											j,
+											k,
+											direction + state,
+											3);
+		world.markBlockRangeForRenderUpdate(i,
+											j,
+											k,
+											i,
+											j,
+											k);
+		world.playSoundEffect(	i + 0.5D,
+								j + 0.5D,
+								k + 0.5D,
+								"random.click",
+								0.3F,
+								0.6F);
+		world.scheduleBlockUpdate(	i,
+									j,
+									k,
+									this.blockID,
+									this.tickRate(world));
 		// world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 		ChunkPosition newPos = null;
 		if (direction == 1) {
@@ -64,21 +79,33 @@ public class BlockElevatorButton extends BlockButton {
 		} else if (direction == 4) {
 			newPos = new ChunkPosition(i, j, k + 1);
 		} else {
-			dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
-			world.setBlock(i, j, k, 0, 0, 3);
+			dropBlockAsItem(world,
+							i,
+							j,
+							k,
+							world.getBlockMetadata(	i,
+													j,
+													k),
+							0);
+			world.setBlock(	i,
+							j,
+							k,
+							0,
+							0,
+							3);
 		}
 		if (newPos == null) {
 			return false;
 		}
 
-		if (world.getBlockId(newPos.x, newPos.y, newPos.z) == DECore.ElevatorCaller.blockID) {
-			boolean foundElevator = BlockElevatorCaller
-					.findAndActivateElevator(
-							world,
-							newPos.x,
-							newPos.y,
-							newPos.z,
-							0);
+		if (world.getBlockId(	newPos.x,
+								newPos.y,
+								newPos.z) == DECore.ElevatorCaller.blockID) {
+			boolean foundElevator = BlockElevatorCaller.findAndActivateElevator(world,
+																				newPos.x,
+																				newPos.y,
+																				newPos.z,
+																				0);
 			if (!world.isRemote && foundElevator) {
 				player.addChatMessage(DECore.message_elevator_called);
 			} else if (!world.isRemote) {
@@ -89,18 +116,14 @@ public class BlockElevatorButton extends BlockButton {
 
 		checkedBlocks.clear();
 		elvs.clear();
-		checkForElevators(world, new ChunkPosition(i, j, k), 0);
-		checkForElevators(world, newPos, 0);
-		DECore.say((new StringBuilder())
-				.append("Checked ")
-					.append(checkedBlocks.size())
-					.append(" blocks")
-					.toString());
-		DECore.say((new StringBuilder())
-				.append("Found ")
-					.append(elvs.size())
-					.append(" elevators")
-					.toString());
+		checkForElevators(	world,
+							new ChunkPosition(i, j, k),
+							0);
+		checkForElevators(	world,
+							newPos,
+							0);
+		DECore.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
+		DECore.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
 		newPos = null;
 		int dist = DECore.max_elevator_Y + 5;
 		int destY = -1;
@@ -108,21 +131,18 @@ public class BlockElevatorButton extends BlockButton {
 			Iterator<ChunkPosition> iter = elvs.iterator();
 			while (iter.hasNext()) {
 				ChunkPosition curPos = iter.next();
-				BlockElevator.refreshAndCombineAllAdjacentElevators(
-						world,
-						curPos);
-				TileEntityElevator curTile = BlockElevator.getTileEntity(
-						world,
-						curPos.x,
-						curPos.y,
-						curPos.z);
+				BlockElevator.refreshAndCombineAllAdjacentElevators(world,
+																	curPos);
+				TileEntityElevator curTile = BlockElevator.getTileEntity(	world,
+																			curPos.x,
+																			curPos.y,
+																			curPos.z);
 				if (curTile != null) {
-					int suggestedY = curTile
-							.getClosestFloorFromYCoor_AlwaysDown(j);
+					int suggestedY = curTile.getClosestFloorFromYCoor_AlwaysDown(j);
 					suggestedY = curTile.getYFromFloor(suggestedY);
 					DECore.say("closest y: " + suggestedY);
-					if (MathHelper.abs(suggestedY - curPos.y) < dist && curTile
-							.hasFloorAt(suggestedY)) {
+					if (MathHelper.abs(suggestedY - curPos.y) < dist
+						&& curTile.hasFloorAt(suggestedY)) {
 						dist = (int) MathHelper.abs(suggestedY - curPos.y);
 						newPos = curPos;
 						destY = suggestedY;
@@ -131,20 +151,22 @@ public class BlockElevatorButton extends BlockButton {
 			}
 		}
 		if (newPos != null) {
-			TileEntityElevator curTile = BlockElevator.getTileEntity(
-					world,
-					newPos.x,
-					newPos.y,
-					newPos.z);
+			TileEntityElevator curTile = BlockElevator.getTileEntity(	world,
+																		newPos.x,
+																		newPos.y,
+																		newPos.z);
 			if (!world.isRemote && destY != newPos.y) {
 				if (!curTile.props.getElevatorName().isEmpty()) {
-					player
-							.addChatMessage(curTile.props.getElevatorName() + " " + DECore.message_named_elevator_called);
+					player.addChatMessage(curTile.props.getElevatorName()
+											+ " "
+											+ DECore.message_named_elevator_called);
 				} else {
 					player.addChatMessage(DECore.message_elevator_called);
 				}
 			}
-			DECore.elevator_demandY(world, newPos, destY);
+			DECore.elevator_demandY(world,
+									newPos,
+									destY);
 		} else {
 			if (!world.isRemote) {
 				player.addChatMessage(DECore.message_elevator_notfound);
@@ -160,36 +182,37 @@ public class BlockElevatorButton extends BlockButton {
 		}
 		checkedBlocks.add(pos);
 		boolean isCeiling = false;
-		if (world.getBlockId(pos.x, pos.y, pos.z) == DECore.Elevator.blockID) {
-			if (!BlockElevator.isCeiling(world, pos)) {
+		if (world.getBlockId(	pos.x,
+								pos.y,
+								pos.z) == DECore.Elevator.blockID) {
+			if (!BlockElevator.isCeiling(	world,
+											pos)) {
 				elvs.add(pos);
 				return;
 			} else {
 				isCeiling = true;
 			}
 		}
-		if (isCeiling || DECore.isBlockOpeningMaterial(world, pos)) {
+		if (isCeiling || DECore.isBlockOpeningMaterial(	world,
+														pos)) {
 			// mod_Elevator.say((new
 			// StringBuilder()).append("Checking ").append(pos.x).append(", ").append(pos.y).append(", ").append(pos.z).toString());
-			if (pos.y > 0 && !DECore.isBlockLedgeMaterial(
-					world,
-					pos.x,
-					pos.y - 1,
-					pos.z)) {
-				checkForElevators(world, new ChunkPosition(
-						pos.x,
-							pos.y - 1,
-							pos.z), numSolid);
+			if (pos.y > 0 && !DECore.isBlockLedgeMaterial(	world,
+															pos.x,
+															pos.y - 1,
+															pos.z)) {
+				checkForElevators(	world,
+									new ChunkPosition(pos.x, pos.y - 1, pos.z),
+									numSolid);
 			}
-			if (pos.y < DECore.max_elevator_Y && !DECore.isBlockLedgeMaterial(
-					world,
-					pos.x,
-					pos.y + 1,
-					pos.z)) {
-				checkForElevators(world, new ChunkPosition(
-						pos.x,
-							pos.y + 1,
-							pos.z), numSolid);
+			if (pos.y < DECore.max_elevator_Y
+				&& !DECore.isBlockLedgeMaterial(world,
+												pos.x,
+												pos.y + 1,
+												pos.z)) {
+				checkForElevators(	world,
+									new ChunkPosition(pos.x, pos.y + 1, pos.z),
+									numSolid);
 			}
 		} else {
 			numSolid++;
@@ -209,13 +232,19 @@ public class BlockElevatorButton extends BlockButton {
 					tempX++;
 				}
 				ChunkPosition curPos = new ChunkPosition(tempX, pos.y, tempZ);
-				checkForElevators(world, curPos, numSolid);
+				checkForElevators(	world,
+									curPos,
+									numSolid);
 			}
 		}
 	}
 
 	public boolean canBePlacedOnBlock(World world, int i, int j, int k) {
-		return (world.isBlockNormalCube(i, j, k) || world.getBlockId(i, j, k) == DECore.ElevatorCaller.blockID);
+		return (world.isBlockNormalCube(i,
+										j,
+										k) || world.getBlockId(	i,
+																j,
+																k) == DECore.ElevatorCaller.blockID);
 	}
 
 	@Override
@@ -229,17 +258,31 @@ public class BlockElevatorButton extends BlockButton {
 	 */
 	@Override
 	public boolean canBlockStay(World world, int x, int y, int z) {
-		int side = world.getBlockMetadata(x, y, z) & 7;
+		int side = world.getBlockMetadata(	x,
+											y,
+											z) & 7;
 
 		switch (side) {
 		case 1:
-			return this.canBePlacedOnBlock(world, x - 1, y, z);
+			return this.canBePlacedOnBlock(	world,
+											x - 1,
+											y,
+											z);
 		case 2:
-			return this.canBePlacedOnBlock(world, x + 1, y, z);
+			return this.canBePlacedOnBlock(	world,
+											x + 1,
+											y,
+											z);
 		case 3:
-			return this.canBePlacedOnBlock(world, x, y, z - 1);
+			return this.canBePlacedOnBlock(	world,
+											x,
+											y,
+											z - 1);
 		case 4:
-			return this.canBePlacedOnBlock(world, x, y, z + 1);
+			return this.canBePlacedOnBlock(	world,
+											x,
+											y,
+											z + 1);
 		default:
 			return false;
 		}
@@ -247,9 +290,24 @@ public class BlockElevatorButton extends BlockButton {
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int notifierID) {
-		if (!canBlockStay(world, x, y, z)) {
-			dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-			world.setBlock(x, y, z, 0, 0, 3);
+		if (!canBlockStay(	world,
+							x,
+							y,
+							z)) {
+			dropBlockAsItem(world,
+							x,
+							y,
+							z,
+							world.getBlockMetadata(	x,
+													y,
+													z),
+							0);
+			world.setBlock(	x,
+							y,
+							z,
+							0,
+							0,
+							3);
 		}
 	}
 
@@ -262,24 +320,33 @@ public class BlockElevatorButton extends BlockButton {
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random) {
 		if (!world.isRemote) {
-			int metadata = world.getBlockMetadata(x, y, z);
+			int metadata = world.getBlockMetadata(	x,
+													y,
+													z);
 
 			if ((metadata & 8) != 0) {
-				world.setBlockMetadataWithNotify(x, y, z, metadata & 7, 3);
-				world.playSoundEffect(
-						x + 0.5D,
-						y + 0.5D,
-						z + 0.5D,
-						"random.click",
-						0.3F,
-						0.5F);
-				world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-				ElevatorPacketHandler.sendButtonTickUpdate(
-						world,
-						x,
-						y,
-						z,
-						metadata);
+				world.setBlockMetadataWithNotify(	x,
+													y,
+													z,
+													metadata & 7,
+													3);
+				world.playSoundEffect(	x + 0.5D,
+										y + 0.5D,
+										z + 0.5D,
+										"random.click",
+										0.3F,
+										0.5F);
+				world.markBlockRangeForRenderUpdate(x,
+													y,
+													z,
+													x,
+													y,
+													z);
+				ElevatorPacketHandler.sendButtonTickUpdate(	world,
+															x,
+															y,
+															z,
+															metadata);
 			}
 		}
 	}

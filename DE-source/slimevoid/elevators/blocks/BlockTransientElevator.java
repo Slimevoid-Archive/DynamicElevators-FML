@@ -53,7 +53,11 @@ public class BlockTransientElevator extends Block {
 
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
-		return isProvidingStrongPower(world, i, j, k, l);
+		return isProvidingStrongPower(	world,
+										i,
+										j,
+										k,
+										l);
 	}
 
 	@Override
@@ -85,42 +89,79 @@ public class BlockTransientElevator extends Block {
 	}
 
 	public void notifyExtendedNeighbors(World world, int i, int j, int k, int notifyID) {
-		world.notifyBlocksOfNeighborChange(i, j, k, notifyID);
-		world.notifyBlocksOfNeighborChange(i - 1, j, k, notifyID);
-		world.notifyBlocksOfNeighborChange(i + 1, j, k, notifyID);
-		world.notifyBlocksOfNeighborChange(i, j, k - 1, notifyID);
-		world.notifyBlocksOfNeighborChange(i, j, k + 1, notifyID);
+		world.notifyBlocksOfNeighborChange(	i,
+											j,
+											k,
+											notifyID);
+		world.notifyBlocksOfNeighborChange(	i - 1,
+											j,
+											k,
+											notifyID);
+		world.notifyBlocksOfNeighborChange(	i + 1,
+											j,
+											k,
+											notifyID);
+		world.notifyBlocksOfNeighborChange(	i,
+											j,
+											k - 1,
+											notifyID);
+		world.notifyBlocksOfNeighborChange(	i,
+											j,
+											k + 1,
+											notifyID);
 	}
 
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {
-		if (checkForEntity(world, i, j, k)) {
-			world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
-			notifyExtendedNeighbors(world, i, j, k, blockID);
+		if (checkForEntity(	world,
+							i,
+							j,
+							k)) {
+			world.scheduleBlockUpdate(	i,
+										j,
+										k,
+										blockID,
+										tickRate(world));
+			notifyExtendedNeighbors(world,
+									i,
+									j,
+									k,
+									blockID);
 		}
 	}
 
 	public void onBlockRemoval(World world, int i, int j, int k) {
-		notifyExtendedNeighbors(world, i, j, k, blockID);
+		notifyExtendedNeighbors(world,
+								i,
+								j,
+								k,
+								blockID);
 	}
 
 	private boolean checkForEntity(World world, int i, int j, int k) {
-		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(
-				(i),
-				(j),
-				(k),
-				i + 1,
-				j + 1,
-				k + 1);
-		box.expand(0, -0.25D, 0);
-		List entities = world.getEntitiesWithinAABBExcludingEntity(null, box);
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(	(i),
+															(j),
+															(k),
+															i + 1,
+															j + 1,
+															k + 1);
+		box.expand(	0,
+					-0.25D,
+					0);
+		List entities = world.getEntitiesWithinAABBExcludingEntity(	null,
+																	box);
 		Iterator iter = entities.iterator();
 		boolean hasEntity = false;
 		while (iter.hasNext() && !hasEntity) {
 			hasEntity = (iter.next() instanceof EntityElevator);
 		}
 		if (!hasEntity) {
-			world.setBlock(i, j, k, 0, 0, 3);
+			world.setBlock(	i,
+							j,
+							k,
+							0,
+							0,
+							3);
 			return false;
 		}
 		return true;
@@ -128,8 +169,15 @@ public class BlockTransientElevator extends Block {
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random rand) {
-		if (checkForEntity(world, i, j, k)) {
-			world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
+		if (checkForEntity(	world,
+							i,
+							j,
+							k)) {
+			world.scheduleBlockUpdate(	i,
+										j,
+										k,
+										blockID,
+										tickRate(world));
 		}
 	}
 

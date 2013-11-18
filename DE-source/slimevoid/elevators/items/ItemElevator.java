@@ -16,11 +16,15 @@ public class ItemElevator extends ItemBlock {
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int i, int j, int k, int l, float x, float y, float z) {
 		boolean clickElevator = false;
-		if (world.getBlockId(i, j, k) == DECore.Elevator.blockID) {
+		if (world.getBlockId(	i,
+								j,
+								k) == DECore.Elevator.blockID) {
 			clickElevator = true;
 		}
 		// mod_Elevator.say("Collect!", true);
-		if (world.getBlockId(i, j, k) != Block.snow.blockID) {
+		if (world.getBlockId(	i,
+								j,
+								k) != Block.snow.blockID) {
 			if (l == 0) {
 				j--;
 			}
@@ -41,23 +45,31 @@ public class ItemElevator extends ItemBlock {
 			}
 		}
 		if (l == 1 && clickElevator) {
-			if (!world.isAirBlock(i, j + 2, k)) {
+			if (!world.isAirBlock(	i,
+									j + 2,
+									k)) {
 				return false;
 			}
 			itemstack.stackSize--;
-			world.setBlock(
-					i,
-					j + 2,
-					k,
-					DECore.Elevator.blockID,
-					0x01,
-					3);
+			world.setBlock(	i,
+							j + 2,
+							k,
+							DECore.Elevator.blockID,
+							0x01,
+							3);
 		} else if (!clickElevator || (clickElevator && l != 0)) {
-			if (!world.isAirBlock(i, j, k)) {
+			if (!world.isAirBlock(	i,
+									j,
+									k)) {
 				return false;
 			}
 			itemstack.stackSize--;
-			world.setBlock(i, j, k, DECore.Elevator.blockID, 0, 3);
+			world.setBlock(	i,
+							j,
+							k,
+							DECore.Elevator.blockID,
+							0,
+							3);
 		}
 
 		return true;

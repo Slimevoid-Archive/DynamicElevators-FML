@@ -25,9 +25,10 @@ public class BlockElevatorCaller extends Block {
 		super(i, material);
 		this.setCreativeTab(CreativeTabs.tabTransport);
 	}
-	
+
 	public void registerIcons(IconRegister iconRegister) {
-		this.blockIcon = Block.furnaceIdle.getIcon(1, 0);
+		this.blockIcon = Block.furnaceIdle.getIcon(	1,
+													0);
 	}
 
 	private boolean isBeingPoweredByNonElevator(World world, int i, int j, int k) {
@@ -48,11 +49,17 @@ public class BlockElevatorCaller extends Block {
 			} else if (iter == 5) {
 				tempX++;
 			}
-			int ID = world.getBlockId(tempX, tempY, tempZ);
-			DECore
-					.say("Checking: " + tempX + ", " + tempY + ", " + tempZ + ": has block ID" + ID);
-			if (ID > 0 && ID != DECore.Elevator.blockID && Block.blocksList[ID]
-					.isProvidingWeakPower(world, tempX, tempY, tempZ, iter) > 0) {
+			int ID = world.getBlockId(	tempX,
+										tempY,
+										tempZ);
+			DECore.say("Checking: " + tempX + ", " + tempY + ", " + tempZ
+						+ ": has block ID" + ID);
+			if (ID > 0 && ID != DECore.Elevator.blockID
+				&& Block.blocksList[ID].isProvidingWeakPower(	world,
+																tempX,
+																tempY,
+																tempZ,
+																iter) > 0) {
 				return true;
 			}
 		}
@@ -86,10 +93,20 @@ public class BlockElevatorCaller extends Block {
 
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random par5Random) {
-		if (isBeingPoweredByNonElevator(world, x, y, z) && !previouslyPowered) {
-			findAndActivateElevator(world, x, y, z, 0);
+		if (isBeingPoweredByNonElevator(world,
+										x,
+										y,
+										z) && !previouslyPowered) {
+			findAndActivateElevator(world,
+									x,
+									y,
+									z,
+									0);
 			previouslyPowered = true;
-		} else if (!isBeingPoweredByNonElevator(world, x, y, z)) {
+		} else if (!isBeingPoweredByNonElevator(world,
+												x,
+												y,
+												z)) {
 			previouslyPowered = false;
 		}
 	}
@@ -97,17 +114,21 @@ public class BlockElevatorCaller extends Block {
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int notifierID) {
 		if (notifierID != DECore.ElevatorButton.blockID) {
-			if (notifierID <= 0 || notifierID == DECore.Elevator.blockID || !Block.blocksList[notifierID]
-					.canProvidePower() || !isBeingPoweredByNonElevator(
-					world,
-					i,
-					j,
-					k)) {
+			if (notifierID <= 0 || notifierID == DECore.Elevator.blockID
+				|| !Block.blocksList[notifierID].canProvidePower()
+				|| !isBeingPoweredByNonElevator(world,
+												i,
+												j,
+												k)) {
 				previouslyPowered = false;
 				return;
 			}
 			if (!previouslyPowered) {
-				world.scheduleBlockUpdate(i, j, k, blockID, 2);
+				world.scheduleBlockUpdate(	i,
+											j,
+											k,
+											blockID,
+											2);
 			}
 		} else {
 			boolean foundButton = false;
@@ -124,13 +145,21 @@ public class BlockElevatorCaller extends Block {
 				} else if (iter == 3) {
 					tempZ++;
 				}
-				if (world.getBlockId(tempX, j, tempZ) == DECore.ElevatorButton.blockID && (world
-						.getBlockMetadata(tempX, j, tempZ) & 8) > 0) {
+				if (world.getBlockId(	tempX,
+										j,
+										tempZ) == DECore.ElevatorButton.blockID
+					&& (world.getBlockMetadata(	tempX,
+												j,
+												tempZ) & 8) > 0) {
 					foundButton = true;
 				}
 			}
 			if (foundButton) {
-				findAndActivateElevator(world, i, j, k, 0);
+				findAndActivateElevator(world,
+										i,
+										j,
+										k,
+										0);
 			}
 		}
 
@@ -170,9 +199,15 @@ public class BlockElevatorCaller extends Block {
 			} else if (iter == 5) {
 				tempX++;
 			}
-			if (world.getBlockId(tempX, tempY, tempZ) == DECore.ElevatorCaller.blockID && !checkedCallers
-					.contains(new ChunkPosition(tempX, tempY, tempZ))) {
-				findAndActivateElevator(world, tempX, tempY, tempZ, depth + 1);
+			if (world.getBlockId(	tempX,
+									tempY,
+									tempZ) == DECore.ElevatorCaller.blockID
+				&& !checkedCallers.contains(new ChunkPosition(tempX, tempY, tempZ))) {
+				findAndActivateElevator(world,
+										tempX,
+										tempY,
+										tempZ,
+										depth + 1);
 				foundOtherCallerBlock = true;
 			}
 		}
@@ -182,18 +217,12 @@ public class BlockElevatorCaller extends Block {
 			return true;
 		}
 		// No uncalled elevator callers were found, so search for elevators here
-		checkForElevators(world, new ChunkPosition(i, j, k), 0);
+		checkForElevators(	world,
+							new ChunkPosition(i, j, k),
+							0);
 		DECore.say("ElevatorCaller activated at: " + i + ", " + j + ", " + k);
-		DECore.say((new StringBuilder())
-				.append("Checked ")
-					.append(checkedBlocks.size())
-					.append(" blocks")
-					.toString());
-		DECore.say((new StringBuilder())
-				.append("Found ")
-					.append(elvs.size())
-					.append(" elevators")
-					.toString());
+		DECore.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
+		DECore.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
 		int dist = 500;
 		int destY = -1;
 		ChunkPosition newPos = null;
@@ -201,14 +230,12 @@ public class BlockElevatorCaller extends Block {
 			Iterator<ChunkPosition> iter = elvs.iterator();
 			while (iter.hasNext()) {
 				ChunkPosition curPos = iter.next();
-				BlockElevator.refreshAndCombineAllAdjacentElevators(
-						world,
-						curPos);
-				TileEntityElevator curTile = BlockElevator.getTileEntity(
-						world,
-						curPos.x,
-						curPos.y,
-						curPos.z);
+				BlockElevator.refreshAndCombineAllAdjacentElevators(world,
+																	curPos);
+				TileEntityElevator curTile = BlockElevator.getTileEntity(	world,
+																			curPos.x,
+																			curPos.y,
+																			curPos.z);
 				if (curTile != null) {
 					int suggestedY = curTile.getClosestYFromYCoor(j);
 					if (MathHelper.abs(suggestedY - curPos.y) < dist) {
@@ -220,7 +247,9 @@ public class BlockElevatorCaller extends Block {
 			}
 		}
 		if (newPos != null) {
-			DECore.elevator_demandY(world, newPos, j);
+			DECore.elevator_demandY(world,
+									newPos,
+									j);
 			clearSets(depth);
 			return true;
 		}
@@ -233,34 +262,35 @@ public class BlockElevatorCaller extends Block {
 		}
 		checkedBlocks.add(pos);
 		boolean isCeiling = false;
-		if (world.getBlockId(pos.x, pos.y, pos.z) == DECore.Elevator.blockID) {
-			if (!BlockElevator.isCeiling(world, pos)) {
+		if (world.getBlockId(	pos.x,
+								pos.y,
+								pos.z) == DECore.Elevator.blockID) {
+			if (!BlockElevator.isCeiling(	world,
+											pos)) {
 				elvs.add(pos);
 				return;
 			} else {
 				isCeiling = true;
 			}
 		}
-		if (isCeiling || DECore.isBlockOpeningMaterial(world, pos)) {
-			if (pos.y > 0 && !DECore.isBlockLedgeMaterial(
-					world,
-					pos.x,
-					pos.y - 1,
-					pos.z)) {
-				checkForElevators(world, new ChunkPosition(
-						pos.x,
-							pos.y - 1,
-							pos.z), numSolid);
+		if (isCeiling || DECore.isBlockOpeningMaterial(	world,
+														pos)) {
+			if (pos.y > 0 && !DECore.isBlockLedgeMaterial(	world,
+															pos.x,
+															pos.y - 1,
+															pos.z)) {
+				checkForElevators(	world,
+									new ChunkPosition(pos.x, pos.y - 1, pos.z),
+									numSolid);
 			}
-			if (pos.y < DECore.max_elevator_Y && !DECore.isBlockLedgeMaterial(
-					world,
-					pos.x,
-					pos.y + 1,
-					pos.z)) {
-				checkForElevators(world, new ChunkPosition(
-						pos.x,
-							pos.y + 1,
-							pos.z), numSolid);
+			if (pos.y < DECore.max_elevator_Y
+				&& !DECore.isBlockLedgeMaterial(world,
+												pos.x,
+												pos.y + 1,
+												pos.z)) {
+				checkForElevators(	world,
+									new ChunkPosition(pos.x, pos.y + 1, pos.z),
+									numSolid);
 			}
 		} else {
 			numSolid++;
@@ -280,7 +310,9 @@ public class BlockElevatorCaller extends Block {
 					tempX++;
 				}
 				ChunkPosition curPos = new ChunkPosition(tempX, pos.y, tempZ);
-				checkForElevators(world, curPos, numSolid);
+				checkForElevators(	world,
+									curPos,
+									numSolid);
 			}
 		}
 	}
@@ -293,9 +325,9 @@ public class BlockElevatorCaller extends Block {
 		}
 	}
 
-	static Set<ChunkPosition> elvs = new HashSet<ChunkPosition>();
-	static Set<ChunkPosition> checkedBlocks = new HashSet<ChunkPosition>();
-	static Set<ChunkPosition> checkedCallers = new HashSet<ChunkPosition>();
+	static Set<ChunkPosition>	elvs				= new HashSet<ChunkPosition>();
+	static Set<ChunkPosition>	checkedBlocks		= new HashSet<ChunkPosition>();
+	static Set<ChunkPosition>	checkedCallers		= new HashSet<ChunkPosition>();
 
-	boolean previouslyPowered = false;
+	boolean						previouslyPowered	= false;
 }
