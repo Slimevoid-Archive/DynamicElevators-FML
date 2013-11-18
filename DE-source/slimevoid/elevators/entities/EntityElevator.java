@@ -280,8 +280,8 @@ public class EntityElevator extends Entity {
 				if (this.motionY > 0) rider.posY += 1F;
 			}
 			rider.motionY = 0.1F;
-			updateRider(rider);
-			rider.unmountEntity(this);
+			// updateRider(rider);
+			// rider.unmountEntity(this);
 			say("Ejected rider #" + rider.entityId);
 		}
 		ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
@@ -320,13 +320,14 @@ public class EntityElevator extends Entity {
 			// / rider.setPosition(rider.posX, centerElevator.posY +
 			// getMountedYOffset() + rider.getYOffset(), rider.posZ);
 			// }
-			rider.onGround = true;
-			rider.fallDistance = 0.0F;
-			rider.isCollidedVertically = true;
+			// rider.onGround = true;
+			// rider.fallDistance = 0.0F;
+			// rider.isCollidedVertically = true;
 		} else if (!(rider instanceof EntityElevator)) {
-			rider.posY = centerElevator.posY + getMountedYOffset()
-							+ rider.yOffset;
-			rider.onGround = false;
+			// rider.posY = centerElevator.posY + getMountedYOffset()
+			// + rider.yOffset;
+			rider.motionY = this.motionY;
+			// rider.onGround = false;
 		}
 
 		say((new StringBuilder()).append("Updating rider with id #").append(rider.entityId).append(" to ").append(rider.posY).toString());

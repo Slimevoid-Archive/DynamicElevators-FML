@@ -9,7 +9,7 @@ public class CoreLib {
 	public static final String	MOD_ID				= "DynamicElevators";
 	public static final String	MOD_RESOURCES		= "elevators";
 	public static final String	MOD_NAME			= "Dynamic Elevators";
-	public static final String	MOD_VERSION			= "2.0.0.5";
+	public static final String	MOD_VERSION			= "2.0.0.6";
 	public static final String	MOD_DEPENDENCIES	= "required-after:SlimevoidLib";
 	public static final String	MOD_CHANNEL			= "DELEVATORS";
 	public static final String	CLIENT_PROXY		= "slimevoid.collaborative.client.proxy.ClientProxy";
