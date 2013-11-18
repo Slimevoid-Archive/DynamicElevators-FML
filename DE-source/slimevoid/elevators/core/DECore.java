@@ -87,21 +87,21 @@ public class DECore {
 
 	// TODO: Add option for allowing/disallowing elevator options to be
 	// changed/accessed
-	public static boolean										invertKeys;																			// =
+	public static boolean										invertKeys;																		// =
 																																					// props.getBoolean("invertElevatorKeys");
 	public static boolean										strictShaft;																		// =
 																																					// props.getBoolean("entireShaftMustBeClear");
 	public static int											elevator_entityID;																	// =
 																																					// props.getInt("elevator_entityID");
 
-	public static int											max_elevator_Y;																		// =
+	public static int											max_elevator_Y;																	// =
 																																					// props.getInt("Max_Elevator_Y");
 
 	static int													guiElevatorID;																		// =
 																																					// props.getInt("Elevator_GUI_ID");
 
 	// Which render types cannot be openings?
-	public static Set<Integer>									disallowed_renderTypes;																// =
+	public static Set<Integer>									disallowed_renderTypes;															// =
 																																					// new
 																																					// HashSet<Integer>();
 	// Which block IDs are allowed to be openings?
@@ -114,7 +114,7 @@ public class DECore {
 																																					// HashSet<Integer>();
 
 	// Which block IDs are allowed to be ledges?
-	public static Set<Integer>									solid_allowed_blockIDs;																// =
+	public static Set<Integer>									solid_allowed_blockIDs;															// =
 																																					// new
 																																					// HashSet<Integer>();
 	// Which block IDs are not allowed to be ledges?
@@ -136,7 +136,7 @@ public class DECore {
 	// TODO: Make these specific to individual elevators using the GUI
 	// TODO: Add custom rendering for elevators to allow for individual
 	// selection of elevator chunk textures
-	public static Icon											topTexture;																			// =
+	public static Icon											topTexture;																		// =
 																																					// props.getInt("Elevator_Top_Texture");
 	public static Icon											sideTexture;																		// =
 																																					// props.getInt("Elevator_SideAndBottom_Texture");
@@ -147,10 +147,10 @@ public class DECore {
 																																					// props.getInt("ElevatorCaller_blockID");
 	public static int											elevator_blockID;																	// =
 																																					// props.getInt("Elevator_blockID");
-	public static int											transient_elevator_blockID;															// =
+	public static int											transient_elevator_blockID;														// =
 																																					// props.getInt("TransientElevator_blockID");
 
-	public static Block											ElevatorButton;																		// =
+	public static Block											ElevatorButton;																	// =
 																																					// (new
 																																					// BlockElevatorButton(elevator_button_blockID,
 																																					// Block.blockSteel.blockIndexInTexture,
@@ -158,7 +158,7 @@ public class DECore {
 	public static Block											Elevator;																			// =
 																																					// (new
 																																					// BlockElevator(elevator_blockID).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setResistance(15F).setUnlocalizedName("elevator"));
-	public static Block											ElevatorCaller;																		// =
+	public static Block											ElevatorCaller;																	// =
 																																					// (new
 																																					// BlockElevatorCaller(elevator_caller_blockID,
 																																					// Material.ground)).setHardness(0.5F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("elevatorcaller");
@@ -257,12 +257,6 @@ public class DECore {
 		// TODO: Make these specific to individual elevators using the GUI
 		// TODO: Add custom rendering for elevators to allow for individual
 		// selection of elevator chunk textures
-		// if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-		// topTexture = Block.blockDiamond.getIcon(0,
-		// 0);//props.getInt("Elevator_Top_Texture");
-		// sideTexture = Block.blockIron.getIcon(0,
-		// 0);//props.getInt("Elevator_SideAndBottom_Texture");
-		// }
 
 		elevator_button_blockID = props.getInt("ElevatorButton_blockID");
 		elevator_caller_blockID = props.getInt("ElevatorCaller_blockID");

@@ -20,22 +20,22 @@ public class TileEntityElevator extends TileEntity {
 	// If the y coordinate is not present in this list, that floor has yet to be
 	// named
 
-	private List<Integer> floors = new ArrayList<Integer>();
+	private List<Integer>	floors				= new ArrayList<Integer>();
 
-	public DEProperties props = new DEProperties();
+	public DEProperties		props				= new DEProperties();
 
-	public static final int NO_ACTION = 0;
-	public static final int REQUEST_NEW_FLOOR = 1;
-	public static final int DEMAND_NEW_FLOOR = 2;
-	public static final int POWER_ON = 3;
+	public static final int	NO_ACTION			= 0;
+	public static final int	REQUEST_NEW_FLOOR	= 1;
+	public static final int	DEMAND_NEW_FLOOR	= 2;
+	public static final int	POWER_ON			= 3;
 
-	public static final int NO_FLOOR = 0;
+	public static final int	NO_FLOOR			= 0;
 
-	private int providesPower = 0;
+	private int				providesPower		= 0;
 
-	private int destination_Y;
+	private int				destination_Y;
 
-	private int state;
+	private int				state;
 
 	public TileEntityElevator() {
 		super();
@@ -247,17 +247,17 @@ public class TileEntityElevator extends TileEntity {
 	}
 
 	public Packet250CustomPayload createPropertiesPacket(boolean GUI_Request) throws IOException {
-		return props.createPropertiesPacket(
-				this.curFloor(),
-				this.numFloors(),
-				floors,
-				GUI_Request);
+		return props.createPropertiesPacket(this.curFloor(),
+											this.numFloors(),
+											floors,
+											GUI_Request);
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("provides", providesPower);
+		nbt.setInteger(	"provides",
+						providesPower);
 		props.writeToNBT(nbt);
 	}
 

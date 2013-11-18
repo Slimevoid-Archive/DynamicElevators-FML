@@ -21,9 +21,8 @@ public class DE_ClientProxy extends DE_CommonProxy {
 
 	@Override
 	public void registerRenderInformation() {
-		RenderingRegistry.registerEntityRenderingHandler(
-				EntityElevator.class,
-				new RenderElevator());
+		RenderingRegistry.registerEntityRenderingHandler(	EntityElevator.class,
+															new RenderElevator());
 	}
 
 	@Override
@@ -38,9 +37,11 @@ public class DE_ClientProxy extends DE_CommonProxy {
 		}
 		try {
 			if (loc != null) {
-				ModLoader.openGUI(entityplayer, new GuiElevator(packet, loc));
+				ModLoader.openGUI(	entityplayer,
+									new GuiElevator(packet, loc));
 			} else {
-				ModLoader.openGUI(entityplayer, new GuiElevator(packet));
+				ModLoader.openGUI(	entityplayer,
+									new GuiElevator(packet));
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -14,18 +14,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiElevatorSlider extends GuiButton {
 
 	/** The value of this slider control. */
-	public float sliderValue = 1.0F;
+	public float	sliderValue		= 1.0F;
 
-	private float sliderPosition = 1.0F;
+	private float	sliderPosition	= 1.0F;
 
-	public float maximumValue = 1.0F;
+	public float	maximumValue	= 1.0F;
 
 	/** Is this slider control being dragged. */
-	public boolean dragging = false;
+	public boolean	dragging		= false;
 
-	private boolean discrete = false;
+	private boolean	discrete		= false;
 
-	String message = "";
+	String			message			= "";
 
 	public GuiElevatorSlider(int id, int left, int top, float defaultValue, float maximum, boolean discreteValues, String property) {
 		super(id, left, top, 150, 20, "");
@@ -48,8 +48,8 @@ public class GuiElevatorSlider extends GuiButton {
 
 	private void nameString() {
 		if (discrete) {
-			this.displayString = message + String
-					.valueOf((int) this.sliderValue);
+			this.displayString = message
+									+ String.valueOf((int) this.sliderValue);
 		} else {
 			this.displayString = message + String.valueOf(this.sliderValue);
 		}
@@ -68,11 +68,13 @@ public class GuiElevatorSlider extends GuiButton {
 	protected void mouseDragged(Minecraft par1Minecraft, int par2, int par3) {
 		if (this.drawButton) {
 			if (this.dragging) {
-				this.sliderPosition = (float) (par2 - (this.xPosition + 4)) / (float) (this.width - 8);
+				this.sliderPosition = (float) (par2 - (this.xPosition + 4))
+										/ (float) (this.width - 8);
 
 				if (discrete) {
-					sliderPosition = MathHelper
-							.floor_float((sliderPosition * maximumValue + 0.5F)) / maximumValue;
+					sliderPosition = MathHelper.floor_float((sliderPosition
+																* maximumValue + 0.5F))
+										/ maximumValue;
 				}
 
 				if (this.sliderPosition < 0.0F) {
@@ -87,23 +89,25 @@ public class GuiElevatorSlider extends GuiButton {
 				nameString();
 			}
 
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			this
-					.drawTexturedModalRect(
-							this.xPosition + (int) (this.sliderPosition * (this.width - 8)),
-							this.yPosition,
-							0,
-							66,
-							4,
-							20);
-			this
-					.drawTexturedModalRect(
-							this.xPosition + (int) (this.sliderPosition * (this.width - 8)) + 4,
-							this.yPosition,
-							196,
-							66,
-							4,
-							20);
+			GL11.glColor4f(	1.0F,
+							1.0F,
+							1.0F,
+							1.0F);
+			this.drawTexturedModalRect(	this.xPosition
+												+ (int) (this.sliderPosition * (this.width - 8)),
+										this.yPosition,
+										0,
+										66,
+										4,
+										20);
+			this.drawTexturedModalRect(	this.xPosition
+												+ (int) (this.sliderPosition * (this.width - 8))
+												+ 4,
+										this.yPosition,
+										196,
+										66,
+										4,
+										20);
 		}
 	}
 
@@ -113,16 +117,20 @@ public class GuiElevatorSlider extends GuiButton {
 	 */
 	@Override
 	public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {
-		if (super.mousePressed(par1Minecraft, par2, par3)) {
+		if (super.mousePressed(	par1Minecraft,
+								par2,
+								par3)) {
 			if (this.dragging) {
 				this.dragging = false;
 				return true;
 			}
-			this.sliderPosition = (float) (par2 - (this.xPosition + 4)) / (float) (this.width - 8);
+			this.sliderPosition = (float) (par2 - (this.xPosition + 4))
+									/ (float) (this.width - 8);
 
 			if (discrete) {
-				sliderPosition = MathHelper
-						.floor_float((sliderPosition * maximumValue + 0.5F)) / maximumValue;
+				sliderPosition = MathHelper.floor_float((sliderPosition
+															* maximumValue + 0.5F))
+									/ maximumValue;
 			}
 
 			if (this.sliderPosition < 0.0F) {
