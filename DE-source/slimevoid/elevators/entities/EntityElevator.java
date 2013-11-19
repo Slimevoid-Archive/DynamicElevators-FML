@@ -7,7 +7,6 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -256,15 +255,17 @@ public class EntityElevator extends Entity {
 		if (this.isDead) {
 			return;
 		}
-		if (!worldObj.isRemote && !mountedEntities.isEmpty()) {
+		if (/* !worldObj.isRemote && */!mountedEntities.isEmpty()) {
 			Iterator<Entity> iter = mountedEntities.iterator();
 			while (iter.hasNext()) {
 				updateRider(iter.next());
 			}
-			ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
-													(int) this.posX,
-													(int) this.posY,
-													(int) this.posZ);
+			if (!worldObj.isRemote) {
+				ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
+														(int) this.posX,
+														(int) this.posY,
+														(int) this.posZ);
+			}
 		}
 	}
 
@@ -279,16 +280,18 @@ public class EntityElevator extends Entity {
 			if (pos < 1.0) {
 				if (this.motionY > 0) rider.posY += 1F;
 			}
-			rider.motionY = 0.1F;
-			// updateRider(rider);
+			rider.motionY = 0.1;
+			updateRider(rider);
 			// rider.unmountEntity(this);
 			say("Ejected rider #" + rider.entityId);
 		}
-		ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
-												(int) this.posX,
-												(int) this.posY,
-												(int) this.posZ,
-												true);
+		if (!worldObj.isRemote) {
+			ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
+													(int) this.posX,
+													(int) this.posY,
+													(int) this.posZ,
+													true);
+		}
 		mountedEntities.clear();
 	}
 
@@ -299,37 +302,21 @@ public class EntityElevator extends Entity {
 
 	@Override
 	public double getMountedYOffset() {
-		return 0.5D;
+		return 0.25D;
 	}
 
 	public void updateRider(Entity rider) {
 		if (rider == null) {
 			return;
 		}
-		if (worldObj.isRemote) {
-			return;
-		}
+		rider.moveEntity(	0,
+							rider.posY - this.posY,
+							0);
+		rider.motionY = this.motionY;
+		rider.fallDistance = 0;
+		rider.isCollidedVertically = true;
+		rider.onGround = true;
 		say("Difference: " + (rider.posY - this.posY));
-		if (rider instanceof EntityLiving) {
-			// if (rider instanceof EntityPlayer) {
-			// rider.posY = centerElevator.posY + getMountedYOffset()
-			// + rider.yOffset;
-			rider.motionY = this.motionY;
-			// }
-			// elses {
-			// / rider.setPosition(rider.posX, centerElevator.posY +
-			// getMountedYOffset() + rider.getYOffset(), rider.posZ);
-			// }
-			// rider.onGround = true;
-			// rider.fallDistance = 0.0F;
-			// rider.isCollidedVertically = true;
-		} else if (!(rider instanceof EntityElevator)) {
-			// rider.posY = centerElevator.posY + getMountedYOffset()
-			// + rider.yOffset;
-			rider.motionY = this.motionY;
-			// rider.onGround = false;
-		}
-
 		say((new StringBuilder()).append("Updating rider with id #").append(rider.entityId).append(" to ").append(rider.posY).toString());
 	}
 
@@ -351,7 +338,7 @@ public class EntityElevator extends Entity {
 	public void onUpdate() {
 
 		if (worldObj.isRemote) {
-			return;
+			// return;
 		}
 
 		int i = MathHelper.floor_double(posX);
@@ -545,9 +532,9 @@ public class EntityElevator extends Entity {
 		this.setPosition(	this.posX,
 							this.posY + this.motionY,
 							this.posZ);
-		if (!worldObj.isRemote) {
-			updateRiderPosition();
-		}
+		// if (!worldObj.isRemote) {
+		updateRiderPosition();
+		// }
 
 		if (!emerHalt) {
 			if (MathHelper.abs((float) motionY) < minElevatorMovingSpeed

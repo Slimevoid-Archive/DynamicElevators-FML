@@ -312,27 +312,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 					double newEntityYPos = dataStream.readDouble(); // Ypos
 					int entity_data = dataStream.readInt(); // Data
 
-					Entity entity = ((EntityPlayer) player).worldObj.getEntityByID(/**
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * 
-					 * EntityHelper.getEntityByID(
-					 **/
-					entityID);
+					Entity entity = ((EntityPlayer) player).worldObj.getEntityByID(entityID);
 					DECore.say("Received request for entity id " + entityID
 								+ " to be set to Y: " + newEntityYPos);
 					if (entity != null) {
@@ -346,7 +326,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 							}
 						} else {
 							if (entity instanceof EntityLiving) {
-								entity.motionY = newEntityYPos > 0 ? newEntityYPos + 0.02 : newEntityYPos - 0.02;
+								entity.motionY = newEntityYPos;
 								entity.onGround = true;
 								entity.fallDistance = 0.0F;
 								entity.isCollidedVertically = true;
