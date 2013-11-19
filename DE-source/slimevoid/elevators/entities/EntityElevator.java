@@ -310,7 +310,7 @@ public class EntityElevator extends Entity {
 			return;
 		}
 		rider.moveEntity(	0,
-							rider.posY - this.posY,
+							(this.posY + 1.25) - rider.posY,
 							0);
 		rider.motionY = this.motionY;
 		rider.fallDistance = 0;
