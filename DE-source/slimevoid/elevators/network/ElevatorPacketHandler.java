@@ -57,7 +57,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 
 	public static HashMap<String, ChunkPosition>	elevatorRequests		= new HashMap();
 
-	public static void sendRiderUpdates(Set<Entity> entities, int x, int y, int z) {
+	public static void sendRiderUpdates(Set<Entity> entities, double x, double y, double z) {
 		sendRiderUpdates(	entities,
 							x,
 							y,
@@ -65,7 +65,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 							false);
 	}
 
-	public static void sendRiderUpdates(Set<Entity> entities, int x, int y, int z, boolean ejectRiders) {
+	public static void sendRiderUpdates(Set<Entity> entities, double x, double y, double z, boolean ejectRiders) {
 		boolean noSend = false;
 
 		if (entities == null || entities.isEmpty()) {
@@ -92,12 +92,9 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 				Entity curEntity = iter.next();
 				dimensionID = curEntity.worldObj.getWorldInfo().getDimension();
 				data.writeInt(curEntity.entityId); // ID
-				data.writeDouble(curEntity.motionY); // posY
-				if (ejectRiders) {
-					data.writeInt(1); // Data (version 2)
-				} else {
-					data.writeInt(0);
-				}
+				data.writeDouble(curEntity.posY);
+				data.writeDouble(curEntity.motionY);
+				data.writeBoolean(ejectRiders);
 			}
 			Packet250CustomPayload packet = new Packet250CustomPayload();
 			packet.channel = CHANNELS[UPDATE_RIDERS];
@@ -309,38 +306,49 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 
 				for (int i = 0; i < numEntities; i++) {
 					int entityID = dataStream.readInt(); // ID
-					double newEntityYPos = dataStream.readDouble(); // Ypos
-					int entity_data = dataStream.readInt(); // Data
+					double posY = dataStream.readDouble();
+					double motionY = dataStream.readDouble();
+					boolean ejectRiders = dataStream.readBoolean();
+					// int entity_data = dataStream.readInt(); // Data
 
 					Entity entity = ((EntityPlayer) player).worldObj.getEntityByID(entityID);
 					DECore.say("Received request for entity id " + entityID
-								+ " to be set to Y: " + newEntityYPos);
+								+ " to be set to Y: " + posY);
 					if (entity != null) {
 						if (entity instanceof EntityElevator) {
 							EntityElevator curElevator = (EntityElevator) entity;
 							curElevator.setPosition(entity.posX,
-													newEntityYPos,
+													posY,
 													entity.posZ);
-							if (entity_data == 1) {
+							if (ejectRiders) {
 								entity.updateRiderPosition();
 							}
 						} else {
 							if (entity instanceof EntityLiving) {
-								entity.motionY = newEntityYPos;
-								entity.onGround = true;
-								entity.fallDistance = 0.0F;
-								entity.isCollidedVertically = true;
+								// if (entity.entityId ==
+								// FMLClientHandler.instance().getClient().thePlayer.entityId)
+								// {
+								// System.out.println("Is Me!");
+								// } else {
+								entity.posY = posY;
+								entity.motionY = motionY;
+								entity.fallDistance = 0;
+								// entity.onGround = true;
+								// entity.isCollidedVertically = true;
+								// }
 							} else {
-								entity.motionY = newEntityYPos;
+								entity.motionY = motionY;
 								// entity.onGround = false;
 							}
-							if (entity_data == 1) {
+							if (ejectRiders) {
 								entity.motionY = 0.1;
+								entity.fallDistance = 0;
+								entity.onGround = true;
 							}
 						}
 
 						DECore.say("Entity with id " + entity.entityId
-									+ " was set to " + newEntityYPos);
+									+ " was set to " + motionY);
 					} else {
 						DECore.say("Entity with that ID does not exist");
 					}

@@ -31,7 +31,7 @@ public class EntityElevator extends Entity {
 	boolean						unUpdated;
 
 	private float				elevatorSpeed			= 0.0F;
-	private static final float	elevatorAccel			= 0.01F;
+	private static final float	elevatorAccel			= 0.005F;
 	private static final float	maxElevatorSpeed		= 0.4F;
 	private static final float	minElevatorMovingSpeed	= 0.016F;
 	public Set<Entity>			mountedEntities;
@@ -239,12 +239,52 @@ public class EntityElevator extends Entity {
 	 */
 
 	@Override
+	public void updateRidden() {
+
+	}
+
+	@Override
+	public double getMountedYOffset() {
+		return 2D;
+	}
+
+	@Override
 	public void mountEntity(Entity entity) {
 	}
 
 	public void setConjoined(Set<EntityElevator> entitylist) {
 		conjoinedelevators.addAll(entitylist);
 		conjoinedHasBeenSet = true;
+	}
+
+	private void ejectRiders() {
+		if (mountedEntities.isEmpty()) {
+			return;
+		}
+		Iterator<Entity> iter = mountedEntities.iterator();
+		while (iter.hasNext()) {
+			Entity rider = iter.next();
+			double pos = Math.abs(rider.posY - this.posY);
+			if (pos < 1.0) {
+				if (this.motionY > 0) rider.moveEntity(	0,
+														1.0,
+														0);
+			}
+			rider.motionY = 0.1;
+			rider.fallDistance = 0;
+			rider.onGround = true;
+			// updateRider(rider);
+			// rider.unmountEntity(this);
+			say("Ejected rider #" + rider.entityId);
+		}
+		if (!worldObj.isRemote) {
+			ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
+													(int) this.posX,
+													(int) this.posY,
+													(int) this.posZ,
+													true);
+		}
+		mountedEntities.clear();
 	}
 
 	@Override
@@ -262,60 +302,26 @@ public class EntityElevator extends Entity {
 			}
 			if (!worldObj.isRemote) {
 				ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
-														(int) this.posX,
-														(int) this.posY,
-														(int) this.posZ);
+														this.posX,
+														this.posY,
+														this.posZ);
 			}
 		}
-	}
-
-	private void ejectRiders() {
-		if (mountedEntities.isEmpty()) {
-			return;
-		}
-		Iterator<Entity> iter = mountedEntities.iterator();
-		while (iter.hasNext()) {
-			Entity rider = iter.next();
-			double pos = Math.abs(rider.posY - this.posY);
-			if (pos < 1.0) {
-				if (this.motionY > 0) rider.posY += 1F;
-			}
-			rider.motionY = 0.1;
-			updateRider(rider);
-			// rider.unmountEntity(this);
-			say("Ejected rider #" + rider.entityId);
-		}
-		if (!worldObj.isRemote) {
-			ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
-													(int) this.posX,
-													(int) this.posY,
-													(int) this.posZ,
-													true);
-		}
-		mountedEntities.clear();
-	}
-
-	@Override
-	public void updateRidden() {
-
-	}
-
-	@Override
-	public double getMountedYOffset() {
-		return 0.25D;
 	}
 
 	public void updateRider(Entity rider) {
 		if (rider == null) {
 			return;
 		}
+		double riderPosY = this.posY - rider.posY;
 		rider.moveEntity(	0,
-							(this.posY + 1.25) - rider.posY,
+
+							riderPosY + this.getMountedYOffset(),
 							0);
 		rider.motionY = this.motionY;
 		rider.fallDistance = 0;
-		rider.isCollidedVertically = true;
-		rider.onGround = true;
+		// rider.isCollidedVertically = true;
+		// rider.onGround = true;
 		say("Difference: " + (rider.posY - this.posY));
 		say((new StringBuilder()).append("Updating rider with id #").append(rider.entityId).append(" to ").append(rider.posY).toString());
 	}
