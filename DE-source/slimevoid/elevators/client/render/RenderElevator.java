@@ -10,7 +10,8 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import slimevoid.elevators.core.DECore;
+import slimevoid.elevators.blocks.BlockElevator;
+import slimevoid.elevators.core.lib.ConfigurationLib;
 import slimevoid.elevators.entities.EntityElevator;
 
 public class RenderElevator extends Render {
@@ -122,7 +123,7 @@ public class RenderElevator extends Render {
 
 	public void doRenderElevator(EntityElevator elevator, double d, double d1, double d2, float f, float f1) {
 		GL11.glPushMatrix();
-		Block block = DECore.Elevator;
+		BlockElevator block = (BlockElevator) ConfigurationLib.Elevator;
 		World world = elevator.getWorld();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glTranslatef(	(float) d,
@@ -133,16 +134,16 @@ public class RenderElevator extends Render {
 
 		// int textureData[] = elevator.getTextureData();
 		Icon textureData[] = {
-				DECore.sideTexture,
-				DECore.sideTexture,
-				DECore.sideTexture };
+				block.sideTexture,
+				block.sideTexture,
+				block.sideTexture };
 
 		// Bottom
-		textureData[0] = elevator.isCeiling() ? DECore.topTexture : DECore.sideTexture;
+		textureData[0] = elevator.isCeiling() ? block.topTexture : block.sideTexture;
 		// Top
-		textureData[1] = elevator.isCeiling() ? DECore.sideTexture : DECore.topTexture;
+		textureData[1] = elevator.isCeiling() ? block.sideTexture : block.topTexture;
 		// Sides
-		textureData[2] = DECore.sideTexture;
+		textureData[2] = block.sideTexture;
 
 		renderElevatorEntity(	block,
 								world,

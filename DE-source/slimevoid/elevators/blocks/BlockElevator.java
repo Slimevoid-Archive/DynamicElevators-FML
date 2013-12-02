@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -21,10 +22,17 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
+import slimevoid.elevators.core.lib.BlockLib;
+import slimevoid.elevators.core.lib.ConfigurationLib;
+import slimevoid.elevators.core.lib.CoreLib;
+import slimevoid.elevators.core.lib.PacketLib;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class BlockElevator extends BlockContainer {
+
+	public Icon	topTexture;
+	public Icon	sideTexture;
 
 	public BlockElevator(int i) {
 		super(i, Material.iron);
@@ -39,8 +47,27 @@ public class BlockElevator extends BlockContainer {
 	}
 
 	public void registerIcons(IconRegister iconRegister) {
-		DECore.topTexture = iconRegister.registerIcon("blockDiamond");
-		DECore.sideTexture = iconRegister.registerIcon("blockIron");
+		try {
+			Block topRef = Block.blocksList[ConfigurationLib.topTextureID];
+			if (topRef != null) {
+				Icon top = topRef.getIcon(	0,
+											0);
+				CoreLib.say("Top texture reference is " + top.getIconName(),
+							true);
+				topTexture = iconRegister.registerIcon(top.getIconName());
+			}
+			Block sideRef = Block.blocksList[ConfigurationLib.sideTextureID];
+			if (sideRef != null) {
+				Icon side = sideRef.getIcon(0,
+											0);
+				CoreLib.say("Side texture reference is " + side.getIconName(),
+							true);
+				sideTexture = iconRegister.registerIcon(side.getIconName());
+			}
+		} catch (IndexOutOfBoundsException e) {
+			topTexture = this.blockIcon;
+			sideTexture = this.blockIcon;
+		}
 	}
 
 	private static boolean	verbose	= true;
@@ -52,7 +79,7 @@ public class BlockElevator extends BlockContainer {
 
 	private static void say(String s, boolean always) {
 		if (always || verbose) {
-			DECore.say(	s,
+			CoreLib.say(s,
 						always);
 		}
 	}
@@ -62,9 +89,9 @@ public class BlockElevator extends BlockContainer {
 	static boolean	isClient	= true;
 
 	private static void openGUI(World world, ChunkPosition loc, EntityPlayer player) {
-		DECore.packetHandler.requestGUIMapping(	world,
-												loc,
-												player);
+		PacketLib.requestGUIMapping(world,
+									loc,
+									player);
 	}
 
 	// ---------------- END SERVER/CLIENT SENSITIVE CODE ------------------ //
@@ -84,15 +111,15 @@ public class BlockElevator extends BlockContainer {
 	public Icon getIcon(int side, int meta) {
 		if (isCeiling(meta)) {
 			if (side != 0) {
-				return DECore.sideTexture;
+				return this.sideTexture;
 			} else {
-				return DECore.topTexture;
+				return this.topTexture;
 			}
 		} else {
 			if (side != 1) {
-				return DECore.sideTexture;
+				return this.sideTexture;
 			} else {
-				return DECore.topTexture;
+				return this.topTexture;
 			}
 		}
 	}
@@ -106,7 +133,7 @@ public class BlockElevator extends BlockContainer {
 		}
 		if (world.getBlockId(	i,
 								j,
-								k) != DECore.Elevator.blockID) {
+								k) != ConfigurationLib.Elevator.blockID) {
 			say("That's not an elevator.");
 			return null;
 		}
@@ -138,7 +165,7 @@ public class BlockElevator extends BlockContainer {
 		}
 		if (world.getBlockId(	i,
 								j,
-								k) != DECore.Elevator.blockID) {
+								k) != ConfigurationLib.Elevator.blockID) {
 			say("That's not an elevator.");
 			return null;
 		}
@@ -179,8 +206,8 @@ public class BlockElevator extends BlockContainer {
 				true);
 			e.printStackTrace();
 		}
-		DECore.elevator_powerOn(world,
-								curPos);
+		BlockLib.elevator_powerOn(	world,
+									curPos);
 		say("Elevator Added: " + DECore.pos2Str(curPos));
 	}
 
@@ -236,7 +263,7 @@ public class BlockElevator extends BlockContainer {
 	}
 
 	public static boolean hasCeiling(World world, int i, int j, int k) {
-		if (j > DECore.max_elevator_Y - 3) {
+		if (j > ConfigurationLib.max_elevator_Y - 3) {
 			return false;
 		}
 		if (isCeiling(	world,
@@ -247,7 +274,7 @@ public class BlockElevator extends BlockContainer {
 		}
 		return (world.getBlockId(	i,
 									j + 3,
-									k) == DECore.Elevator.blockID);
+									k) == ConfigurationLib.Elevator.blockID);
 	}
 
 	public static boolean hasFloor(World world, int i, int j, int k) {
@@ -256,7 +283,7 @@ public class BlockElevator extends BlockContainer {
 		}
 		return (world.getBlockId(	i,
 									j - 3,
-									k) == DECore.Elevator.blockID);
+									k) == ConfigurationLib.Elevator.blockID);
 	}
 
 	public static boolean isCeiling(World world, ChunkPosition pos) {
@@ -279,7 +306,7 @@ public class BlockElevator extends BlockContainer {
 	public void updateCeilingStatus(World world, int i, int j, int k) {
 		if (world.getBlockId(	i,
 								j,
-								k) != DECore.Elevator.blockID) {
+								k) != ConfigurationLib.Elevator.blockID) {
 			return;
 		}
 		int metadata = world.getBlockMetadata(	i,
@@ -348,7 +375,7 @@ public class BlockElevator extends BlockContainer {
 		}
 
 		for (int testY = y + 1; testY <= max; testY++) {
-			boolean valid = DECore.isBlockOpeningMaterial(	world,
+			boolean valid = BlockLib.isBlockOpeningMaterial(world,
 															x,
 															testY,
 															z)
@@ -376,7 +403,7 @@ public class BlockElevator extends BlockContainer {
 		if (hasCeiling(	world,
 						x,
 						origY,
-						y) && (y + 3) >= DECore.max_elevator_Y) {
+						y) && (y + 3) >= ConfigurationLib.max_elevator_Y) {
 			return false;
 		}
 
@@ -394,15 +421,15 @@ public class BlockElevator extends BlockContainer {
 			} else if (iter == 3) {
 				tempX++;
 			}
-			if (DECore.isBlockLedgeMaterial(world,
-											tempX,
-											y,
-											tempZ)
-				&& DECore.isBlockOpeningMaterial(	world,
+			if (BlockLib.isBlockLedgeMaterial(	world,
+												tempX,
+												y,
+												tempZ)
+				&& BlockLib.isBlockOpeningMaterial(	world,
 													tempX,
 													y + 1,
 													tempZ)
-				&& DECore.isBlockOpeningMaterial(	world,
+				&& BlockLib.isBlockOpeningMaterial(	world,
 													tempX,
 													y + 2,
 													tempZ)) {
@@ -424,7 +451,7 @@ public class BlockElevator extends BlockContainer {
 		Set<Integer> blockNum = new HashSet<Integer>();
 		if (world.getBlockId(	x,
 								y,
-								z) != DECore.Elevator.blockID) {
+								z) != ConfigurationLib.Elevator.blockID) {
 			return blockNum;
 		}
 
@@ -432,10 +459,10 @@ public class BlockElevator extends BlockContainer {
 		boolean betweenFloors = true;
 
 		for (int curY = y; curY > 0
-							&& (curY == y || DECore.isBlockOpeningMaterial(	world,
-																			x,
-																			curY,
-																			z)); curY--) {
+							&& (curY == y || BlockLib.isBlockOpeningMaterial(	world,
+																				x,
+																				curY,
+																				z)); curY--) {
 			if (hasPossibleFloor(	world,
 									x,
 									curY,
@@ -449,8 +476,8 @@ public class BlockElevator extends BlockContainer {
 		}
 
 		boolean addCheck = true;
-		for (int curY = y + 1; curY < (DECore.max_elevator_Y - 3)
-								&& (DECore.isBlockOpeningMaterial(	world,
+		for (int curY = y + 1; curY < (ConfigurationLib.max_elevator_Y - 3)
+								&& (BlockLib.isBlockOpeningMaterial(world,
 																	x,
 																	curY,
 																	z) || (curY == y + 3 && hasCeiling(	world,
@@ -482,18 +509,18 @@ public class BlockElevator extends BlockContainer {
 		return isReachable(	world,
 							testFloor,
 							origY,
-							DECore.strictShaft);
+							ConfigurationLib.strictShaft);
 	}
 
 	public static boolean isReachable(World world, ChunkPosition testFloor, int origY, boolean strict) {
-		if (testFloor.y <= 0 || testFloor.y >= DECore.max_elevator_Y) {
+		if (testFloor.y <= 0 || testFloor.y >= ConfigurationLib.max_elevator_Y) {
 			return false;
 		}
 		if (hasCeiling(	world,
 						testFloor.x,
 						origY,
 						testFloor.z)
-			&& (testFloor.y + 3) >= DECore.max_elevator_Y) {
+			&& (testFloor.y + 3) >= ConfigurationLib.max_elevator_Y) {
 			return false;
 		}
 
@@ -655,7 +682,8 @@ public class BlockElevator extends BlockContainer {
 							j,
 							k);
 		ItemStack curItem = player.getCurrentEquippedItem();
-		if (curItem != null && curItem.itemID == DECore.Elevator.blockID) {
+		if (curItem != null
+			&& curItem.itemID == ConfigurationLib.Elevator.blockID) {
 			return false;
 		}
 		boolean isCeiling = false;
@@ -678,7 +706,7 @@ public class BlockElevator extends BlockContainer {
 														k);
 
 		if (elevatorInfo == null) {
-			player.addChatMessage(DECore.message_elevator_outoforder);
+			player.addChatMessage(ConfigurationLib.message_elevator_outoforder);
 			return true;
 		}
 
@@ -756,7 +784,7 @@ public class BlockElevator extends BlockContainer {
 			if (!conjoinedElevators.contains(curPos)
 				&& world.getBlockId(curX,
 									pos.y,
-									curZ) == DECore.Elevator.blockID) {
+									curZ) == ConfigurationLib.Elevator.blockID) {
 				populateAdjacenciesList(world,
 										curPos,
 										dist + 1);
@@ -864,9 +892,9 @@ public class BlockElevator extends BlockContainer {
 				toggleConjoinedPower(	world,
 										0);
 				// Refresh for actual movement
-				DECore.refreshElevator(	world,
-										curPos,
-										2);
+				BlockLib.refreshElevator(	world,
+											curPos,
+											2);
 			} else if (!world.isRemote
 						&& (curDest != j)
 						&& (elevatorInfo.hasFloorAt(curDest) || curState == DEMAND_NEW_FLOOR)) {

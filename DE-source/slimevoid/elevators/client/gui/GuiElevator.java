@@ -15,41 +15,30 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.src.ModLoader;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.ChunkPosition;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
+import slimevoid.elevators.core.lib.BlockLib;
+import slimevoid.elevators.core.lib.ConfigurationLib;
+import slimevoid.elevators.core.lib.CoreLib;
+import slimevoid.elevators.core.lib.GuiLib;
+import slimevoid.elevators.core.lib.PacketLib;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiElevator extends GuiScreen {
-	// Needs command execution?
-	public static final int			GUI_OPTIONS					= DECore.GUI_OPTIONS;				// N
-	public static final int			GUI_RESET					= DECore.GUI_RESET;				// Y
-	public static final int			GUI_CANCEL					= DECore.GUI_CANCEL;				// Y
-	public static final int			GUI_OPTIONS_CANCEL			= DECore.GUI_OPTIONS_CANCEL;		// N
-	public static final int			GUI_OPTIONS_SLIDER			= DECore.GUI_OPTIONS_SLIDER;		// N
-	public static final int			GUI_OPTIONS_NAMESLIST		= DECore.GUI_OPTIONS_NAMESLIST;	// N
-	public static final int			GUI_OPTIONS_FLOORNAME		= DECore.GUI_OPTIONS_FLOORNAME;	// N
-	public static final int			GUI_OPTIONS_ELEVATORNAME	= DECore.GUI_OPTIONS_ELEVATORNAME;	// N
-	public static final int			GUI_OPTIONS_APPLY			= DECore.GUI_OPTIONS_APPLY;		// Y
-	public static final int			GUI_OPTIONS_POWER			= DECore.GUI_OPTIONS_POWER;
-	public static final int			GUI_OPTIONS_HALT			= DECore.GUI_OPTIONS_HALT;
-	public static final int			GUI_OPTIONS_MOBILE			= DECore.GUI_OPTIONS_MOBILE;
-	public static final int			GUI_RENAME_OK				= DECore.GUI_RENAME_OK;
-	public static final int			GUI_RENAME_CANCEL			= DECore.GUI_RENAME_CANCEL;
 
-	public static final int			NAMING_ELEVATOR				= 1;
-	public static final int			NAMING_FLOOR				= 2;
+	public static final int			NAMING_ELEVATOR		= 1;
+	public static final int			NAMING_FLOOR		= 2;
 
-	protected int					xSize						= 215;
-	protected int					ySize						= 213;
+	protected int					xSize				= 215;
+	protected int					ySize				= 213;
 
 	ChunkPosition					elevatorPos;
 
@@ -57,8 +46,8 @@ public class GuiElevator extends GuiScreen {
 	private GuiButton				nameOk;
 	private GuiButton				nameCancel;
 
-	private int						nameMode					= 0;
-	private int						curSelectedFloor			= 0;
+	private int						nameMode			= 0;
+	private int						curSelectedFloor	= 0;
 
 	private GuiElevatorSlider		floorZeroSlider;
 
@@ -70,15 +59,15 @@ public class GuiElevator extends GuiScreen {
 	private GuiElevatorRadialButton	canBeHalted;
 	private GuiElevatorRadialButton	mobilePower;
 
-	private List<GuiButton>			floorButtons				= new ArrayList<GuiButton>();
+	private List<GuiButton>			floorButtons		= new ArrayList<GuiButton>();
 
-	private boolean					sentPacket					= false;
+	private boolean					sentPacket			= false;
 
-	private boolean					optionsOpen					= false;
+	private boolean					optionsOpen			= false;
 
-	boolean							isRemote					= false;
-	int								numFloors					= 0;
-	int								curFloor					= 0;
+	boolean							isRemote			= false;
+	int								numFloors			= 0;
+	int								curFloor			= 0;
 
 	protected int					guiLeft;
 	protected int					guiTop;
@@ -88,13 +77,13 @@ public class GuiElevator extends GuiScreen {
 
 	private int						buttonId;
 
-	public DEProperties				props						= new DEProperties();
+	public DEProperties				props				= new DEProperties();
 	public List<Integer>			yCoordList;
 
-	int								titleTop					= 0;
-	int								subtitleTop					= 0;
+	int								titleTop			= 0;
+	int								subtitleTop			= 0;
 
-	int								floorOne					= 1;
+	int								floorOne			= 1;
 
 	// Constructor for local (SSP) GUI
 	public GuiElevator(Packet250CustomPayload packet, ChunkPosition pos) throws IOException {
@@ -109,13 +98,13 @@ public class GuiElevator extends GuiScreen {
 		buttonId = -1;
 		screenTitle = "";
 
-		DECore.say("GUI LOADING...");
+		CoreLib.say("GUI LOADING...");
 
 		DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		curFloor = dataStream.readInt();
 		numFloors = dataStream.readInt();
 
-		DECore.say("floors: " + numFloors + ", current: " + curFloor);
+		CoreLib.say("floors: " + numFloors + ", current: " + curFloor);
 
 		props.readInData(packet);
 		floorOne = props.getFloorOne();
@@ -169,12 +158,12 @@ public class GuiElevator extends GuiScreen {
 			}
 		}
 
-		DECore.say("Size: " + size + "; rows: " + numRows + "; columns: "
+		CoreLib.say("Size: " + size + "; rows: " + numRows + "; columns: "
 					+ numCols);
 
 		int startX = width / 2;
 
-		if (DECore.invertKeys) {
+		if (ConfigurationLib.invertKeys) {
 			startX += (numCols / 2 - 1) * (20) + (numCols / 2) * spacing;
 			if (numCols % 2 == 1) {
 				startX += 10;
@@ -194,7 +183,7 @@ public class GuiElevator extends GuiScreen {
 
 		for (int j = size; j > 0; j--) {
 			GuiButton curButton;
-			if (!DECore.invertKeys) {
+			if (!ConfigurationLib.invertKeys) {
 				curButton = new GuiButton(j, startX + ((j - 1) % numCols)
 												* spacing, startY
 															- spacing
@@ -215,14 +204,14 @@ public class GuiElevator extends GuiScreen {
 		titleTop = guiTop + 5;
 		subtitleTop = guiTop + 15;
 
-		buttonList.add(new GuiElevatorOptionsButton(GUI_OPTIONS, guiLeft + 4, guiTop + 4));
-		buttonList.add(new GuiButton(GUI_RESET, width / 2 - 95, guiTop + 180, 90, 20, "Reset Elevator"));
-		buttonList.add(new GuiButton(GUI_CANCEL, width / 2 + 5, guiTop + 180, 90, 20, "Close"));
+		buttonList.add(new GuiElevatorOptionsButton(GuiLib.GUI_OPTIONS, guiLeft + 4, guiTop + 4));
+		buttonList.add(new GuiButton(GuiLib.GUI_RESET, width / 2 - 95, guiTop + 180, 90, 20, "Reset Elevator"));
+		buttonList.add(new GuiButton(GuiLib.GUI_CANCEL, width / 2 + 5, guiTop + 180, 90, 20, "Close"));
 
-		buttonList.add(new GuiButton(GUI_OPTIONS_APPLY, width / 2 - 95, guiTop + 180, 90, 20, "Apply"));
-		buttonList.add(new GuiButton(GUI_OPTIONS_CANCEL, width / 2 + 5, guiTop + 180, 90, 20, stringtranslate.translateKey("gui.cancel")));
+		buttonList.add(new GuiButton(GuiLib.GUI_OPTIONS_APPLY, width / 2 - 95, guiTop + 180, 90, 20, "Apply"));
+		buttonList.add(new GuiButton(GuiLib.GUI_OPTIONS_CANCEL, width / 2 + 5, guiTop + 180, 90, 20, stringtranslate.translateKey("gui.cancel")));
 
-		floorZeroSlider = new GuiElevatorSlider(GUI_OPTIONS_SLIDER, width / 2 - 75, guiTop + 110, floorOne, numFloors, true, "First Floor: ");
+		floorZeroSlider = new GuiElevatorSlider(GuiLib.GUI_OPTIONS_SLIDER, width / 2 - 75, guiTop + 110, floorOne, numFloors, true, "First Floor: ");
 		buttonList.add(floorZeroSlider);
 
 		// TODO: Add interface for selecting textures for elevator floor,
@@ -233,9 +222,9 @@ public class GuiElevator extends GuiScreen {
 			floorNamesForList.add(i);
 		}
 
-		floorNamesList = new GuiElevatorList(this, GUI_OPTIONS_NAMESLIST, width / 2 - 103, guiTop + 50, 130, 20, 15, 50, floorNamesForList, this.mc, this.mc.fontRenderer);
-		RenameFloor = new GuiButton(GUI_OPTIONS_FLOORNAME, width / 2 + 40, guiTop + 50, 60, 20, "Rename...");
-		RenameElevator = new GuiButton(GUI_OPTIONS_ELEVATORNAME, width / 2 - 60, guiTop + 25, 120, 20, "Rename Elevator...");
+		floorNamesList = new GuiElevatorList(this, GuiLib.GUI_OPTIONS_NAMESLIST, width / 2 - 103, guiTop + 50, 130, 20, 15, 50, floorNamesForList, this.mc, this.mc.fontRenderer);
+		RenameFloor = new GuiButton(GuiLib.GUI_OPTIONS_FLOORNAME, width / 2 + 40, guiTop + 50, 60, 20, "Rename...");
+		RenameElevator = new GuiButton(GuiLib.GUI_OPTIONS_ELEVATORNAME, width / 2 - 60, guiTop + 25, 120, 20, "Rename Elevator...");
 		buttonList.add(RenameFloor);
 		buttonList.add(RenameElevator);
 
@@ -243,20 +232,20 @@ public class GuiElevator extends GuiScreen {
 		// RenameElevator.enabled = false;
 
 		txtEntryBox = new GuiTextField(this.fontRenderer, this.width / 2 - 100, guiTop + 60, 200, 20);
-		nameOk = new GuiButton(GUI_RENAME_OK, width / 2 - 50, guiTop + 90, 40, 20, stringtranslate.translateKey("Apply"));
-		nameCancel = new GuiButton(GUI_RENAME_CANCEL, width / 2 + 10, guiTop + 90, 40, 20, stringtranslate.translateKey("gui.cancel"));
+		nameOk = new GuiButton(GuiLib.GUI_RENAME_OK, width / 2 - 50, guiTop + 90, 40, 20, stringtranslate.translateKey("Apply"));
+		nameCancel = new GuiButton(GuiLib.GUI_RENAME_CANCEL, width / 2 + 10, guiTop + 90, 40, 20, stringtranslate.translateKey("gui.cancel"));
 		buttonList.add(nameOk);
 		buttonList.add(nameCancel);
 
-		canProvidePower = new GuiElevatorRadialButton(GUI_OPTIONS_POWER, width / 2 - 100, guiTop + 130, "Stationary elevators provide power");
-		canBeHalted = new GuiElevatorRadialButton(GUI_OPTIONS_HALT, width / 2 - 100, guiTop + 160, "Moving elevators can be halted");
-		mobilePower = new GuiElevatorRadialButton(GUI_OPTIONS_MOBILE, width / 2 - 100, guiTop + 145, "Moving elevators provide power");
+		canProvidePower = new GuiElevatorRadialButton(GuiLib.GUI_OPTIONS_POWER, width / 2 - 100, guiTop + 130, "Stationary elevators provide power");
+		canBeHalted = new GuiElevatorRadialButton(GuiLib.GUI_OPTIONS_HALT, width / 2 - 100, guiTop + 160, "Moving elevators can be halted");
+		mobilePower = new GuiElevatorRadialButton(GuiLib.GUI_OPTIONS_MOBILE, width / 2 - 100, guiTop + 145, "Moving elevators provide power");
 		try {
 			canProvidePower.enabled = props.getCanProvidePower();
 			canBeHalted.enabled = props.getCanHalt();
 			mobilePower.enabled = props.getMobilePower();
 		} catch (Exception e) {
-			DECore.say("Error occurred when getting properties");
+			CoreLib.say("Error occurred when getting properties");
 		}
 
 		buttonList.add(canProvidePower);
@@ -369,12 +358,12 @@ public class GuiElevator extends GuiScreen {
 	private void toggleVisibility() {
 		for (int i = 0; i < buttonList.size(); i++) {
 			GuiButton button = (GuiButton) buttonList.get(i);
-			if (button.id < GUI_OPTIONS_CANCEL) {
+			if (button.id < GuiLib.GUI_OPTIONS_CANCEL) {
 				button.drawButton = !optionsOpen;
 			} else {
 				button.drawButton = optionsOpen && nameMode == 0;
 			}
-			if (button.id == GUI_OPTIONS) {
+			if (button.id == GuiLib.GUI_OPTIONS) {
 				button.enabled = !optionsOpen;
 			}
 		}
@@ -393,11 +382,11 @@ public class GuiElevator extends GuiScreen {
 	protected void actionPerformed(GuiButton guibutton) {
 		int command = guibutton.id;
 		switch (command) {
-		case GUI_OPTIONS:
+		case GuiLib.GUI_OPTIONS:
 			optionsOpen = true;
 			toggleVisibility();
 			break;
-		case GUI_OPTIONS_APPLY:
+		case GuiLib.GUI_OPTIONS_APPLY:
 			props.renameElevator(screenTitle);
 			props.setFirstFloorYFromFloor(floorOne);
 
@@ -407,30 +396,30 @@ public class GuiElevator extends GuiScreen {
 
 			if (!isRemote) {
 				try {
-					DECore.checkedProperties.put(	elevatorPos,
-													props.createPropertiesPacket(	command,
-																					numFloors,
-																					false));
+					ConfigurationLib.checkedProperties.put(	elevatorPos,
+															props.createPropertiesPacket(	command,
+																							numFloors,
+																							false));
 				} catch (IOException e) {
-					DECore.say(	"Error while creating elevator properties packet.",
+					CoreLib.say("Error while creating elevator properties packet.",
 								true);
 					e.printStackTrace();
 				}
 			}
-			exit(	GUI_OPTIONS_APPLY,
+			exit(	GuiLib.GUI_OPTIONS_APPLY,
 					false);
-		case GUI_OPTIONS_CANCEL:
+		case GuiLib.GUI_OPTIONS_CANCEL:
 			optionsOpen = false;
 			toggleVisibility();
 			renameButtons();
 			break;
-		case GUI_OPTIONS_ELEVATORNAME:
+		case GuiLib.GUI_OPTIONS_ELEVATORNAME:
 			nameMode = NAMING_ELEVATOR;
 			txtEntryBox.setText(screenTitle);
 			txtEntryBox.setFocused(true);
 			toggleVisibility();
 			break;
-		case GUI_OPTIONS_FLOORNAME:
+		case GuiLib.GUI_OPTIONS_FLOORNAME:
 			if (floorNamesList.selectedElement > -1) {
 				curSelectedFloor = floorNamesList.selectedElement + 1;
 				nameMode = NAMING_FLOOR;
@@ -444,35 +433,36 @@ public class GuiElevator extends GuiScreen {
 				txtEntryBox.setFocused(true);
 			}
 			break;
-		case GUI_RENAME_OK:
+		case GuiLib.GUI_RENAME_OK:
 			if (nameMode == NAMING_ELEVATOR) {
 				screenTitle = txtEntryBox.getText();
 			} else if (nameMode == NAMING_FLOOR) {
 				props.nameFloor(curSelectedFloor,
 								txtEntryBox.getText());
 			}
-		case GUI_RENAME_CANCEL:
+		case GuiLib.GUI_RENAME_CANCEL:
 			nameMode = 0;
 			toggleVisibility();
 			txtEntryBox.setText("");
 			txtEntryBox.setFocused(false);
 			break;
-		case GUI_OPTIONS_SLIDER:
+		case GuiLib.GUI_OPTIONS_SLIDER:
 			floorOne = (int) floorZeroSlider.sliderValue;
 			break;
-		case GUI_CANCEL:
-			exit(GUI_CANCEL);
+		case GuiLib.GUI_CANCEL:
+			exit(GuiLib.GUI_CANCEL);
 			break;
-		case GUI_RESET:
+		case GuiLib.GUI_RESET:
 			if (!isRemote) {
-				DECore.elevator_reset(	ModLoader.getMinecraftInstance().theWorld,
+				BlockLib.elevator_reset(FMLClientHandler.instance().getClient().theWorld,
 										elevatorPos);
 			}
-			exit(GUI_RESET);
+			exit(GuiLib.GUI_RESET);
 			break;
 		default:
 			int selectedFloor = guibutton.id;
-			if (selectedFloor < 1 || selectedFloor > DECore.max_elevator_Y) {
+			if (selectedFloor < 1
+				|| selectedFloor > ConfigurationLib.max_elevator_Y) {
 				return;
 			}
 			if (selectedFloor > numFloors || curFloor == selectedFloor) {
@@ -480,7 +470,7 @@ public class GuiElevator extends GuiScreen {
 			}
 
 			if (!isRemote) {
-				DECore.elevator_requestFloor(	ModLoader.getMinecraftInstance().theWorld,
+				BlockLib.elevator_requestFloor(	FMLClientHandler.instance().getClient().theWorld,
 												elevatorPos,
 												selectedFloor);
 			}
@@ -497,22 +487,22 @@ public class GuiElevator extends GuiScreen {
 	private void exit(int command, boolean close) {
 		if (isRemote) {
 			try {
-				sentPacket = DECore.packetHandler.sendGUIPacketToServer(props.createPropertiesPacket(	command,
-																										numFloors,
-																										false));
+				sentPacket = PacketLib.sendGUIPacketToServer(props.createPropertiesPacket(	command,
+																							numFloors,
+																							false));
 			} catch (IOException e) {
-				DECore.say(	"Error while creating packet:",
+				CoreLib.say("Error while creating packet:",
 							true);
 				e.printStackTrace();
 				sentPacket = false;
 			}
 		} else if (elevatorPos != null) {
-			DECore.refreshElevator(	ModLoader.getMinecraftInstance().theWorld,
-									elevatorPos);
+			BlockLib.refreshElevator(	FMLClientHandler.instance().getClient().theWorld,
+										elevatorPos);
 			sentPacket = close;
 		}
 		if (close) {
-			DECore.say("Exiting gui!");
+			CoreLib.say("Exiting gui!");
 			this.mc.displayGuiScreen((GuiScreen) null);
 			this.mc.setIngameFocus();
 		}
@@ -528,8 +518,8 @@ public class GuiElevator extends GuiScreen {
 	@Override
 	public void onGuiClosed() {
 		if (!sentPacket) {
-			DECore.say("Exiting gui!");
-			exit(	GUI_CANCEL,
+			CoreLib.say("Exiting gui!");
+			exit(	GuiLib.GUI_CANCEL,
 					false);
 		}
 	}
@@ -572,7 +562,7 @@ public class GuiElevator extends GuiScreen {
 	@Override
 	public void handleKeyboardInput() {
 		if (Keyboard.getEventKeyState()) {
-			if (Keyboard.getEventKey() == GUI_CANCEL
+			if (Keyboard.getEventKey() == GuiLib.GUI_CANCEL
 				&& floorNamesList.selectedElement > 0) { // up
 				floorNamesList.selectedElement--;
 				floorNamesList.setAmountScrolled();

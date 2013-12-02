@@ -11,8 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkPosition;
-import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
+import slimevoid.elevators.core.lib.ConfigurationLib;
 
 public class TileEntityElevator extends TileEntity {
 
@@ -95,7 +95,7 @@ public class TileEntityElevator extends TileEntity {
 	}
 
 	public boolean demandY(int dest_Y) {
-		if (dest_Y > 0 && dest_Y < DECore.max_elevator_Y) {
+		if (dest_Y > 0 && dest_Y < ConfigurationLib.max_elevator_Y) {
 			destination_Y = dest_Y;
 			state = DEMAND_NEW_FLOOR;
 			this.onInventoryChanged();
@@ -119,7 +119,7 @@ public class TileEntityElevator extends TileEntity {
 		if (hasNoFloors()) {
 			return false;
 		}
-		if (y <= 0 || y >= DECore.max_elevator_Y) {
+		if (y <= 0 || y >= ConfigurationLib.max_elevator_Y) {
 			return false;
 		}
 		return floors.contains(y);
@@ -196,7 +196,7 @@ public class TileEntityElevator extends TileEntity {
 		if (hasNoFloors()) {
 			return NO_FLOOR;
 		}
-		int dist = DECore.max_elevator_Y + 1;
+		int dist = ConfigurationLib.max_elevator_Y + 1;
 		int chosenFloor = NO_FLOOR;
 		for (int i = 0; i < floors.size(); i++) {
 			int curY = floors.get(i);
@@ -237,9 +237,9 @@ public class TileEntityElevator extends TileEntity {
 
 	public boolean checkoutData() throws IOException {
 		ChunkPosition curPos = new ChunkPosition(xCoord, yCoord, zCoord);
-		Packet250CustomPayload packet = DECore.checkedProperties.get(curPos);
+		Packet250CustomPayload packet = ConfigurationLib.checkedProperties.get(curPos);
 		if (props.readInData(packet)) {
-			DECore.checkedProperties.remove(curPos);
+			ConfigurationLib.checkedProperties.remove(curPos);
 			return true;
 		}
 

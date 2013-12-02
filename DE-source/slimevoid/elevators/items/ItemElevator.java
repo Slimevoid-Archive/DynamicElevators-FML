@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import slimevoid.elevators.core.DECore;
+import slimevoid.elevators.core.lib.ConfigurationLib;
 
 public class ItemElevator extends ItemBlock {
 
@@ -18,7 +18,7 @@ public class ItemElevator extends ItemBlock {
 		boolean clickElevator = false;
 		if (world.getBlockId(	i,
 								j,
-								k) == DECore.Elevator.blockID) {
+								k) == ConfigurationLib.Elevator.blockID) {
 			clickElevator = true;
 		}
 		// mod_Elevator.say("Collect!", true);
@@ -54,7 +54,7 @@ public class ItemElevator extends ItemBlock {
 			world.setBlock(	i,
 							j + 2,
 							k,
-							DECore.Elevator.blockID,
+							ConfigurationLib.Elevator.blockID,
 							0x01,
 							3);
 		} else if (!clickElevator || (clickElevator && l != 0)) {
@@ -67,7 +67,7 @@ public class ItemElevator extends ItemBlock {
 			world.setBlock(	i,
 							j,
 							k,
-							DECore.Elevator.blockID,
+							ConfigurationLib.Elevator.blockID,
 							0,
 							3);
 		}

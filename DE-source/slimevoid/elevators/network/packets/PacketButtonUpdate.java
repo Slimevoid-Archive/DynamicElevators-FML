@@ -1,8 +1,8 @@
 package slimevoid.elevators.network.packets;
 
 import net.minecraft.world.World;
-import slimevoid.elevators.core.DECore;
-import slimevoid.elevators.network.ElevatorPacketHandler;
+import slimevoid.elevators.core.lib.ConfigurationLib;
+import slimevoid.elevators.core.lib.PacketLib;
 import slimevoidlib.network.PacketIds;
 import slimevoidlib.network.PacketPayload;
 import slimevoidlib.network.PacketUpdate;
@@ -15,7 +15,7 @@ public class PacketButtonUpdate extends PacketUpdate {
 
 	public PacketButtonUpdate(int x, int y, int z, int metadata) {
 		this();
-		this.setChannel(ElevatorPacketHandler.CHANNELS[ElevatorPacketHandler.BLOCK_UPDATE]);
+		this.setChannel(PacketLib.BLOCK_UPDATE);
 		this.setPosition(	x,
 							y,
 							z,
@@ -38,7 +38,7 @@ public class PacketButtonUpdate extends PacketUpdate {
 		int blockId = world.getBlockId(	this.xPosition,
 										this.yPosition,
 										this.zPosition);
-		if (blockId == DECore.elevator_button_blockID) {
+		if (blockId == ConfigurationLib.elevator_button_blockID) {
 			return true;
 		}
 		return false;

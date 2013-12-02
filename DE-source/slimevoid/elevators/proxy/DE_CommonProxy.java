@@ -13,10 +13,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import slimevoid.elevators.api.IDECommonProxy;
+import slimevoid.elevators.core.lib.ConfigurationLib;
 import slimevoidlib.IPacketHandling;
 import cpw.mods.fml.common.network.Player;
 
 public class DE_CommonProxy implements IDECommonProxy {
+
 	@Override
 	public void registerRenderInformation() {
 	}
@@ -61,8 +63,7 @@ public class DE_CommonProxy implements IDECommonProxy {
 
 	@Override
 	public void registerConfigurationProperties(File configFile) {
-		// TODO Auto-generated method stub
-
+		ConfigurationLib.CommonConfig(configFile);
 	}
 
 	@Override

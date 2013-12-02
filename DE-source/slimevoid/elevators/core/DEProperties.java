@@ -15,7 +15,9 @@ import java.util.Map;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MathHelper;
-import slimevoid.elevators.network.ElevatorPacketHandler;
+import slimevoid.elevators.core.lib.ConfigurationLib;
+import slimevoid.elevators.core.lib.CoreLib;
+import slimevoid.elevators.core.lib.PacketLib;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class DEProperties {
@@ -50,9 +52,9 @@ public class DEProperties {
 	}
 
 	public void setFirstFloorYFromFloor(int floor) {
-		DECore.say("Received request to set floor one as " + floor);
+		CoreLib.say("Received request to set floor one as " + floor);
 		firstFloorYValue = getYCoordFromFloor(floor);
-		DECore.say("Set floor one as " + firstFloorYValue);
+		CoreLib.say("Set floor one as " + firstFloorYValue);
 	}
 
 	public void setColorData(int color) {
@@ -108,7 +110,7 @@ public class DEProperties {
 		}
 		DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 
-		DECore.say("Loading properties from packet...");
+		CoreLib.say("Loading properties from packet...");
 
 		command = dataStream.readInt();
 		int numFloors = dataStream.readInt();
@@ -117,14 +119,14 @@ public class DEProperties {
 		canBeHalted = dataStream.readBoolean();
 		enableMobilePower = dataStream.readBoolean();
 
-		DECore.say("power: " + canProvidePower + ", halt: " + canBeHalted
+		CoreLib.say("power: " + canProvidePower + ", halt: " + canBeHalted
 					+ ", mobile:" + enableMobilePower);
 
 		elevatorName = dataStream.readUTF();
 		firstFloorYValue = dataStream.readInt();
 		colorData = dataStream.readInt();
 
-		DECore.say("name: " + elevatorName + ", first floor Y: "
+		CoreLib.say("name: " + elevatorName + ", first floor Y: "
 					+ firstFloorYValue + ", color: " + colorData);
 
 		for (int i = 0; i < numFloors; i++) {
@@ -132,7 +134,7 @@ public class DEProperties {
 			String curName = dataStream.readUTF();
 			floorNames.put(	curYValue,
 							curName);
-			DECore.say("yCoord: " + curYValue + " : " + curName);
+			CoreLib.say("yCoord: " + curYValue + " : " + curName);
 		}
 		return true;
 	}
@@ -176,9 +178,9 @@ public class DEProperties {
 
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		if (GUI_Request) {
-			packet.channel = ElevatorPacketHandler.CHANNELS[ElevatorPacketHandler.GUI_REQUEST];
+			packet.channel = PacketLib.GUI_REQUEST;
 		} else {
-			packet.channel = ElevatorPacketHandler.CHANNELS[ElevatorPacketHandler.GUI_DATA];
+			packet.channel = PacketLib.GUI_DATA;
 		}
 		packet.data = bytes.toByteArray();
 		packet.length = packet.data.length;
@@ -200,7 +202,7 @@ public class DEProperties {
 		if (floor < 1) {
 			return 0;
 		}
-		return DECore.max_elevator_Y;
+		return ConfigurationLib.max_elevator_Y;
 	}
 
 	// should only be used by the GUI for getting floor "one"
@@ -224,7 +226,7 @@ public class DEProperties {
 		if (name == null) {
 			return false;
 		}
-		if (yCoord > 0 && yCoord < DECore.max_elevator_Y) {
+		if (yCoord > 0 && yCoord < ConfigurationLib.max_elevator_Y) {
 			floorNames.put(	yCoord,
 							name);
 			return true;
@@ -256,9 +258,9 @@ public class DEProperties {
 		int actualFloorNum = (floorOne < 1) ? curFloor : curFloor - floorOne
 															+ 1;
 		if (curFloor >= floorOne) {
-			name = DECore.floorName + " " + actualFloorNum;
+			name = ConfigurationLib.floorName + " " + actualFloorNum;
 		} else {
-			name = DECore.basementName + " "
+			name = ConfigurationLib.basementName + " "
 					+ String.valueOf((int) MathHelper.abs(actualFloorNum - 1));
 		}
 		return name;
@@ -302,7 +304,7 @@ public class DEProperties {
 	}
 
 	public void readFromNBT(NBTTagCompound nbt) {
-		for (int curY = 0; curY < (DECore.max_elevator_Y + 2); curY++) {
+		for (int curY = 0; curY < (ConfigurationLib.max_elevator_Y + 2); curY++) {
 			String curFloorName = "";
 			try {
 				curFloorName = nbt.getString((new StringBuilder()).append("x").append(String.valueOf(curY)).toString());

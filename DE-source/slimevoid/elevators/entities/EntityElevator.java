@@ -15,14 +15,15 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import slimevoid.elevators.blocks.BlockElevator;
-import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
-import slimevoid.elevators.network.ElevatorPacketHandler;
+import slimevoid.elevators.core.lib.ConfigurationLib;
+import slimevoid.elevators.core.lib.CoreLib;
+import slimevoid.elevators.core.lib.PacketLib;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class EntityElevator extends Entity {
 
-	private static final int	blockID					= DECore.Elevator.blockID;
+	private static final int	blockID					= ConfigurationLib.Elevator.blockID;
 	private byte				stillcount				= 0;
 	private byte				waitToAccelerate		= 0;
 	public int					dest;
@@ -147,7 +148,7 @@ public class EntityElevator extends Entity {
 	}
 
 	private void say(String s) {
-		DECore.say((new StringBuilder()).append(" [ ").append(entityId).append(" ] ").append(s).toString());
+		CoreLib.say((new StringBuilder()).append(" [ ").append(entityId).append(" ] ").append(s).toString());
 	}
 
 	// -------------------------------------------------------------------- //
@@ -278,11 +279,11 @@ public class EntityElevator extends Entity {
 			say("Ejected rider #" + rider.entityId);
 		}
 		if (!worldObj.isRemote) {
-			ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
-													(int) this.posX,
-													(int) this.posY,
-													(int) this.posZ,
-													true);
+			PacketLib.sendRiderUpdates(	mountedEntities,
+										(int) this.posX,
+										(int) this.posY,
+										(int) this.posZ,
+										true);
 		}
 		mountedEntities.clear();
 	}
@@ -301,10 +302,10 @@ public class EntityElevator extends Entity {
 				updateRider(iter.next());
 			}
 			if (!worldObj.isRemote) {
-				ElevatorPacketHandler.sendRiderUpdates(	mountedEntities,
-														this.posX,
-														this.posY,
-														this.posZ);
+				PacketLib.sendRiderUpdates(	mountedEntities,
+											this.posX,
+											this.posY,
+											this.posZ);
 			}
 		}
 	}
@@ -372,7 +373,7 @@ public class EntityElevator extends Entity {
 					try {
 						props.mergeProperties(curTile);
 					} catch (IOException e) {
-						DECore.say(	"Unable to merge properties",
+						CoreLib.say("Unable to merge properties",
 									true);
 						e.printStackTrace();
 					}
@@ -381,7 +382,7 @@ public class EntityElevator extends Entity {
 					worldObj.setBlock(	i,
 										j,
 										k,
-										DECore.Transient.blockID,
+										ConfigurationLib.Transient.blockID,
 										0,
 										3);
 				} else {
@@ -440,12 +441,12 @@ public class EntityElevator extends Entity {
 				worldObj.setBlock(	curX,
 									curY,
 									curZ,
-									DECore.Transient.blockID,
+									ConfigurationLib.Transient.blockID,
 									0,
 									3);
 			}
 		}
-		DECore.say("-----------------------------------------------------------------");
+		CoreLib.say("-----------------------------------------------------------------");
 
 		if (!center) {
 			say((new StringBuilder()).append("Speed: ").append(motionY).append(", posY: ").append(posY).append(", destY: ").append(destY).append(", center: "
@@ -516,10 +517,10 @@ public class EntityElevator extends Entity {
 		// check whether at the destination or not
 		atDestination = onGround
 						|| (MathHelper.abs((float) (destY - posY)) < elevatorSpeed);
-		if (destY < 1 || destY > DECore.max_elevator_Y) {
+		if (destY < 1 || destY > ConfigurationLib.max_elevator_Y) {
 			atDestination = true;
 			say("Requested destination is too high or too low!");
-			say((new StringBuilder()).append("Requested: ").append(destY).append(", max: ").append(DECore.max_elevator_Y).toString());
+			say((new StringBuilder()).append("Requested: ").append(destY).append(", max: ").append(ConfigurationLib.max_elevator_Y).toString());
 		}
 
 		say((new StringBuilder()).append("Speed: ").append(motionY).append(", posY: ").append(posY).append(", destY: ").append(destY).append(", range: ").append(range).append(", center: "
@@ -572,8 +573,8 @@ public class EntityElevator extends Entity {
 		int curY = MathHelper.floor_double(posY);
 		if (!isCeiling()) {
 			try {
-				DECore.checkedProperties.put(	new ChunkPosition(i, curY, k),
-												props.createPropertiesPacket(false));
+				ConfigurationLib.checkedProperties.put(	new ChunkPosition(i, curY, k),
+														props.createPropertiesPacket(false));
 			} catch (IOException e) {
 				say("Unable to check properties");
 				e.printStackTrace();
@@ -611,7 +612,7 @@ public class EntityElevator extends Entity {
 					curentity.posY += 0.5;
 					if (curentity instanceof EntityPlayer) {
 						EntityPlayer player = (EntityPlayer) curentity;
-						player.addChatMessage(DECore.message_elevator_arrival
+						player.addChatMessage(ConfigurationLib.message_elevator_arrival
 												+ " " + floorName);
 					}
 				}

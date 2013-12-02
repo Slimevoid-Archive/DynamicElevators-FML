@@ -1,7 +1,7 @@
 package slimevoid.elevators.core;
 
-import java.io.File;
-
+import slimevoid.elevators.core.lib.BlockLib;
+import slimevoid.elevators.core.lib.ConfigurationLib;
 import slimevoid.elevators.core.lib.CoreLib;
 import slimevoid.elevators.entities.EntityElevator;
 import slimevoid.elevators.tileentities.TileEntityElevator;
@@ -16,10 +16,7 @@ public class DEInit {
 	public static void initialize(ICommonProxy proxy) {
 		if (initialized) return;
 		initialized = true;
-		DECore.props = new Props(new File(DynamicElevators.proxy.getMinecraftDir()
-											+ "/config/DynamicElevators.cfg").getPath());
 		load();
-		DECore.props.save();
 	}
 
 	public static void load() {
@@ -29,29 +26,28 @@ public class DEInit {
 		DECore.addItems();
 
 		GameRegistry.registerTileEntity(TileEntityElevator.class,
-										"dynamicelevator");
+										BlockLib.BLOCK_ELEVATOR);
 
 		EntityRegistry.registerModEntity(	EntityElevator.class,
-											"delv",
-											DECore.elevator_entityID,
+											BlockLib.BLOCK_ELEVATOR,
+											ConfigurationLib.elevator_entityID,
 											DynamicElevators.instance,
 											400,
 											1,
 											true);
 
-		EntityRegistry.instance();
 		EntityRegistry.registerGlobalEntityID(	EntityElevator.class,
-												"delv",
-												DECore.elevator_entityID);
+												BlockLib.BLOCK_ELEVATOR,
+												ConfigurationLib.elevator_entityID);
 
 		DynamicElevators.proxy.registerRenderInformation();
-
-		DECore.addConfig();
 
 		DECore.addNames();
 		DECore.addRecipes();
 
-		DECore.registerPackets();
+		ConfigurationLib.finalizeConfiguration();
+
+		// PacketLib.registerPackets();
 	}
 
 }

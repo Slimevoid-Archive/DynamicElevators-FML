@@ -17,8 +17,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import slimevoid.elevators.core.DECore;
-import slimevoid.elevators.network.ElevatorPacketHandler;
+import slimevoid.elevators.core.lib.BlockLib;
+import slimevoid.elevators.core.lib.ConfigurationLib;
+import slimevoid.elevators.core.lib.CoreLib;
+import slimevoid.elevators.core.lib.PacketLib;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class BlockElevatorButton extends BlockButton {
@@ -100,16 +102,16 @@ public class BlockElevatorButton extends BlockButton {
 
 		if (world.getBlockId(	newPos.x,
 								newPos.y,
-								newPos.z) == DECore.ElevatorCaller.blockID) {
+								newPos.z) == ConfigurationLib.ElevatorCaller.blockID) {
 			boolean foundElevator = BlockElevatorCaller.findAndActivateElevator(world,
 																				newPos.x,
 																				newPos.y,
 																				newPos.z,
 																				0);
 			if (!world.isRemote && foundElevator) {
-				player.addChatMessage(DECore.message_elevator_called);
+				player.addChatMessage(ConfigurationLib.message_elevator_called);
 			} else if (!world.isRemote) {
-				player.addChatMessage(DECore.message_elevator_notfound);
+				player.addChatMessage(ConfigurationLib.message_elevator_notfound);
 			}
 			return true;
 		}
@@ -122,10 +124,10 @@ public class BlockElevatorButton extends BlockButton {
 		checkForElevators(	world,
 							newPos,
 							0);
-		DECore.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
-		DECore.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
+		CoreLib.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
+		CoreLib.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
 		newPos = null;
-		int dist = DECore.max_elevator_Y + 5;
+		int dist = ConfigurationLib.max_elevator_Y + 5;
 		int destY = -1;
 		if (!elvs.isEmpty()) {
 			Iterator<ChunkPosition> iter = elvs.iterator();
@@ -140,7 +142,7 @@ public class BlockElevatorButton extends BlockButton {
 				if (curTile != null) {
 					int suggestedY = curTile.getClosestFloorFromYCoor_AlwaysDown(j);
 					suggestedY = curTile.getYFromFloor(suggestedY);
-					DECore.say("closest y: " + suggestedY);
+					CoreLib.say("closest y: " + suggestedY);
 					if (MathHelper.abs(suggestedY - curPos.y) < dist
 						&& curTile.hasFloorAt(suggestedY)) {
 						dist = (int) MathHelper.abs(suggestedY - curPos.y);
@@ -159,17 +161,17 @@ public class BlockElevatorButton extends BlockButton {
 				if (!curTile.props.getElevatorName().isEmpty()) {
 					player.addChatMessage(curTile.props.getElevatorName()
 											+ " "
-											+ DECore.message_named_elevator_called);
+											+ ConfigurationLib.message_named_elevator_called);
 				} else {
-					player.addChatMessage(DECore.message_elevator_called);
+					player.addChatMessage(ConfigurationLib.message_elevator_called);
 				}
 			}
-			DECore.elevator_demandY(world,
-									newPos,
-									destY);
+			BlockLib.elevator_demandY(	world,
+										newPos,
+										destY);
 		} else {
 			if (!world.isRemote) {
-				player.addChatMessage(DECore.message_elevator_notfound);
+				player.addChatMessage(ConfigurationLib.message_elevator_notfound);
 			}
 		}
 
@@ -184,7 +186,7 @@ public class BlockElevatorButton extends BlockButton {
 		boolean isCeiling = false;
 		if (world.getBlockId(	pos.x,
 								pos.y,
-								pos.z) == DECore.Elevator.blockID) {
+								pos.z) == ConfigurationLib.Elevator.blockID) {
 			if (!BlockElevator.isCeiling(	world,
 											pos)) {
 				elvs.add(pos);
@@ -193,11 +195,11 @@ public class BlockElevatorButton extends BlockButton {
 				isCeiling = true;
 			}
 		}
-		if (isCeiling || DECore.isBlockOpeningMaterial(	world,
-														pos)) {
+		if (isCeiling || BlockLib.isBlockOpeningMaterial(	world,
+															pos)) {
 			// mod_Elevator.say((new
 			// StringBuilder()).append("Checking ").append(pos.x).append(", ").append(pos.y).append(", ").append(pos.z).toString());
-			if (pos.y > 0 && !DECore.isBlockLedgeMaterial(	world,
+			if (pos.y > 0 && !BlockLib.isBlockLedgeMaterial(world,
 															pos.x,
 															pos.y - 1,
 															pos.z)) {
@@ -205,11 +207,11 @@ public class BlockElevatorButton extends BlockButton {
 									new ChunkPosition(pos.x, pos.y - 1, pos.z),
 									numSolid);
 			}
-			if (pos.y < DECore.max_elevator_Y
-				&& !DECore.isBlockLedgeMaterial(world,
-												pos.x,
-												pos.y + 1,
-												pos.z)) {
+			if (pos.y < ConfigurationLib.max_elevator_Y
+				&& !BlockLib.isBlockLedgeMaterial(	world,
+													pos.x,
+													pos.y + 1,
+													pos.z)) {
 				checkForElevators(	world,
 									new ChunkPosition(pos.x, pos.y + 1, pos.z),
 									numSolid);
@@ -244,7 +246,7 @@ public class BlockElevatorButton extends BlockButton {
 										j,
 										k) || world.getBlockId(	i,
 																j,
-																k) == DECore.ElevatorCaller.blockID);
+																k) == ConfigurationLib.ElevatorCaller.blockID);
 	}
 
 	@Override
@@ -342,11 +344,11 @@ public class BlockElevatorButton extends BlockButton {
 													x,
 													y,
 													z);
-				ElevatorPacketHandler.sendButtonTickUpdate(	world,
-															x,
-															y,
-															z,
-															metadata);
+				PacketLib.sendButtonTickUpdate(	world,
+												x,
+												y,
+												z,
+												metadata);
 			}
 		}
 	}

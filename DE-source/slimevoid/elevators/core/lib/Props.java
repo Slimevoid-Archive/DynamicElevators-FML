@@ -1,4 +1,4 @@
-package slimevoid.elevators.core;
+package slimevoid.elevators.core.lib;
 
 import java.io.BufferedReader;
 import java.io.File;

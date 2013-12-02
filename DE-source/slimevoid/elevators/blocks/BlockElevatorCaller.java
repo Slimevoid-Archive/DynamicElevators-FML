@@ -16,7 +16,9 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import slimevoid.elevators.core.DECore;
+import slimevoid.elevators.core.lib.BlockLib;
+import slimevoid.elevators.core.lib.ConfigurationLib;
+import slimevoid.elevators.core.lib.CoreLib;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class BlockElevatorCaller extends Block {
@@ -52,9 +54,9 @@ public class BlockElevatorCaller extends Block {
 			int ID = world.getBlockId(	tempX,
 										tempY,
 										tempZ);
-			DECore.say("Checking: " + tempX + ", " + tempY + ", " + tempZ
+			CoreLib.say("Checking: " + tempX + ", " + tempY + ", " + tempZ
 						+ ": has block ID" + ID);
-			if (ID > 0 && ID != DECore.Elevator.blockID
+			if (ID > 0 && ID != ConfigurationLib.Elevator.blockID
 				&& Block.blocksList[ID].isProvidingWeakPower(	world,
 																tempX,
 																tempY,
@@ -113,8 +115,9 @@ public class BlockElevatorCaller extends Block {
 
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int notifierID) {
-		if (notifierID != DECore.ElevatorButton.blockID) {
-			if (notifierID <= 0 || notifierID == DECore.Elevator.blockID
+		if (notifierID != ConfigurationLib.ElevatorButton.blockID) {
+			if (notifierID <= 0
+				|| notifierID == ConfigurationLib.Elevator.blockID
 				|| !Block.blocksList[notifierID].canProvidePower()
 				|| !isBeingPoweredByNonElevator(world,
 												i,
@@ -147,7 +150,7 @@ public class BlockElevatorCaller extends Block {
 				}
 				if (world.getBlockId(	tempX,
 										j,
-										tempZ) == DECore.ElevatorButton.blockID
+										tempZ) == ConfigurationLib.ElevatorButton.blockID
 					&& (world.getBlockMetadata(	tempX,
 												j,
 												tempZ) & 8) > 0) {
@@ -201,7 +204,7 @@ public class BlockElevatorCaller extends Block {
 			}
 			if (world.getBlockId(	tempX,
 									tempY,
-									tempZ) == DECore.ElevatorCaller.blockID
+									tempZ) == ConfigurationLib.ElevatorCaller.blockID
 				&& !checkedCallers.contains(new ChunkPosition(tempX, tempY, tempZ))) {
 				findAndActivateElevator(world,
 										tempX,
@@ -220,9 +223,9 @@ public class BlockElevatorCaller extends Block {
 		checkForElevators(	world,
 							new ChunkPosition(i, j, k),
 							0);
-		DECore.say("ElevatorCaller activated at: " + i + ", " + j + ", " + k);
-		DECore.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
-		DECore.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
+		CoreLib.say("ElevatorCaller activated at: " + i + ", " + j + ", " + k);
+		CoreLib.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
+		CoreLib.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
 		int dist = 500;
 		int destY = -1;
 		ChunkPosition newPos = null;
@@ -247,9 +250,9 @@ public class BlockElevatorCaller extends Block {
 			}
 		}
 		if (newPos != null) {
-			DECore.elevator_demandY(world,
-									newPos,
-									j);
+			BlockLib.elevator_demandY(	world,
+										newPos,
+										j);
 			clearSets(depth);
 			return true;
 		}
@@ -264,7 +267,7 @@ public class BlockElevatorCaller extends Block {
 		boolean isCeiling = false;
 		if (world.getBlockId(	pos.x,
 								pos.y,
-								pos.z) == DECore.Elevator.blockID) {
+								pos.z) == ConfigurationLib.Elevator.blockID) {
 			if (!BlockElevator.isCeiling(	world,
 											pos)) {
 				elvs.add(pos);
@@ -273,9 +276,9 @@ public class BlockElevatorCaller extends Block {
 				isCeiling = true;
 			}
 		}
-		if (isCeiling || DECore.isBlockOpeningMaterial(	world,
-														pos)) {
-			if (pos.y > 0 && !DECore.isBlockLedgeMaterial(	world,
+		if (isCeiling || BlockLib.isBlockOpeningMaterial(	world,
+															pos)) {
+			if (pos.y > 0 && !BlockLib.isBlockLedgeMaterial(world,
 															pos.x,
 															pos.y - 1,
 															pos.z)) {
@@ -283,11 +286,11 @@ public class BlockElevatorCaller extends Block {
 									new ChunkPosition(pos.x, pos.y - 1, pos.z),
 									numSolid);
 			}
-			if (pos.y < DECore.max_elevator_Y
-				&& !DECore.isBlockLedgeMaterial(world,
-												pos.x,
-												pos.y + 1,
-												pos.z)) {
+			if (pos.y < ConfigurationLib.max_elevator_Y
+				&& !BlockLib.isBlockLedgeMaterial(	world,
+													pos.x,
+													pos.y + 1,
+													pos.z)) {
 				checkForElevators(	world,
 									new ChunkPosition(pos.x, pos.y + 1, pos.z),
 									numSolid);
