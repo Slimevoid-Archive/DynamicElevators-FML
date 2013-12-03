@@ -21,10 +21,10 @@ import net.minecraft.world.ChunkPosition;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
 import slimevoid.elevators.core.lib.BlockLib;
 import slimevoid.elevators.core.lib.ConfigurationLib;
-import slimevoid.elevators.core.lib.CoreLib;
 import slimevoid.elevators.core.lib.GuiLib;
 import slimevoid.elevators.core.lib.PacketLib;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -98,13 +98,13 @@ public class GuiElevator extends GuiScreen {
 		buttonId = -1;
 		screenTitle = "";
 
-		CoreLib.say("GUI LOADING...");
+		DECore.say("GUI LOADING...");
 
 		DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		curFloor = dataStream.readInt();
 		numFloors = dataStream.readInt();
 
-		CoreLib.say("floors: " + numFloors + ", current: " + curFloor);
+		DECore.say("floors: " + numFloors + ", current: " + curFloor);
 
 		props.readInData(packet);
 		floorOne = props.getFloorOne();
@@ -158,7 +158,7 @@ public class GuiElevator extends GuiScreen {
 			}
 		}
 
-		CoreLib.say("Size: " + size + "; rows: " + numRows + "; columns: "
+		DECore.say("Size: " + size + "; rows: " + numRows + "; columns: "
 					+ numCols);
 
 		int startX = width / 2;
@@ -245,7 +245,7 @@ public class GuiElevator extends GuiScreen {
 			canBeHalted.enabled = props.getCanHalt();
 			mobilePower.enabled = props.getMobilePower();
 		} catch (Exception e) {
-			CoreLib.say("Error occurred when getting properties");
+			DECore.say("Error occurred when getting properties");
 		}
 
 		buttonList.add(canProvidePower);
@@ -401,7 +401,7 @@ public class GuiElevator extends GuiScreen {
 																							numFloors,
 																							false));
 				} catch (IOException e) {
-					CoreLib.say("Error while creating elevator properties packet.",
+					DECore.say(	"Error while creating elevator properties packet.",
 								true);
 					e.printStackTrace();
 				}
@@ -491,7 +491,7 @@ public class GuiElevator extends GuiScreen {
 																							numFloors,
 																							false));
 			} catch (IOException e) {
-				CoreLib.say("Error while creating packet:",
+				DECore.say(	"Error while creating packet:",
 							true);
 				e.printStackTrace();
 				sentPacket = false;
@@ -502,7 +502,7 @@ public class GuiElevator extends GuiScreen {
 			sentPacket = close;
 		}
 		if (close) {
-			CoreLib.say("Exiting gui!");
+			DECore.say("Exiting gui!");
 			this.mc.displayGuiScreen((GuiScreen) null);
 			this.mc.setIngameFocus();
 		}
@@ -518,7 +518,7 @@ public class GuiElevator extends GuiScreen {
 	@Override
 	public void onGuiClosed() {
 		if (!sentPacket) {
-			CoreLib.say("Exiting gui!");
+			DECore.say("Exiting gui!");
 			exit(	GuiLib.GUI_CANCEL,
 					false);
 		}

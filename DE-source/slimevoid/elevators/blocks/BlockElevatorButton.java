@@ -17,9 +17,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.lib.BlockLib;
 import slimevoid.elevators.core.lib.ConfigurationLib;
-import slimevoid.elevators.core.lib.CoreLib;
 import slimevoid.elevators.core.lib.PacketLib;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
@@ -124,8 +124,8 @@ public class BlockElevatorButton extends BlockButton {
 		checkForElevators(	world,
 							newPos,
 							0);
-		CoreLib.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
-		CoreLib.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
+		DECore.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
+		DECore.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
 		newPos = null;
 		int dist = ConfigurationLib.max_elevator_Y + 5;
 		int destY = -1;
@@ -142,7 +142,7 @@ public class BlockElevatorButton extends BlockButton {
 				if (curTile != null) {
 					int suggestedY = curTile.getClosestFloorFromYCoor_AlwaysDown(j);
 					suggestedY = curTile.getYFromFloor(suggestedY);
-					CoreLib.say("closest y: " + suggestedY);
+					DECore.say("closest y: " + suggestedY);
 					if (MathHelper.abs(suggestedY - curPos.y) < dist
 						&& curTile.hasFloorAt(suggestedY)) {
 						dist = (int) MathHelper.abs(suggestedY - curPos.y);

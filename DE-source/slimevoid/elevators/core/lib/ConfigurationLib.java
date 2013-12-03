@@ -246,28 +246,28 @@ public class ConfigurationLib {
 		}
 
 		if (!disallowed_renderTypes.isEmpty()) {
-			CoreLib.say("Opening: Disallowed render types: "
+			DECore.say("Opening: Disallowed render types: "
 								+ DECore.convertIntSetToString(disallowed_renderTypes),
 						true);
 		}
 
 		if (!disallowed_blockIDs.isEmpty()) {
-			CoreLib.say("Opening: Disallowed block IDs: "
+			DECore.say("Opening: Disallowed block IDs: "
 								+ DECore.convertIntSetToString(disallowed_blockIDs),
 						true);
 		}
 		if (!allowed_blockIDs.isEmpty()) {
-			CoreLib.say("Opening: Allowed block IDs: "
+			DECore.say("Opening: Allowed block IDs: "
 								+ DECore.convertIntSetToString(allowed_blockIDs),
 						true);
 		}
 		if (!solid_disallowed_blockIDs.isEmpty()) {
-			CoreLib.say("Ledge: Disallowed block IDs: "
+			DECore.say("Ledge: Disallowed block IDs: "
 								+ DECore.convertIntSetToString(solid_disallowed_blockIDs),
 						true);
 		}
 		if (!solid_allowed_blockIDs.isEmpty()) {
-			CoreLib.say("Ledge: Allowed block IDs: "
+			DECore.say("Ledge: Allowed block IDs: "
 								+ DECore.convertIntSetToString(solid_allowed_blockIDs),
 						true);
 		}

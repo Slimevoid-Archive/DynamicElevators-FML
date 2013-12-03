@@ -17,14 +17,4 @@ public class CoreLib {
 	@SideOnly(Side.CLIENT)
 	public static boolean		OPTIFINE_INSTALLED	= FMLClientHandler.instance().hasOptifine();
 
-	public static void say(String s) {
-		say(s,
-			false);
-	}
-
-	public static void say(String s, boolean ignoreVerbose) {
-		if (ConfigurationLib.verbose || ignoreVerbose) {
-			System.out.println("[ElevatorMod] " + s);
-		}
-	}
 }

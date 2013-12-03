@@ -17,11 +17,11 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import slimevoid.elevators.api.IDECommonProxy;
 import slimevoid.elevators.blocks.BlockElevator;
+import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
 import slimevoid.elevators.core.DynamicElevators;
 import slimevoid.elevators.core.lib.BlockLib;
 import slimevoid.elevators.core.lib.ConfigurationLib;
-import slimevoid.elevators.core.lib.CoreLib;
 import slimevoid.elevators.core.lib.GuiLib;
 import slimevoid.elevators.core.lib.PacketLib;
 import slimevoid.elevators.entities.EntityElevator;
@@ -40,7 +40,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 		DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 
-		CoreLib.say("Packet received on channel " + packet.channel);
+		DECore.say("Packet received on channel " + packet.channel);
 
 		try {
 
@@ -51,7 +51,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 			}
 			World world = playerMP.worldObj;
 			if (world == null) {
-				CoreLib.say("World is null. Returning.");
+				DECore.say("World is null. Returning.");
 				return;
 			}
 
@@ -89,7 +89,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 					return;
 				}
 
-				CoreLib.say("Received elevator response from "
+				DECore.say("Received elevator response from "
 							+ playerMP.username + " requesting GUI command "
 							+ command);
 
@@ -141,7 +141,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 					// int entity_data = dataStream.readInt(); // Data
 
 					Entity entity = ((EntityPlayer) player).worldObj.getEntityByID(entityID);
-					CoreLib.say("Received request for entity id " + entityID
+					DECore.say("Received request for entity id " + entityID
 								+ " to be set to Y: " + posY);
 					if (entity != null) {
 						if (entity instanceof EntityElevator) {
@@ -176,10 +176,10 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 							}
 						}
 
-						CoreLib.say("Entity with id " + entity.entityId
+						DECore.say("Entity with id " + entity.entityId
 									+ " was set to " + motionY);
 					} else {
-						CoreLib.say("Entity with that ID does not exist");
+						DECore.say("Entity with that ID does not exist");
 					}
 				}
 			} else if (packet.channel.equals(PacketLib.ELEVATOR_PROPERTIES)) {
@@ -188,12 +188,12 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 				boolean center = dataStream.readBoolean();
 				int metadata = dataStream.readInt();
 
-				CoreLib.say("Received prop update info for elevator id "
+				DECore.say("Received prop update info for elevator id "
 							+ entityID);
 
 				Entity entity = world.getEntityByID(entityID);
 				if (entity == null || !(entity instanceof EntityElevator)) {
-					CoreLib.say("Entity with that ID does not exist");
+					DECore.say("Entity with that ID does not exist");
 				} else {
 					EntityElevator elevator = (EntityElevator) entity;
 					elevator.setProperties(	dest,
@@ -222,7 +222,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 				PacketDispatcher.sendPacketToServer(responsePacket);
 
 			}
-			CoreLib.say("Error while reading incoming packet.",
+			DECore.say(	"Error while reading incoming packet.",
 						true);
 			e.printStackTrace();
 			return;
@@ -271,14 +271,14 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 		// packet.length = packet.data.length;
 		// PacketDispatcher.sendPacketToServer(packet);
 		// } catch (Exception e) {
-		// CoreLib.say("Unable to unregister channels!!",
+		// DECore.say("Unable to unregister channels!!",
 		// true);
 		// }
 	}
 
 	@Override
 	public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login) {
-		// CoreLib.say("Sending channel registration packet...");
+		// DECore.say("Sending channel registration packet...");
 		// ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		// DataOutputStream data = new DataOutputStream(bytes);
 		//
@@ -294,7 +294,7 @@ public class ElevatorPacketHandler implements IConnectionHandler,
 		// packet.length = packet.data.length;
 		// PacketDispatcher.sendPacketToServer(packet);
 		// } catch (Exception e) {
-		// CoreLib.say("Unable to register channels!!",
+		// DECore.say("Unable to register channels!!",
 		// true);
 		// }
 	}

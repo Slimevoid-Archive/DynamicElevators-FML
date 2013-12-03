@@ -16,9 +16,9 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.lib.BlockLib;
 import slimevoid.elevators.core.lib.ConfigurationLib;
-import slimevoid.elevators.core.lib.CoreLib;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class BlockElevatorCaller extends Block {
@@ -54,7 +54,7 @@ public class BlockElevatorCaller extends Block {
 			int ID = world.getBlockId(	tempX,
 										tempY,
 										tempZ);
-			CoreLib.say("Checking: " + tempX + ", " + tempY + ", " + tempZ
+			DECore.say("Checking: " + tempX + ", " + tempY + ", " + tempZ
 						+ ": has block ID" + ID);
 			if (ID > 0 && ID != ConfigurationLib.Elevator.blockID
 				&& Block.blocksList[ID].isProvidingWeakPower(	world,
@@ -223,9 +223,9 @@ public class BlockElevatorCaller extends Block {
 		checkForElevators(	world,
 							new ChunkPosition(i, j, k),
 							0);
-		CoreLib.say("ElevatorCaller activated at: " + i + ", " + j + ", " + k);
-		CoreLib.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
-		CoreLib.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
+		DECore.say("ElevatorCaller activated at: " + i + ", " + j + ", " + k);
+		DECore.say((new StringBuilder()).append("Checked ").append(checkedBlocks.size()).append(" blocks").toString());
+		DECore.say((new StringBuilder()).append("Found ").append(elvs.size()).append(" elevators").toString());
 		int dist = 500;
 		int destY = -1;
 		ChunkPosition newPos = null;

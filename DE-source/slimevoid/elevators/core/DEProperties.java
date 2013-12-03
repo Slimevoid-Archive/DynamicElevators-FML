@@ -52,9 +52,9 @@ public class DEProperties {
 	}
 
 	public void setFirstFloorYFromFloor(int floor) {
-		CoreLib.say("Received request to set floor one as " + floor);
+		DECore.say("Received request to set floor one as " + floor);
 		firstFloorYValue = getYCoordFromFloor(floor);
-		CoreLib.say("Set floor one as " + firstFloorYValue);
+		DECore.say("Set floor one as " + firstFloorYValue);
 	}
 
 	public void setColorData(int color) {
@@ -110,7 +110,7 @@ public class DEProperties {
 		}
 		DataInputStream dataStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 
-		CoreLib.say("Loading properties from packet...");
+		DECore.say("Loading properties from packet...");
 
 		command = dataStream.readInt();
 		int numFloors = dataStream.readInt();
@@ -119,14 +119,14 @@ public class DEProperties {
 		canBeHalted = dataStream.readBoolean();
 		enableMobilePower = dataStream.readBoolean();
 
-		CoreLib.say("power: " + canProvidePower + ", halt: " + canBeHalted
+		DECore.say("power: " + canProvidePower + ", halt: " + canBeHalted
 					+ ", mobile:" + enableMobilePower);
 
 		elevatorName = dataStream.readUTF();
 		firstFloorYValue = dataStream.readInt();
 		colorData = dataStream.readInt();
 
-		CoreLib.say("name: " + elevatorName + ", first floor Y: "
+		DECore.say("name: " + elevatorName + ", first floor Y: "
 					+ firstFloorYValue + ", color: " + colorData);
 
 		for (int i = 0; i < numFloors; i++) {
@@ -134,7 +134,7 @@ public class DEProperties {
 			String curName = dataStream.readUTF();
 			floorNames.put(	curYValue,
 							curName);
-			CoreLib.say("yCoord: " + curYValue + " : " + curName);
+			DECore.say("yCoord: " + curYValue + " : " + curName);
 		}
 		return true;
 	}

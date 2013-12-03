@@ -33,7 +33,7 @@ public class DECore {
 		// checkProps();
 		// loadProps();
 
-		CoreLib.say("Starting in verbose mode!");
+		DECore.say("Starting in verbose mode!");
 
 		ConfigurationLib.ElevatorButton = (new BlockElevatorButton(ConfigurationLib.elevator_button_blockID, false)).setHardness(0.5F).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("elevatorbutton");
 		ConfigurationLib.Elevator = (new BlockElevator(ConfigurationLib.elevator_blockID).setHardness(3.0F).setStepSound(Block.soundMetalFootstep).setResistance(15F).setUnlocalizedName("elevator"));
@@ -156,11 +156,22 @@ public class DECore {
 				}
 			}
 		} catch (Exception e) {
-			CoreLib.say("There was a problem reading the properties file, using default list instead.");
+			DECore.say("There was a problem reading the properties file, using default list instead.");
 			s.clear();
 			popIntSetFromString(s,
 								def,
 								"");
+		}
+	}
+
+	public static void say(String s) {
+		say(s,
+			false);
+	}
+
+	public static void say(String s, boolean ignoreVerbose) {
+		if (ConfigurationLib.verbose || ignoreVerbose) {
+			System.out.println("[ElevatorMod] " + s);
 		}
 	}
 }

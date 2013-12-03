@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import slimevoid.elevators.blocks.BlockElevator;
+import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
 public class BlockLib {
@@ -110,7 +111,7 @@ public class BlockLib {
 			return;
 		}
 		if (info.requestFloor(floor)) {
-			CoreLib.say("Destination set: " + info.getDestination());
+			DECore.say("Destination set: " + info.getDestination());
 			refreshElevator(world,
 							pos,
 							10);
@@ -126,7 +127,7 @@ public class BlockLib {
 			return;
 		}
 		if (info.demandY(Y)) {
-			CoreLib.say("Destination set: " + info.getDestination());
+			DECore.say("Destination set: " + info.getDestination());
 			refreshElevator(world,
 							pos,
 							10);
@@ -142,7 +143,7 @@ public class BlockLib {
 			return;
 		}
 		if (info.reset()) {
-			CoreLib.say("Destination set: " + info.getDestination());
+			DECore.say("Destination set: " + info.getDestination());
 			refreshElevator(world,
 							pos,
 							10);

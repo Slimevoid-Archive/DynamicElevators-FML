@@ -15,6 +15,7 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import slimevoid.elevators.api.IDECommonProxy;
 import slimevoid.elevators.blocks.BlockElevator;
+import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DynamicElevators;
 import slimevoid.elevators.network.ElevatorPacketHandler;
 import slimevoid.elevators.network.packets.PacketButtonUpdate;
@@ -89,7 +90,7 @@ public class PacketLib {
 													packet);
 
 		} catch (IOException e) {
-			CoreLib.say("Error while creating entity update packet.",
+			DECore.say(	"Error while creating entity update packet.",
 						true);
 			e.printStackTrace();
 		}
@@ -105,7 +106,7 @@ public class PacketLib {
 			return false;
 		}
 
-		CoreLib.say((new StringBuilder()).append("Received elevator request from ").append(player.username).toString());
+		DECore.say((new StringBuilder()).append("Received elevator request from ").append(player.username).toString());
 
 		BlockElevator elevator = (BlockElevator) ConfigurationLib.Elevator;
 		TileEntityElevator elevatorInfo = BlockElevator.getTileEntity(	world,
@@ -123,20 +124,20 @@ public class PacketLib {
 			elevatorRequests.put(	player.username,
 									loc);
 			if (player instanceof EntityPlayerMP) {
-				CoreLib.say("Attempting to open GUI via packet");
+				DECore.say("Attempting to open GUI via packet");
 				PacketDispatcher.sendPacketToPlayer(packet,
 													(Player) player);
 			} else {
-				CoreLib.say("Attempting to open GUI locally");
+				DECore.say("Attempting to open GUI locally");
 				((IDECommonProxy) DynamicElevators.proxy).openGui(	world,
 																	player,
 																	packet,
 																	loc);
 			}
 
-			CoreLib.say((new StringBuilder()).append("Successfully added request for ").append(player.username).toString());
+			DECore.say((new StringBuilder()).append("Successfully added request for ").append(player.username).toString());
 		} catch (IOException e) {
-			CoreLib.say("Error while creating packet - unable to open GUI for "
+			DECore.say(	"Error while creating packet - unable to open GUI for "
 								+ player.username,
 						true);
 			e.printStackTrace();

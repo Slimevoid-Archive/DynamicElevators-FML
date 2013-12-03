@@ -52,7 +52,7 @@ public class BlockElevator extends BlockContainer {
 			if (topRef != null) {
 				Icon top = topRef.getIcon(	0,
 											0);
-				CoreLib.say("Top texture reference is " + top.getIconName(),
+				DECore.say("Top texture reference is " + top.getIconName(),
 							true);
 				topTexture = iconRegister.registerIcon(top.getIconName());
 			}
@@ -60,7 +60,7 @@ public class BlockElevator extends BlockContainer {
 			if (sideRef != null) {
 				Icon side = sideRef.getIcon(0,
 											0);
-				CoreLib.say("Side texture reference is " + side.getIconName(),
+				DECore.say("Side texture reference is " + side.getIconName(),
 							true);
 				sideTexture = iconRegister.registerIcon(side.getIconName());
 			}
@@ -79,7 +79,7 @@ public class BlockElevator extends BlockContainer {
 
 	private static void say(String s, boolean always) {
 		if (always || verbose) {
-			CoreLib.say(s,
+			DECore.say(s,
 						always);
 		}
 	}

@@ -15,9 +15,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import slimevoid.elevators.blocks.BlockElevator;
+import slimevoid.elevators.core.DECore;
 import slimevoid.elevators.core.DEProperties;
 import slimevoid.elevators.core.lib.ConfigurationLib;
-import slimevoid.elevators.core.lib.CoreLib;
 import slimevoid.elevators.core.lib.PacketLib;
 import slimevoid.elevators.tileentities.TileEntityElevator;
 
@@ -148,7 +148,7 @@ public class EntityElevator extends Entity {
 	}
 
 	private void say(String s) {
-		CoreLib.say((new StringBuilder()).append(" [ ").append(entityId).append(" ] ").append(s).toString());
+		DECore.say((new StringBuilder()).append(" [ ").append(entityId).append(" ] ").append(s).toString());
 	}
 
 	// -------------------------------------------------------------------- //
@@ -373,7 +373,7 @@ public class EntityElevator extends Entity {
 					try {
 						props.mergeProperties(curTile);
 					} catch (IOException e) {
-						CoreLib.say("Unable to merge properties",
+						DECore.say(	"Unable to merge properties",
 									true);
 						e.printStackTrace();
 					}
@@ -446,7 +446,7 @@ public class EntityElevator extends Entity {
 									3);
 			}
 		}
-		CoreLib.say("-----------------------------------------------------------------");
+		DECore.say("-----------------------------------------------------------------");
 
 		if (!center) {
 			say((new StringBuilder()).append("Speed: ").append(motionY).append(", posY: ").append(posY).append(", destY: ").append(destY).append(", center: "
